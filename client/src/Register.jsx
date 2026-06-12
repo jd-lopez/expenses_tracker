@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { registerUser } from "./services/authService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,7 +15,7 @@ export default function Register() {
     email: "",
     password: "",
   });
-
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -36,6 +37,9 @@ export default function Register() {
       const message = res.message;
       setError("");
       setSuccess(message);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
     } catch (error) {
       const message = error?.response?.data.message;
       setSuccess("");
@@ -88,44 +92,47 @@ export default function Register() {
           onSubmit={handleSubmit}
           className="flex flex-col gap-8 font-serif"
         >
-          <div className="flex flex-col relative">
-            <FontAwesomeIcon icon={faUser} className="icon" />
+          <div className="flex justify-between">
+            <div className="flex flex-col relative">
+              <FontAwesomeIcon icon={faUser} className="icon" />
 
-            <input
-              name="first"
-              value={formData.first}
-              type="text"
-              id="firstName"
-              required
-              onChange={handleChange}
-              className="input peer"
-              placeholder="Ingresa tu nombre"
-            />
-            <label className="labelPlaceholder" htmlFor="firstName">
-              Ingresa tu nombre
-            </label>
+              <input
+                name="first"
+                value={formData.first}
+                type="text"
+                id="firstName"
+                required
+                onChange={handleChange}
+                className="input peer"
+                placeholder="Ingresa tu nombre"
+              />
+              <label className="labelPlaceholder" htmlFor="firstName">
+                Ingresa tu nombre
+              </label>
+            </div>
+
+            {/*Last name input */}
+
+            <div className="flex flex-col gap-1 relative">
+              <FontAwesomeIcon icon={faUser} className="icon" />
+
+              <input
+                name="last"
+                value={formData.last}
+                onChange={handleChange}
+                type="text"
+                id="lastName"
+                required
+                className="input peer"
+                placeholder="Ingresa tu apellido"
+              />
+
+              <label htmlFor="lastName" className="labelPlaceholder">
+                Ingresa tu apellido
+              </label>
+            </div>
           </div>
 
-          {/*Last name input */}
-
-          <div className="flex flex-col gap-1 relative">
-            <FontAwesomeIcon icon={faUser} className="icon" />
-
-            <input
-              name="last"
-              value={formData.last}
-              onChange={handleChange}
-              type="text"
-              id="lastName"
-              required
-              className="input peer"
-              placeholder="Ingresa tu apellido"
-            />
-
-            <label htmlFor="lastName" className="labelPlaceholder">
-              Ingresa tu apellido
-            </label>
-          </div>
           <div className="flex flex-col gap-1 relative">
             <FontAwesomeIcon icon={faEnvelope} className="icon" />
 
@@ -146,7 +153,7 @@ export default function Register() {
           </div>
 
           <div className="flex flex-col gap-1 relative">
-            <FontAwesomeIcon icon={faEnvelope} className="icon" />
+            <FontAwesomeIcon icon={faLock} className="icon" />
 
             <input
               name="password"
@@ -168,7 +175,11 @@ export default function Register() {
             className="mt-4 rounded-md px-2 font-bold hover:bg-blue-800 py-1 bg-blue-600 text-white"
             disabled={isLoading}
           >
-            {isLoading ? "Creando cuenta..." : "Crear cuenta"}
+            {isLoading
+              ? "Creando cuenta..."
+              : success
+                ? "Redirigiendo"
+                : "Crear cuenta"}
           </button>
         </form>
       </div>
