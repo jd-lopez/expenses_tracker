@@ -6,18 +6,18 @@ function signToken(user) {
   return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 }
 
-function normalizeNameInput({ firstName, lastName }) {
+function normalizeNameInput({ first, last }) {
   return {
-    first: typeof firstName === "string" ? firstName.trim() : "",
-    last: typeof lastName === "string" ? lastName.trim() : "",
+    first: typeof first === "string" ? first.trim() : "",
+    last: typeof last === "string" ? last.trim() : "",
   };
 }
 
 export const registerUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const { first, last, email, password } = req.body;
 
-    const normalizedNames = normalizeNameInput({ firstName, lastName });
+    const normalizedNames = normalizeNameInput({ first, last});
 
     if (
       !normalizedNames.first ||
@@ -33,7 +33,7 @@ export const registerUser = async (req, res) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ message: "Invalid email format" });
+      return res.status(400).json({ message: "Formato de correo invalido" });
     }
 
     if (password.length < 8) {
@@ -45,7 +45,7 @@ export const registerUser = async (req, res) => {
     const existingUser = await prisma.users.findUnique({ where: { email } });
 
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: "Ya existe un usuario con ese correo electrónico" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -69,6 +69,7 @@ export const registerUser = async (req, res) => {
         lastName: user.lastName,
         email: user.email,
       },
+      message: "Cuenta creada exitosamente",
     });
   } catch (error) {
     console.log(error);
