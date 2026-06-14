@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "./services/authService";
+import { registerUser } from "../services/authService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBuildingColumns,
@@ -8,14 +8,20 @@ import {
   faLock,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
+
+import { useAuth } from "../../../context/AuthContext";
+
 export default function Register() {
+  const navigate = useNavigate();
+  const { signup } = useAuth();
+
   const [formData, setFormData] = useState({
     first: "",
     last: "",
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -33,7 +39,8 @@ export default function Register() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await registerUser(formData);
+      const res = await signup(formData);
+
       const message = res.message;
       setError("");
       setSuccess(message);
@@ -41,7 +48,8 @@ export default function Register() {
         navigate("/dashboard");
       }, 2000);
     } catch (error) {
-      const message = error?.response?.data.message;
+      const message =
+        error?.response?.data?.message || error?.message || "Ocurrió un error";
       setSuccess("");
       setError(message);
     } finally {
@@ -50,8 +58,8 @@ export default function Register() {
   }
 
   return (
-    <div className="bg-[#f8f9ff]  flex justify-between rounded-2xl shadow-2xl w-full h-full ">
-      <div className="hidden md:flex bg-primary text-white flex-col justify-center gap-6 px-20 flex-1">
+    <div className=" bg-[#f8f9ff]  flex justify-between rounded-2xl shadow-2xl w-full h-full ">
+      <div className="hidden md:flex bg-primary text-white flex-col justify-center gap-6 px-20 flex-1 h-screen">
         <div className="flex items-center gap-4">
           <div className="rounded-md bg-white p-2 ">
             <FontAwesomeIcon

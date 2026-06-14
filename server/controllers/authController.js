@@ -17,7 +17,7 @@ export const registerUser = async (req, res) => {
   try {
     const { first, last, email, password } = req.body;
 
-    const normalizedNames = normalizeNameInput({ first, last});
+    const normalizedNames = normalizeNameInput({ first, last });
 
     if (
       !normalizedNames.first ||
@@ -45,7 +45,9 @@ export const registerUser = async (req, res) => {
     const existingUser = await prisma.users.findUnique({ where: { email } });
 
     if (existingUser) {
-      return res.status(400).json({ message: "Ya existe un usuario con ese correo electrónico" });
+      return res
+        .status(400)
+        .json({ message: "Ya existe un usuario con ese correo electrónico" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -59,7 +61,7 @@ export const registerUser = async (req, res) => {
       },
     });
 
-    const token = signToken(user);
+    const token = signToken(user.id);
 
     res.status(201).json({
       token,
