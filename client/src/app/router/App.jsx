@@ -6,12 +6,23 @@ import Dashboard from "../../features/transactions/pages/Dashboard";
 import Layout from "../layouts/Layout";
 import PublicLayout from "../layouts/PublicLayout";
 import Transactions from "../../features/transactions/pages/Transactions";
+import { useAuth } from "../../context/AuthContext";
+import { Navigate } from "react-router-dom";
+import Login from "../../features/auth/pages/Login";
 function App() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<PublicLayout />}>
+        <Route element={<PublicLayout />}>
           <Route path="/register" element={<Register />} />
+          <Route
+            path="login"
+            element={
+              isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />
+            }
+          />
         </Route>
 
         <Route

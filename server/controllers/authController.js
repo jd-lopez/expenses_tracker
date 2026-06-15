@@ -81,6 +81,7 @@ export const registerUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   try {
+    console.log(req.body);
     const { email, password } = req.body;
 
     //validate user

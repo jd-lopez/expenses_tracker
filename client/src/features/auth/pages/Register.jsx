@@ -1,15 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { registerUser } from "../services/authService";
+import { useNavigate, NavLink } from "react-router-dom";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBuildingColumns,
-  faEnvelope,
-  faLock,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBuildingColumns } from "@fortawesome/free-solid-svg-icons";
 
 import { useAuth } from "../../../context/AuthContext";
+import SignupForm from "../components/SignupForm";
+import SSO from "../components/SSO";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -58,7 +55,7 @@ export default function Register() {
   }
 
   return (
-    <div className=" bg-[#f8f9ff]  flex justify-between rounded-2xl shadow-2xl w-full h-full ">
+    <div className=" bg-[#f8f9ff]  flex justify-between rounded-2xl shadow-2xl w-full h-full">
       <div className="hidden md:flex bg-primary text-white flex-col justify-center gap-6 px-20 flex-1 h-screen">
         <div className="flex items-center gap-4">
           <div className="rounded-md bg-white p-2 ">
@@ -78,7 +75,7 @@ export default function Register() {
           subscripciones and inversiones en un unico y seguro espacio.
         </p>
       </div>
-      <div className="flex flex-col flex-1 justify-center p-4 md:px-20 gap-10">
+      <div className="flex flex-col flex-1 justify-center p-4 md:px-20 gap-10 bg-background">
         <div className=" flex self-center md:hidden items-baseline gap-4">
           <div className="rounded-md bg-white p-2 ">
             <FontAwesomeIcon
@@ -96,100 +93,28 @@ export default function Register() {
 
         {error && <p className="text-red-600">{error}</p>}
         {success && <p className="text-green-600">{success}</p>}
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-8 font-serif"
-        >
-          <div className="flex justify-between">
-            <div className="flex flex-col relative">
-              <FontAwesomeIcon icon={faUser} className="icon" />
+        <SignupForm
+          formData={formData}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          isLoading={isLoading}
+          success={success}
+        />
 
-              <input
-                name="first"
-                value={formData.first}
-                type="text"
-                id="firstName"
-                required
-                onChange={handleChange}
-                className="input peer"
-                placeholder="Ingresa tu nombre"
-              />
-              <label className="labelPlaceholder" htmlFor="firstName">
-                Ingresa tu nombre
-              </label>
-            </div>
+        <div className="flex justify-between items-center">
+          <div className="w-20 md:w-30 h-0.5 bg-gray-300"></div>
+          <span>O continua con</span>
+          <div className="w-20 md:w-30 h-0.5 bg-gray-300"></div>
+        </div>
 
-            {/*Last name input */}
+        <SSO />
 
-            <div className="flex flex-col gap-1 relative">
-              <FontAwesomeIcon icon={faUser} className="icon" />
-
-              <input
-                name="last"
-                value={formData.last}
-                onChange={handleChange}
-                type="text"
-                id="lastName"
-                required
-                className="input peer"
-                placeholder="Ingresa tu apellido"
-              />
-
-              <label htmlFor="lastName" className="labelPlaceholder">
-                Ingresa tu apellido
-              </label>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-1 relative">
-            <FontAwesomeIcon icon={faEnvelope} className="icon" />
-
-            <input
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              type="text"
-              id="email"
-              required
-              className="input peer"
-              placeholder="Ingresa tu correo"
-            />
-
-            <label htmlFor="email" className="labelPlaceholder">
-              Ingresa tu correo
-            </label>
-          </div>
-
-          <div className="flex flex-col gap-1 relative">
-            <FontAwesomeIcon icon={faLock} className="icon" />
-
-            <input
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              type="text"
-              id="password"
-              required
-              className="input peer"
-              placeholder="Ingresa un contrasena segura"
-            />
-
-            <label htmlFor="password" className="labelPlaceholder">
-              Ingresa un contrasena segura
-            </label>
-          </div>
-
-          <button
-            className="mt-4 rounded-md px-2 font-bold hover:bg-blue-800 py-1 bg-blue-600 text-white"
-            disabled={isLoading}
-          >
-            {isLoading
-              ? "Creando cuenta..."
-              : success
-                ? "Redirigiendo"
-                : "Crear cuenta"}
-          </button>
-        </form>
+        <p className="mx-auto">
+          Ya tienes una cuenta?
+          <NavLink to="/login" className="text-blue-700 font-bold ml-2">
+            Inicia session
+          </NavLink>
+        </p>
       </div>
     </div>
   );

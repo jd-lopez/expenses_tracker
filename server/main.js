@@ -3,14 +3,14 @@ import cors from "cors";
 import helmet from "helmet";
 import expressRateLimit from "express-rate-limit";
 import dotenv from "dotenv";
+import { registerUser, loginUser } from "./controllers/authController.js";
+import { authMiddleware } from "./middleware/auth.js";
 
 const app = express();
 const PORT = 3000;
 
 dotenv.config();
 app.use(cors());
-
-import { registerUser, loginUser } from "./controllers/authController.js";
 
 // Middleware to set security-related HTTP headers
 app.use(helmet());

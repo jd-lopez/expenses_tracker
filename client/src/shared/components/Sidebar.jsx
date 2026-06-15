@@ -9,7 +9,7 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
 
   const handleLogout = () => {
     logout();
-    navigate("/register");
+    navigate("/login");
   };
 
   return (
