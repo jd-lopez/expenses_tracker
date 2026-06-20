@@ -5,6 +5,10 @@ import expressRateLimit from "express-rate-limit";
 import dotenv from "dotenv";
 import { registerUser, loginUser } from "./controllers/authController.js";
 import { authMiddleware } from "./middleware/auth.js";
+import {
+  getAllTransactions,
+  createTransaction,
+} from "./controllers/transactionController.js";
 
 const app = express();
 const PORT = 3000;
@@ -37,8 +41,10 @@ app.get("/", (req, res) => {
 app.get("/about", (req, res) => {
   res.send("This is the about page!");
 });
+app.get("/transactions", authMiddleware, getAllTransactions);
 app.post("/register", registerUser);
 app.post("/login", loginUser);
+app.post("/transactions", authMiddleware, createTransaction);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

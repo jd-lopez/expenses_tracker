@@ -9,6 +9,8 @@ import Transactions from "../../features/transactions/pages/Transactions";
 import { useAuth } from "../../context/AuthContext";
 import { Navigate } from "react-router-dom";
 import Login from "../../features/auth/pages/Login";
+import Accounts from "../../features/transactions/pages/Accounts";
+
 function App() {
   const { isAuthenticated } = useAuth();
 
@@ -16,7 +18,16 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<PublicLayout />}>
-          <Route path="/register" element={<Register />} />
+          <Route
+            path="/register"
+            element={
+              isAuthenticated ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Register />
+              )
+            }
+          />
           <Route
             path="login"
             element={
@@ -34,6 +45,7 @@ function App() {
         >
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/transactions" element={<Transactions />} />
+          <Route path="/accounts" element={<Accounts />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -25,7 +25,7 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
 
         <ul className="flex md:flex-col flex-1">
           <li>
-            <NavLink to="dashboard">Dashboard</NavLink>
+            <NavLink to="/dashboard">Dashboard</NavLink>
           </li>
           <li>
             <NavLink to={"/transactions"}>Transactions</NavLink>
@@ -34,7 +34,7 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
             <NavLink>Analytics</NavLink>
           </li>
           <li>
-            <NavLink>Accounts</NavLink>
+            <NavLink to="/accounts">Accounts</NavLink>
           </li>
           <li>
             <NavLink>Subscriptions</NavLink>

@@ -3,7 +3,15 @@ import jwt from "jsonwebtoken";
 import { prisma } from "../prisma/client.js";
 
 function signToken(user) {
-  return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  const userId = typeof user === "object" && user !== null ? user.id : user;
+
+  if (!userId) {
+    throw new Error("Cannot sign token without a valid userId");
+  }
+
+  return jwt.sign({ userId }, process.env.JWT_SECRET, {
+    expiresIn: "1h",
+  });
 }
 
 function normalizeNameInput({ first, last }) {
@@ -61,7 +69,7 @@ export const registerUser = async (req, res) => {
       },
     });
 
-    const token = signToken(user.id);
+    const token = signToken(user);
 
     res.status(201).json({
       token,
@@ -81,7 +89,6 @@ export const registerUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   try {
-    console.log(req.body);
     const { email, password } = req.body;
 
     //validate user
@@ -104,7 +111,7 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = signToken(user.id);
+    const token = signToken(user);
     res.json({
       token,
       user: {
@@ -113,6 +120,7 @@ export const loginUser = async (req, res) => {
         lastName: user.lastName,
         email: user.email,
       },
+      message: "Inicio de sesión exitoso",
     });
   } catch (error) {
     console.error(error);

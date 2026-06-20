@@ -48,7 +48,7 @@ export default function Login() {
   }
 
   return (
-    <div className="py-6 px-6 flex flex-col gap-4 shadow-2xl rounded-2xl my-auto bg-white">
+    <div className="py-6 px-6 flex flex-col gap-4 shadow-2xl rounded-2xl my-auto bg-white mx-auto md:scale-150 lg:scale-100">
       <h1 className="text-3xl font-bold">Bienvenido de nuevo</h1>
       <p>Ingresa tus credenciales para acceder a tus Dashboard</p>
 

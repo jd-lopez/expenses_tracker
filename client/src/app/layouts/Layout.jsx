@@ -20,7 +20,7 @@ export default function Layout() {
           setIsOpen={setIsOpen}
           toggleSidebar={toggleSidebar}
         />
-        <main className="flex-1 overflow-y-auto px-6 py-2">
+        <main className="flex-1 overflow-y-auto px-6 py-4 relative">
           <Outlet />
         </main>
       </div>

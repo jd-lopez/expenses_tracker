@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 export default function PublicLayout() {
   return (
-    <main className="flex flex-col items-center h-full bg-background">
+    <main className="flex justify-between items-center h-full w-full bg-background">
       <Outlet />
     </main>
   );

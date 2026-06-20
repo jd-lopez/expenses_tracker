@@ -2,16 +2,17 @@
 @import "tailwindcss";
 
 
-#root{
+#root {
     height: 100vh;
 }
-html{
+
+html {
 
     box-sizing: border-box;
-   
+
 }
 
-@theme{
+@theme {
     --color-primary: #4f46e5;
     --color-secondary: #10b981;
     --color-tertiary: #f43f5e;
@@ -67,7 +68,7 @@ html{
     --color-on-primary-container: #dad7ff;
 }
 
-body{
+body {
 
     font-family: "Playfair", sans-serif;
     width: 100%;
@@ -76,40 +77,42 @@ body{
 }
 
 
-@layer components{
+@layer components {
 
-    .inputWrapper{
-        @apply flex flex-col border border-gray-600 rounded-md gap-2 py-1 px-2 
+    .inputWrapper {
+        @apply flex flex-col border border-gray-600 rounded-md gap-2 py-1 px-2
     }
 
-    .input{
-        @apply outline-0  border border-gray-400 shadow-xl rounded-md flex-1 pl-8 py-2.5 placeholder-transparent
+    .input {
+        @apply outline-0 border border-gray-400 shadow-xl rounded-md flex-1 pl-8 py-2.5 placeholder-transparent
     }
 
 
-    .labelPlaceholder{
+    .labelPlaceholder {
 
-        @apply peer-placeholder-shown:text-gray-500
-              peer-placeholder-shown:text-base 
-
-              peer-placeholder-shown:top-3
-              peer-placeholder-shown:left-8
-
-              peer-focus:-top-6
-              peer-focus:left-0
-              peer-focus:text-lg
-              peer-focus:text-slate-800
-
-              absolute left-0 -top-7   text-slate-800 transition-all duration-400 text-lg
+        @apply peer-placeholder-shown:text-gray-500 peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-placeholder-shown:left-8 peer-focus:-top-6 peer-focus:left-0 peer-focus:text-lg peer-focus:text-slate-800 absolute left-0 -top-7 text-slate-800 transition-all duration-400 text-lg
     }
 
-    .icon{
+    .icon {
 
         @apply absolute top-3.5 left-1 pointer-events-none text-blue-800
     }
 
-    .bottomNavButtons{
+    .bottomNavButtons {
 
         @apply flex flex-col items-center
+    }
+
+    .addButton {
+        @apply rounded-md px-3 py-1 text-white font-bold text-lg md:text-lg md:px-2 md:py-2
+    }
+
+    .accountModalFields {
+
+        @apply flex flex-col gap-2
+    }
+
+    .modalInput {
+        @apply rounded-md px-2 py-1 border border-gray-400 shadow
     }
 }
