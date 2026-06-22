@@ -39,6 +39,7 @@ model Accounts {
   userId         Int
   type           AccountTypes
   name           String
+  institution    String
 }
 
 model Categories {

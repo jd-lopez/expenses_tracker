@@ -9,7 +9,7 @@ import {
   getAllTransactions,
   createTransaction,
 } from "./controllers/transactionController.js";
-
+import { getAccounts, createAccount } from "./controllers/accountController.js";
 const app = express();
 const PORT = 3000;
 
@@ -41,9 +41,11 @@ app.get("/", (req, res) => {
 app.get("/about", (req, res) => {
   res.send("This is the about page!");
 });
+app.get("/accounts", authMiddleware, getAccounts);
 app.get("/transactions", authMiddleware, getAllTransactions);
 app.post("/register", registerUser);
 app.post("/login", loginUser);
+app.post("/accounts", authMiddleware, createAccount);
 app.post("/transactions", authMiddleware, createTransaction);
 
 app.listen(PORT, () => {

@@ -17,9 +17,24 @@ export function useTransactions() {
     }
   }
 
+  async function createTransaction(transData) {
+    try {
+      const data = await transactionService.createTransaction(transData);
+      setTransactions((prev) => [...prev, data]);
+      setError(null);
+      return data;
+    } catch (err) {
+      const errorMessage = err?.response?.data?.message || err.message;
+      setError(errorMessage);
+      throw err;
+    }
+  }
+
   return {
     transactions,
+    setTransactions,
     error,
     loadTransactions,
+    createTransaction,
   };
 }

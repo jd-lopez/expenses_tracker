@@ -1,4 +1,4 @@
-import api from "../../../shared/utils/api.js";
+import api from "../../../shared/utils/api";
 
 export const transactionService = {
   async getAll() {
@@ -6,8 +6,8 @@ export const transactionService = {
     return response.data;
   },
 
-  async createTransaction(transactionData) {
-    const response = await api.get("/transations", transactionData);
+  async createTransaction(transData) {
+    const response = await api.post("/transactions", transData);
     return response.data;
   },
 };

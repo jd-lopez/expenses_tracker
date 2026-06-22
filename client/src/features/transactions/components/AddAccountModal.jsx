@@ -2,13 +2,14 @@ import React from "react";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBank } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "motion/react";
 
-export default function AddAccountModal({ createAccount }) {
+export default function AddAccountModal({ createAccount, setAccountModal }) {
   const [accountData, setAccountData] = useState({
     name: "",
     institution: "",
     type: "credit",
-    balance: "",
+    initialBalance: "",
   });
 
   function handleChange(e) {
@@ -24,21 +25,26 @@ export default function AddAccountModal({ createAccount }) {
     e.preventDefault();
     const payload = {
       ...accountData,
-      balance: Number(accountData.balance),
+      initialBalance: Number(accountData.balance),
     };
 
     await createAccount(payload);
-    console.log(payload);
+    setAccountModal(false);
   }
 
   return (
-    <dialog
+    <motion.dialog
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0 }}
       open
       className="absolute top-20 left-1/2 -translate-x-2/3 rounded-2xl shadow-xl"
     >
       <div className="rounded-md border border-gray-200 p-4">
-        <h1>Add New Account</h1>
-        <p>Manually track a bank account, credit card or investments.</p>
+        <h1 className="text-2xl font-bold text-blue-950">Add New Account</h1>
+        <p className="text-slate-600">
+          Manually track a bank account, credit card or investments.
+        </p>
 
         <form onSubmit={handleSubmit} className="mt-10 flex flex-col gap-2">
           <div className="accountModalFields">
@@ -73,26 +79,40 @@ export default function AddAccountModal({ createAccount }) {
               id=""
               required
             >
-              <option value="creditcard">Credit card</option>
-              <option value="debitcard">Debit Card</option>
+              <option value="CREDIT">Credit card</option>
+              <option value="CHECKING">Checking</option>
+              <option value="CASH">Cash</option>
+              <option value="SAVINGS">Savings</option>
             </select>
           </div>
           <div className="accountModalFields">
             <label htmlFor="">Balance inicial</label>
             <input
-              name="balance"
-              value={accountData.balance}
+              name="initialBalance"
+              value={accountData.initialBalance}
               onChange={handleChange}
               className="modalInput"
               type="number"
               required
             />
           </div>
-          <button className=" text-white font-bold py-1 rounded-2xl hover:bg-blue-600 bg-blue-500">
-            Agregar
-          </button>
+          <div className="flex justify-between gap-4 mt-6">
+            <button
+              type="submit"
+              className="flex-1 text-white font-bold py-1 rounded-2xl  hover:bg-blue-600 bg-blue-500"
+            >
+              Agregar
+            </button>
+            <button
+              className="flex-1 text-white font-bold py-1 rounded-2xl  hover:bg-red-600 bg-red-500"
+              onClick={() => setAccountModal(false)}
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
-    </dialog>
+    </motion.dialog>
   );
 }

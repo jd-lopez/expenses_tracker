@@ -23,7 +23,10 @@ export const getAllTransactions = async (req, res) => {
 export const createTransaction = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { title, description, amount, type, accountId, categoryId } = req.body;
+    const { title, description, amount, type, accountId, categoryId } =
+      req.body;
+
+    console.log(typeof amount);
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });

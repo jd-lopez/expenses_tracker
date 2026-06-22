@@ -2,6 +2,16 @@ import React from "react";
 import Dashboard from "../../features/transactions/pages/Dashboard";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHome,
+  faFileInvoice,
+  faChartLine,
+  faMoneyCheckDollar,
+  faGear,
+  faCircleQuestion,
+  faSignOut,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
   const { logout } = useAuth();
@@ -14,39 +24,147 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
 
   return (
     <section
-      className={`hidden md:block md:h-screen border-r border-r-sky-300 shadow-lg ${isOpen ? "w-52 - p-4" : "w-24"}`}
+      popoverTarget="my-popover"
+      className={`hidden md:block md:h-screen border-r bg-background border-r-sky-300 shadow-lg transition-all duration-300 ${isOpen ? "w-52 p-4" : "w-28 p-2"}`}
       onMouseEnter={(e) => {
         toggleSidebar();
       }}
       onMouseLeave={toggleSidebar}
     >
-      <aside className="flex flex-row md:flex-col justify-between h-full">
-        <h1 className="hidden md:block">FinTrack</h1>
+      <aside className="flex flex-row md:flex-col justify-between items-center h-full gap-10">
+        <h1 className="hidden md:block font-bold text-2xl">FinTrack</h1>
 
-        <ul className="flex md:flex-col flex-1">
+        <ul className="flex md:flex-col flex-1 gap-4">
           <li>
-            <NavLink to="/dashboard">Dashboard</NavLink>
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) =>
+                `px-6 py-1 flex gap-2  items-center ${isActive && isOpen ? "bg-blue-600 rounded-md text-white" : "bg-background text-blue-600"}`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <FontAwesomeIcon
+                    icon={faHome}
+                    className={`transition-all duration-200 ${isOpen ? "text-xl" : isActive ? "text-xl text-white px-3 py-1 rounded-md  bg-blue-600" : "text-2xl px-3"}`}
+                  />
+                  <span
+                    className={` transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-0 w-0"}`}
+                  >
+                    Dashboard
+                  </span>
+                </>
+              )}
+            </NavLink>
           </li>
           <li>
-            <NavLink to={"/transactions"}>Transactions</NavLink>
+            <NavLink
+              to="/transactions"
+              className={({ isActive }) =>
+                `px-6 py-1 flex gap-2  items-center ${isActive && isOpen ? "bg-blue-600 rounded-md text-white" : "bg-background text-blue-600"}`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <FontAwesomeIcon
+                    icon={faFileInvoice}
+                    className={`transition-all duration-200 ${isOpen ? "text-xl" : isActive ? "text-xl text-white px-3 py-1 rounded-md  bg-blue-600" : "text-2xl px-3"}`}
+                  />
+                  <span
+                    className={` transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-0 w-0"}`}
+                  >
+                    Transactions
+                  </span>
+                </>
+              )}
+            </NavLink>
           </li>
           <li>
-            <NavLink>Analytics</NavLink>
+            <NavLink
+              to="/register"
+              className={({ isActive }) =>
+                `px-6 py-1 flex gap-2  items-center ${isActive && isOpen ? "bg-blue-600 rounded-md text-white" : "bg-background text-blue-600"}`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <FontAwesomeIcon
+                    icon={faChartLine}
+                    className={`transition-all duration-200 ${isOpen ? "text-xl" : isActive ? "text-xl text-white px-3 py-1 rounded-md  bg-blue-600" : "text-2xl px-3"}`}
+                  />
+                  <span
+                    className={` transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-0 w-0"}`}
+                  >
+                    Analytics
+                  </span>
+                </>
+              )}
+            </NavLink>
           </li>
           <li>
-            <NavLink to="/accounts">Accounts</NavLink>
+            <NavLink
+              to="/accounts"
+              className={({ isActive }) =>
+                `px-6 py-1 flex gap-2  items-center ${isActive && isOpen ? "bg-blue-600 rounded-md text-white" : "bg-background text-blue-600"}`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <FontAwesomeIcon
+                    icon={faMoneyCheckDollar}
+                    className={`transition-all duration-200 ${isOpen ? "text-xl" : isActive ? "text-xl text-white px-3 py-1 rounded-md  bg-blue-600" : "text-2xl px-3"}`}
+                  />
+                  <span
+                    className={` transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-0 w-0"}`}
+                  >
+                    Accounts
+                  </span>
+                </>
+              )}
+            </NavLink>
           </li>
-          <li>
-            <NavLink>Subscriptions</NavLink>
-          </li>
-          <li>
-            <NavLink>Settings</NavLink>
+
+          <li className="">
+            <NavLink
+              to=""
+              className={({ isActive }) =>
+                `px-6 py-1 flex gap-2  items-center ${isActive && isOpen ? "bg-blue-600 rounded-md text-white" : "bg-background text-blue-600"}`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <FontAwesomeIcon
+                    icon={faGear}
+                    className={`transition-all duration-200 ${isOpen ? "text-xl" : isActive ? "text-xl text-white px-3 py-1 rounded-md  bg-blue-600" : "text-2xl px-3 "}`}
+                  />
+                  <span
+                    className={` transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-0 w-0"}`}
+                  >
+                    Settings
+                  </span>
+                </>
+              )}
+            </NavLink>
           </li>
         </ul>
 
-        <div className="hidden md:flex flex-col">
-          <button>Help</button>
-          <button onClick={handleLogout}>Logut</button>
+        <div className="hidden md:flex flex-col gap-2">
+          <button className={`flex gap-2`}>
+            <FontAwesomeIcon icon={faCircleQuestion} className="sideIcon" />
+            <span
+              className={` transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-0 w-0"}`}
+            >
+              Help
+            </span>
+          </button>
+          <button onClick={handleLogout} className={`flex gap-2`}>
+            <FontAwesomeIcon icon={faSignOut} className="sideIcon" />
+            <span
+              className={` transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-0 w-0"}`}
+            >
+              Log out
+            </span>
+          </button>
         </div>
       </aside>
     </section>
