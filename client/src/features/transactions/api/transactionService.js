@@ -6,6 +6,11 @@ export const transactionService = {
     return response.data;
   },
 
+  async getAllCategories() {
+    const response = await api.get("/categories");
+    return response.data;
+  },
+
   async createTransaction(transData) {
     const response = await api.post("/transactions", transData);
     return response.data;

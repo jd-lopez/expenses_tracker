@@ -28,12 +28,7 @@ function App() {
               )
             }
           />
-          <Route
-            path="login"
-            element={
-              isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />
-            }
-          />
+          <Route path="login" element={<Login />} />
         </Route>
 
         <Route

@@ -3,13 +3,23 @@ import cors from "cors";
 import helmet from "helmet";
 import expressRateLimit from "express-rate-limit";
 import dotenv from "dotenv";
-import { registerUser, loginUser } from "./controllers/authController.js";
+import {
+  registerUser,
+  loginUser,
+  getCurrentUser,
+} from "./controllers/authController.js";
 import { authMiddleware } from "./middleware/auth.js";
 import {
   getAllTransactions,
   createTransaction,
 } from "./controllers/transactionController.js";
 import { getAccounts, createAccount } from "./controllers/accountController.js";
+
+import {
+  getCategories,
+  createCategory,
+} from "./controllers/categoryController.js";
+
 const app = express();
 const PORT = 3000;
 
@@ -45,8 +55,10 @@ app.get("/accounts", authMiddleware, getAccounts);
 app.get("/transactions", authMiddleware, getAllTransactions);
 app.post("/register", registerUser);
 app.post("/login", loginUser);
+app.get("/me", authMiddleware, getCurrentUser);
 app.post("/accounts", authMiddleware, createAccount);
 app.post("/transactions", authMiddleware, createTransaction);
+app.get("/categories", authMiddleware, getCategories);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

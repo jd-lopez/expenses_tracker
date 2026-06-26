@@ -10,3 +10,8 @@ export async function registerUser(formData) {
 
   return res.data;
 }
+
+export const getCurrentUser = async () => {
+  const res = await api.get("/me");
+  return res.data;
+};

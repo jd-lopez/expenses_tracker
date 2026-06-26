@@ -8,7 +8,7 @@ export const getAllTransactions = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const transactions = await prisma.transactions.findMany({
+    const transactions = await prisma.transaction.findMany({
       where: {
         account: { userId },
       },
@@ -45,7 +45,7 @@ export const createTransaction = async (req, res) => {
         .json({ message: "type must be one of: INCOME, EXPENSE, TRANSFER" });
     }
 
-    const transaction = await prisma.transactions.create({
+    const transaction = await prisma.transaction.create({
       data: {
         title,
         description,

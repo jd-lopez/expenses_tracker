@@ -7,7 +7,7 @@ export const getAccounts = async (req, res) => {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const accounts = await prisma.accounts.findMany({
+  const accounts = await prisma.account.findMany({
     where: {
       userId,
     },
@@ -34,7 +34,7 @@ export const createAccount = async (req, res) => {
 
     const uppertype = type.toUpperCase();
     console.log(uppertype);
-    const account = await prisma.accounts.create({
+    const account = await prisma.account.create({
       data: {
         userId,
         name,

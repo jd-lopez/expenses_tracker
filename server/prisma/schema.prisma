@@ -12,15 +12,15 @@ datasource db {
   provider = "postgresql"
 }
 
-model Users {
-  id         Int          @id @default(autoincrement())
+model User {
+  id         Int        @id @default(autoincrement())
   firstName  String
   lastName   String
-  email      String       @unique
+  email      String     @unique
   password   String
-  createdAt  DateTime     @default(now())
-  accounts   Accounts[]
-  categories Categories[]
+  createdAt  DateTime   @default(now())
+  accounts   Account[]
+  categories Category[]
   profilePic String?
 }
 
@@ -31,23 +31,31 @@ enum AccountTypes {
   CREDIT
 }
 
-model Accounts {
-  id             Int            @id @default(autoincrement())
-  initialBalance Decimal        @default(0)
-  transactions   Transactions[]
-  user           Users          @relation(fields: [userId], references: [id])
+model Account {
+  id             Int           @id @default(autoincrement())
+  initialBalance Decimal       @default(0)
+  transactions   Transaction[]
+  user           User          @relation(fields: [userId], references: [id])
   userId         Int
   type           AccountTypes
   name           String
   institution    String
 }
 
-model Categories {
-  id           Int            @id @default(autoincrement())
+enum CategoryType {
+  INCOME
+  EXPENSE
+}
+
+model Category {
+  id           Int           @id @default(autoincrement())
   name         String
-  user         Users          @relation(fields: [userId], references: [id])
+  user         User          @relation(fields: [userId], references: [id])
   userId       Int
-  transactions Transactions[]
+  transactions Transaction[]
+  type         CategoryType
+
+  @@unique([userId, name])
 }
 
 enum TransactionTypes {
@@ -56,15 +64,19 @@ enum TransactionTypes {
   TRANSFER
 }
 
-model Transactions {
-  id          Int              @id @default(autoincrement())
-  title       String
-  description String?
-  amount      Decimal
-  type        TransactionTypes
-  account     Accounts         @relation(fields: [accountId], references: [id])
-  accountId   Int
-  categories  Categories?      @relation(fields: [categoryId], references: [id])
-  categoryId  Int?
-  createdAt   DateTime         @default(now())
+model Transaction {
+  id              Int              @id @default(autoincrement())
+  title           String
+  description     String?
+  amount          Decimal
+  type            TransactionTypes
+  account         Account          @relation(fields: [accountId], references: [id])
+  accountId       Int
+  categories      Category?        @relation(fields: [categoryId], references: [id])
+  categoryId      Int?
+  createdAt       DateTime         @default(now())
+  transactionDate DateTime         @default(now())
+
+  @@index([accountId])
+  @@index([createdAt])
 }

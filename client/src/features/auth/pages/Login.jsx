@@ -32,11 +32,13 @@ export default function Login() {
       const res = await login(formData);
 
       const message = res.message;
+      console.log(message);
+
       setError("");
       setSuccess(message);
       setTimeout(() => {
         navigate("/dashboard");
-      }, 2000);
+      }, 4000);
     } catch (error) {
       const message =
         error?.response?.data?.message || error?.message || "Ocurrió un error";
@@ -48,7 +50,7 @@ export default function Login() {
   }
 
   return (
-    <div className="py-6 px-6 flex flex-col gap-4 shadow-2xl rounded-2xl my-auto bg-white mx-auto md:scale-150 lg:scale-100">
+    <div className="py-6 px-6 flex h-screen flex-col gap-4 shadow-2xl rounded-2xl my-auto bg-white mx-auto md:scale-150 lg:scale-100 md:h-fit">
       <h1 className="text-3xl font-bold">Bienvenido de nuevo</h1>
       <p>Ingresa tus credenciales para acceder a tus Dashboard</p>
 
@@ -65,6 +67,7 @@ export default function Login() {
         handleSubmit={handleSubmit}
         isLoading={isLoading}
         success={success}
+        error={error}
       />
 
       <div className=" flex justify-between">

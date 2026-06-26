@@ -1,18 +1,41 @@
 import { useContext, createContext } from "react";
-import { loginUser, registerUser } from "../features/auth/services/authService";
-import { useState } from "react";
+import {
+  loginUser,
+  registerUser,
+  getCurrentUser,
+} from "../features/auth/services/authService";
+import { useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   const [token, setToken] = useState(
     () => localStorage.getItem("token") || null,
   );
+
+  useEffect(() => {
+    verifyUser();
+  }, []);
+
+  async function verifyUser() {
+    try {
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      const data = await getCurrentUser();
+
+      setUser(data);
+    } catch (err) {
+      logout(); // token invalid or user deleted
+    } finally {
+      setLoading(false);
+    }
+  }
 
   async function signup({ first, last, email, password }) {
     try {
@@ -61,7 +84,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, token, isAuthenticated, signup, login, logout }}
+      value={{ user, token, isAuthenticated, loading, signup, login, logout }}
     >
       {children}
     </AuthContext.Provider>

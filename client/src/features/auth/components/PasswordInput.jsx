@@ -19,7 +19,7 @@ export default function PasswordInput({ formData, handleChange }) {
         />
 
         <label htmlFor="password" className="labelPlaceholder">
-          Ingresa un contrasena segura
+          Ingresa una contrasena segura
         </label>
       </div>
     </>

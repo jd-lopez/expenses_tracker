@@ -50,7 +50,7 @@ export const registerUser = async (req, res) => {
         .json({ message: "Password must be at least 8 characters long" });
     }
 
-    const existingUser = await prisma.users.findUnique({ where: { email } });
+    const existingUser = await prisma.user.findUnique({ where: { email } });
 
     if (existingUser) {
       return res
@@ -60,13 +60,33 @@ export const registerUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await prisma.users.create({
+    const user = await prisma.user.create({
       data: {
         firstName: normalizedNames.first,
         lastName: normalizedNames.last,
         email: email,
         password: hashedPassword,
       },
+    });
+
+    await prisma.category.createMany({
+      data: [
+        {
+          userId: user.id,
+          name: "Food",
+          type: "EXPENSE",
+        },
+        {
+          userId: user.id,
+          name: "Transportation",
+          type: "EXPENSE",
+        },
+        {
+          userId: user.id,
+          name: "Salary",
+          type: "INCOME",
+        },
+      ],
     });
 
     const token = signToken(user);
@@ -99,7 +119,7 @@ export const loginUser = async (req, res) => {
         .json({ message: "Email and password are required" });
     }
 
-    const user = await prisma.users.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
@@ -126,4 +146,13 @@ export const loginUser = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "Failed to login user" });
   }
+};
+
+export const getCurrentUser = async (req, res) => {
+  res.json({
+    id: req.user.id,
+    firstName: req.user.firstName,
+    lastName: req.user.lastName,
+    email: req.user.email,
+  });
 };
