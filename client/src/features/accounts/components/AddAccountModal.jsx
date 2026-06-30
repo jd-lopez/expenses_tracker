@@ -25,7 +25,7 @@ export default function AddAccountModal({ createAccount, setAccountModal }) {
     e.preventDefault();
     const payload = {
       ...accountData,
-      initialBalance: Number(accountData.balance),
+      initialBalance: Number(accountData.initialBalance),
     };
 
     await createAccount(payload);
@@ -38,7 +38,7 @@ export default function AddAccountModal({ createAccount, setAccountModal }) {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0 }}
       open
-      className="absolute top-20 left-1/2 -translate-x-2/3 rounded-2xl shadow-xl"
+      className="fixed w-full md:w-2/3 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md"
     >
       <div className="rounded-md border border-gray-200 p-4">
         <h1 className="text-2xl font-bold text-blue-950">Add New Account</h1>

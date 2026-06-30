@@ -7,8 +7,10 @@ import { motion } from "motion/react";
 export default function AddTransactionModal({
   accounts,
   transactions,
+  loadTransactions,
   createTransaction,
   setTransModal,
+  categories,
 }) {
   const [transData, serTransData] = useState({
     title: "",
@@ -39,13 +41,14 @@ export default function AddTransactionModal({
     };
 
     await createTransaction(payload);
+    await loadTransactions();
     setTransModal(false);
   }
 
   return (
     <motion.dialog
       open
-      className="fixed w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md"
+      className="fixed w-full md:w-2/4 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md"
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0 }}
@@ -122,11 +125,14 @@ export default function AddTransactionModal({
               className="border border-gray-700 rounded-md outline-0 py-1"
             >
               <option value=""> Select Category</option>
-              {categories.map((cat) => (
-                <option key={cat} value="">
-                  {cat}
-                </option>
-              ))}
+
+              {categories.map((cat) => {
+                return (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                );
+              })}
             </select>
           </div>
 

@@ -13,7 +13,7 @@ export const getCategories = async (req, res) => {
     },
   });
 
-  return res.status(200).json(category);
+  return res.status(200).json(categories);
 };
 
 export const createCategory = async (req, res) => {

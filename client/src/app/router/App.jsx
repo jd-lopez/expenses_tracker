@@ -9,7 +9,7 @@ import Transactions from "../../features/transactions/pages/Transactions";
 import { useAuth } from "../../context/AuthContext";
 import { Navigate } from "react-router-dom";
 import Login from "../../features/auth/pages/Login";
-import Accounts from "../../features/transactions/pages/Accounts";
+import Accounts from "../../features/accounts/Accounts";
 
 function App() {
   const { isAuthenticated } = useAuth();

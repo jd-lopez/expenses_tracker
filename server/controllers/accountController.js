@@ -20,6 +20,7 @@ export const createAccount = async (req, res) => {
   try {
     const userId = req.user.id;
     const { name, institution, type, initialBalance } = req.body;
+    console.log(name, institution, type, userId, initialBalance);
 
     console.log(name);
     if (!userId) {

@@ -13,10 +13,13 @@ import { AnimatePresence } from "motion/react";
 import AddTransactionModal from "./AddTransactionModal";
 import { useTransactions } from "../../features/transactions/hooks/useTransactions";
 import { useAccounts } from "../../features/transactions/hooks/useAccounts";
+import { useCategories } from "../../features/transactions/hooks/useCategories";
 
 export default function BottomNav() {
-  const { transactions, createTransaction } = useTransactions();
+  const { transactions, loadTransactions, createTransaction } =
+    useTransactions();
   const { accounts } = useAccounts();
+  const { categories } = useCategories();
   const [openMore, setOpenMore] = useState(false);
   const [transModal, setTransModal] = useState(false);
 
@@ -136,8 +139,10 @@ export default function BottomNav() {
             <AddTransactionModal
               accounts={accounts}
               transactions={transactions}
+              loadTransactions={loadTransactions}
               createTransaction={createTransaction}
               setTransModal={setTransModal}
+              categories={categories}
             />
           </div>
         )}

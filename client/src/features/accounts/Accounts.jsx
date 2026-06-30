@@ -1,10 +1,10 @@
 import React from "react";
 import { useState } from "react";
-import AddAccountModal from "../components/AddAccountModal";
-import { useAccounts } from "../hooks/useAccounts";
+import AddAccountModal from "./components/AddAccountModal";
+import { useAccounts } from "../transactions/hooks/useAccounts";
 
 import { motion, AnimatePresence } from "motion/react";
-import AccountsList from "../components/AccountsList";
+import AccountsList from "./components/AccountsList";
 
 export default function Accounts() {
   const [accountModal, setAccountModal] = useState(false);

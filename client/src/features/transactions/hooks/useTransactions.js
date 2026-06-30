@@ -32,8 +32,6 @@ export function useTransactions() {
 
   return {
     transactions,
-    setTransactions,
-    error,
     loadTransactions,
     createTransaction,
   };

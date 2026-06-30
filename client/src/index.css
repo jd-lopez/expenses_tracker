@@ -79,6 +79,11 @@ body {
 
 @layer components {
 
+    .no-scroll {
+
+        scrollbar-width: none;
+    }
+
     .inputWrapper {
         @apply flex flex-col border border-gray-600 rounded-md gap-2 py-1 px-2
     }
