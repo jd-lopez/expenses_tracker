@@ -20,8 +20,12 @@ export default function AppRoutes() {
     <Routes>
       <Route element={<PublicLayout />}>
         <Route
-          path="/register"
-          element={<GuestRoute><Register /></GuestRoute>}
+          path="/"
+          element={
+            <GuestRoute>
+              <Login />
+            </GuestRoute>
+          }
         />
         <Route path="/login" element={<Login />} />
       </Route>
