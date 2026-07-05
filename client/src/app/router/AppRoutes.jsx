@@ -28,6 +28,7 @@ export default function AppRoutes() {
           }
         />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Route>
 
       <Route
