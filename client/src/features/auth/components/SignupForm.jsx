@@ -19,7 +19,7 @@ export default function SignupForm({
   return (
     <>
       <form onSubmit={handleSubmit} className="flex flex-col gap-8 font-serif">
-        <div className="flex flex-col md:flex-row gap-2">
+        <div className="flex flex-col md:flex-row gap-6">
           <div className="flex flex-col relative md:flex-1">
             <FontAwesomeIcon icon={faUser} className="icon" />
 

@@ -55,8 +55,8 @@ export default function Register() {
   }
 
   return (
-    <div className=" bg-[#f8f9ff]  flex justify-between rounded-2xl shadow-2xl w-full h-full">
-      <div className="hidden md:flex bg-primary text-white flex-col justify-center gap-6 px-20 flex-1 h-screen">
+    <div className=" bg-[#f8f9ff] h-full w-full flex justify-between items-center rounded-2xl shadow-2xl md:max-w-4/5 md:max-h-3/4 lg:max-w-full lg:max-h-full">
+      <div className="hidden lg:flex bg-primary text-white flex-col justify-center gap-6 px-20 flex-1 h-screen">
         <div className="flex items-center gap-4">
           <div className="rounded-md bg-white p-2 ">
             <FontAwesomeIcon
@@ -75,9 +75,9 @@ export default function Register() {
           subscripciones and inversiones en un unico y seguro espacio.
         </p>
       </div>
-      <div className="flex flex-col flex-1 justify-center p-4 md:px-20 gap-10 bg-background">
+      <div className="flex h-full w-full flex-col flex-2 justify-center p-4 rounded-2xl md:px-20 gap-10  bg-white lg:h-full">
         <div className=" flex self-center md:hidden items-baseline gap-4">
-          <div className="rounded-md bg-white p-2 ">
+          <div className="rounded-md bg-white p-2">
             <FontAwesomeIcon
               icon={faBuildingColumns}
               className="text-black text-5xl"
