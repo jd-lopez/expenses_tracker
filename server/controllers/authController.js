@@ -74,16 +74,19 @@ export const registerUser = async (req, res) => {
         {
           userId: user.id,
           name: "Food",
+          icon: "faUtensils",
           type: "EXPENSE",
         },
         {
           userId: user.id,
           name: "Transportation",
+          icon: "faCar",
           type: "EXPENSE",
         },
         {
           userId: user.id,
           name: "Salary",
+          icon: "faMoneyBillWave",
           type: "INCOME",
         },
       ],

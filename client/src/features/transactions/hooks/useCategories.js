@@ -9,10 +9,9 @@ export function useCategories() {
     loadCategories();
   }, []);
 
-  async function loadCategories(params) {
+  async function loadCategories() {
     try {
       setError(null);
-
       const data = await categoryService.getAllCategories();
       setCategories(data);
     } catch (error) {
@@ -20,5 +19,18 @@ export function useCategories() {
     }
   }
 
-  return { categories, error, loadCategories };
+  async function createCategory(data) {
+    try {
+      const category = await categoryService.createCategory(data);
+      setCategories((prev) => [...prev, category]);
+      setError(null);
+      return category;
+    } catch (error) {
+      const msg = error.response?.data?.message || error.message;
+      setError(msg);
+      throw error;
+    }
+  }
+
+  return { categories, error, loadCategories, createCategory };
 }

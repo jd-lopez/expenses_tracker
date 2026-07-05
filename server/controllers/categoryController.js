@@ -19,28 +19,30 @@ export const getCategories = async (req, res) => {
 export const createCategory = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { name, categoryType } = req.body;
+    const { name, type, icon } = req.body;
 
-    console.log(name);
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    if (!userId || !name || !categoryType) {
-      return res.status(400).json({ message: "Category required" });
+    if (!name || !type) {
+      return res.status(400).json({ message: "name and type are required" });
     }
 
-    const uppertype = categoryType.toUpperCase();
-    console.log(uppertype);
+    const uppertype = type.toUpperCase();
+
+    if (!["INCOME", "EXPENSE"].includes(uppertype)) {
+      return res.status(400).json({ message: "type must be INCOME or EXPENSE" });
+    }
+
     const category = await prisma.category.create({
       data: {
         userId,
         name,
-        categoryType: uppertype,
+        icon: icon || null,
+        type: uppertype,
       },
     });
-
-    console.log(typeof initialBalance);
 
     return res.status(201).json(category);
   } catch (error) {

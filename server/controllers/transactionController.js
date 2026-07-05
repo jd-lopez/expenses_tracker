@@ -23,10 +23,15 @@ export const getAllTransactions = async (req, res) => {
 export const createTransaction = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { title, description, amount, type, accountId, categoryId } =
-      req.body;
-
-    console.log(typeof amount);
+    const {
+      title,
+      description,
+      amount,
+      type,
+      accountId,
+      categoryId,
+      transactionDate,
+    } = req.body;
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -53,10 +58,39 @@ export const createTransaction = async (req, res) => {
         type,
         accountId,
         categoryId: categoryId || null,
+        transactionDate: transactionDate
+          ? new Date(transactionDate)
+          : undefined,
       },
     });
 
     res.status(201).json(transaction);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteTransaction = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    let { id } = req.params;
+    let transId = Number(id);
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const deletedTrans = await prisma.transaction.delete({
+      where: {
+        id: transId,
+      },
+    });
+
+    if (!deletedTrans) {
+      return res.status(404).json({ message: "Not found" });
+    }
+
+    return res.status(201).json(deletedTrans);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

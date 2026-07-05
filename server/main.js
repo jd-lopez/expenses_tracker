@@ -12,6 +12,7 @@ import { authMiddleware } from "./middleware/auth.js";
 import {
   getAllTransactions,
   createTransaction,
+  deleteTransaction,
 } from "./controllers/transactionController.js";
 import { getAccounts, createAccount } from "./controllers/accountController.js";
 
@@ -59,6 +60,8 @@ app.get("/me", authMiddleware, getCurrentUser);
 app.post("/accounts", authMiddleware, createAccount);
 app.post("/transactions", authMiddleware, createTransaction);
 app.get("/categories", authMiddleware, getCategories);
+app.post("/categories", authMiddleware, createCategory);
+app.delete("/transactions/:id", authMiddleware, deleteTransaction);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

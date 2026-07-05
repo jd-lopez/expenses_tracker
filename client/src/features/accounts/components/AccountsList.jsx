@@ -1,5 +1,5 @@
 import React from "react";
-import { useTransactions } from "../../transactions/hooks/useTransactions";
+import { useTransactions } from "../../../context/TransactionsContext";
 
 export default function AccountsList({ accounts = [] }) {
   const { transactions } = useTransactions();

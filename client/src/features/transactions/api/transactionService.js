@@ -6,13 +6,13 @@ export const transactionService = {
     return response.data;
   },
 
-  async getAllCategories() {
-    const response = await api.get("/categories");
+  async createTransaction(transData) {
+    const response = await api.post("/transactions", transData);
     return response.data;
   },
 
-  async createTransaction(transData) {
-    const response = await api.post("/transactions", transData);
+  async deleteTransaction(id) {
+    const response = await api.delete(`/transactions/${id}`);
     return response.data;
   },
 };

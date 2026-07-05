@@ -11,15 +11,15 @@ import {
 import MobileMoreModal from "./MobileMoreModal";
 import { AnimatePresence } from "motion/react";
 import AddTransactionModal from "./AddTransactionModal";
-import { useTransactions } from "../../features/transactions/hooks/useTransactions";
 import { useAccounts } from "../../features/transactions/hooks/useAccounts";
 import { useCategories } from "../../features/transactions/hooks/useCategories";
+import { useTransactions } from "../../context/TransactionsContext";
 
 export default function BottomNav() {
   const { transactions, loadTransactions, createTransaction } =
     useTransactions();
   const { accounts } = useAccounts();
-  const { categories } = useCategories();
+  const { categories, createCategory } = useCategories();
   const [openMore, setOpenMore] = useState(false);
   const [transModal, setTransModal] = useState(false);
 
@@ -133,7 +133,7 @@ export default function BottomNav() {
         {transModal && (
           <div>
             <div
-              className="absolute top-18 left-0 right-0 bottom-20  bg-slate-700/60 backdrop-blur-xs "
+              className="absolute top-0 left-0 right-0 bottom-0  bg-slate-700/60 backdrop-blur-xs "
               onClick={() => setTransModal(false)}
             ></div>
             <AddTransactionModal
@@ -143,6 +143,7 @@ export default function BottomNav() {
               createTransaction={createTransaction}
               setTransModal={setTransModal}
               categories={categories}
+              createCategory={createCategory}
             />
           </div>
         )}
