@@ -25,16 +25,14 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
   return (
     <section
       popoverTarget="my-popover"
-      className={`hidden md:block md:h-screen border-r bg-background border-r-sky-300 shadow-lg transition-all duration-300 ${isOpen ? "w-52 p-4" : "w-28 p-2"}`}
+      className={`hidden md:block md:h-full border-r bg-background border-r-sky-300 shadow-lg transition-all duration-300 ${isOpen ? "w-52 p-4" : "w-28 p-2"}`}
       onMouseEnter={(e) => {
         toggleSidebar();
       }}
       onMouseLeave={toggleSidebar}
     >
-      <aside className="flex flex-row md:flex-col justify-between items-center h-full gap-10">
-        <h1 className="hidden md:block font-bold text-2xl">FinTrack</h1>
-
-        <ul className="flex md:flex-col flex-1 gap-4">
+      <aside className="flex flex-row md:flex-col justify-between  items-center h-full gap-4">
+        <ul className="flex md:flex-col gap-4">
           <li>
             <NavLink
               to="/dashboard"

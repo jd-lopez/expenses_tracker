@@ -50,7 +50,22 @@ export default function Transactions() {
 
   return (
     <div className="overflow-x-hidden">
-      <h1 className="text-3xl font-bold text-blue-800">Transactions</h1>
+      <div className="flex justify-between items-center gap-2">
+        <h1 className="text-3xl font-bold text-blue-800">Transactions</h1>
+        <input
+          type="text"
+          placeholder="Busca una trasaccion..."
+          className="rounded-2xl border border-gray-500 px-4 py-1 min-w-40 max-w-80 lg:w-2xl bg-blue-100/30"
+        />
+        <button
+          onClick={() => setTransModal(!transModal)}
+          className="hidden bg-blue-600 text-white px-4 py-1 rounded-md cursor-pointer
+          md:block
+          "
+        >
+          Add transaction
+        </button>
+      </div>
 
       <SummaryCards
         totalIncome={totalIncome}
@@ -61,6 +76,15 @@ export default function Transactions() {
       <div className="mt-6 space-y-2">
         <AnimatePresence>
           {transactions.map((tr) => {
+            const account = accounts.find((act) => act.id === tr.accountId);
+            const accountName = account?.name;
+            const institution = account?.institution;
+            console.log(accountName);
+
+            console.log(accounts);
+            console.log(tr.accountId);
+            console.log(accounts.find((act) => act.id === tr.accountId));
+
             const cat = getCategory(tr.categoryId);
             const icon = cat?.icon
               ? allIcons[cat.icon]
@@ -95,6 +119,13 @@ export default function Transactions() {
                       `  ${formatDate(tr.transactionDate)}`}
                   </p>
                 </div>
+
+                <div className="text-xs text-gray-600">
+                  <p>
+                    {accountName} - {institution}
+                  </p>
+                </div>
+
                 <div className="flex flex-col items-center flex-1 ">
                   <p
                     className={`font-bold ${
@@ -123,13 +154,6 @@ export default function Transactions() {
           })}
         </AnimatePresence>
       </div>
-
-      <button
-        onClick={() => setTransModal(!transModal)}
-        className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md cursor-pointer"
-      >
-        Add transaction
-      </button>
 
       <AnimatePresence>
         {transModal && (
