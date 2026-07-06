@@ -73,7 +73,19 @@ export default function Transactions() {
         totalNet={totalNet}
       />
 
-      <div className="mt-6 space-y-2">
+      <div className="flex flex-col mt-6 space-y-2">
+        {transactions.length > 0 ? (
+          <div className="grid grid-cols-6 place-items-start gap-16 rounded-md border border-gray-200 py-2 px-2 text-sm">
+            <button>Titulo</button>
+            <button>Fecha</button>
+            <button className="">Categoria</button>
+            <button>Cuenta</button>
+            <button>Monto</button>
+            <button>Actions</button>
+          </div>
+        ) : (
+          <div>No Transactions yet</div>
+        )}
         <AnimatePresence>
           {transactions.map((tr) => {
             const account = accounts.find((act) => act.id === tr.accountId);
@@ -100,27 +112,26 @@ export default function Transactions() {
                 exit={{ opacity: 0, height: 0, marginBottom: 0 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
                 key={tr.id}
-                className="flex items-center justify-between p-2 border border-gray-200 rounded-lg"
+                className=" grid grid-cols-6 items-center p-2 border border-gray-200 rounded-lg "
               >
-                <div className="flex items-start flex-col flex-1">
+                <p className="font-medium  flex-1">{tr.title}</p>
+
+                <p className="text-xs text-gray-500  flex-1">
+                  {tr.transactionDate && `  ${formatDate(tr.transactionDate)}`}
+                </p>
+
+                <div className=" flex items-start flex-col flex-1">
                   {icon && (
                     <div className="size-7 rounded-full bg-blue-100 text-blue-700 grid place-content-center">
                       <FontAwesomeIcon icon={icon} />
                     </div>
                   )}
-                  <p className="text-xs bg-blue-200 rounded-xl px-1 py-0.5">
+                  <p className="hidden md:block text-xs bg-blue-200 rounded-xl px-1 py-0.5">
                     {cat?.name}
                   </p>
                 </div>
-                <div className="flex flex-col items-start flex-1">
-                  <p className="font-medium">{tr.title}</p>
-                  <p className="text-xs text-gray-500">
-                    {tr.transactionDate &&
-                      `  ${formatDate(tr.transactionDate)}`}
-                  </p>
-                </div>
 
-                <div className="text-xs text-gray-600">
+                <div className="text-xs text-gray-600 flex-1">
                   <p>
                     {accountName} - {institution}
                   </p>
@@ -146,7 +157,10 @@ export default function Transactions() {
                   </p>
                 </div>
 
-                <button onClick={() => deleteTransaction(tr.id)} className="">
+                <button
+                  onClick={() => deleteTransaction(tr.id)}
+                  className=" flex-1 "
+                >
                   <FontAwesomeIcon icon={allIcons.faEllipsisV} />
                 </button>
               </motion.div>

@@ -52,7 +52,7 @@ export default function AddTransactionModal({
     <>
       <motion.dialog
         open
-        className="fixed md:w-2/4 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md"
+        className="fixed w-screen md:w-2/4 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md"
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0 }}
