@@ -9,6 +9,7 @@ import Register from "../../features/auth/pages/Register";
 import Dashboard from "../../features/transactions/pages/Dashboard";
 import Transactions from "../../features/transactions/pages/Transactions";
 import Accounts from "../../features/accounts/Accounts";
+import AccountSummary from "../../features/accounts/AccountSummary";
 
 function GuestRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -43,6 +44,7 @@ export default function AppRoutes() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/accounts" element={<Accounts />} />
+        <Route path="/accounts/:id" element={<AccountSummary />} />
       </Route>
     </Routes>
   );

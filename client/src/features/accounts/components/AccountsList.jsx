@@ -1,9 +1,21 @@
 import React from "react";
-import { useTransactions } from "../../../context/TransactionsContext";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBuildingColumns,
+  faDollarSign,
+  faEllipsisVertical,
+  faPiggyBank,
+  faPlus,
+  faWallet,
+} from "@fortawesome/free-solid-svg-icons";
 
-export default function AccountsList({ accounts = [] }) {
-  const { transactions } = useTransactions();
-
+export default function AccountsList({
+  accounts = [],
+  transactions,
+  setAccountModal,
+  accountModal,
+}) {
   const accountsWithTotal = accounts.map((account) => {
     const initialBalance = Number(account.initialBalance) || 0;
 
@@ -17,22 +29,73 @@ export default function AccountsList({ accounts = [] }) {
     return { ...account, total };
   });
 
-  return (
-    <div>
-      <h1>Fuente financiera</h1>
-      <p>Gestiona tus cuentas y efectivo</p>
+  const navigate = useNavigate();
 
-      <div className="flex gap-2 ">
+  const accountIcons = {
+    CREDIT: faBuildingColumns,
+    CHECKING: faDollarSign,
+    SAVINGS: faPiggyBank,
+  };
+
+  const accountType = {
+    CREDIT: "Credito Disponible",
+    CHECKING: "Balance actual",
+    SAVINGS: "Balance de ahorros",
+    CASH: "Balance en Efectivo",
+  };
+
+  return (
+    <div className=" flex flex-col gap-3">
+      <h2 className="text-xl font-bold">Fuente financiera</h2>
+      <p className="text-sm text-slate-500">
+        Gestiona tus cuentas y efectivo. Abre cualquier cuenta para ver sus
+        transacciones.
+      </p>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 ">
+        <div
+          className=" flex flex-col items-center justify-center gap-6 border border-gray-200 shadow rounded-xl p-4 bg-radial from-white to-blue-100/75"
+          onClick={() => setAccountModal(!accountModal)}
+        >
+          <div className="grid place-items-center bg-white border border-slate-500 rounded-full size-8">
+            <FontAwesomeIcon icon={faPlus} className="" />
+          </div>
+          <p> Agrega una cuenta</p>
+        </div>
+
         {accountsWithTotal.map((act) => {
           console.log(typeof act.initialBalance);
 
+          const icon = accountIcons[act.type] ?? faWallet;
+          const balHeading = accountType[act.type] ?? "Balance actual";
+
           return (
-            <div key={act.id} className="border border-gray-600 rounded-xl p-4">
-              <h2>{act.name}</h2>
-              <p>{act.type}</p>
+            <div
+              onClick={() => navigate(`/accounts/${act.id}`)}
+              key={act.id}
+              className=" flex flex-col gap-6 border border-gray-200 shadow rounded-xl p-4"
+            >
+              <div className="flex justify-between items-center">
+                <div
+                  className={`grid place-content-center rounded-full size-7 text-white ${act.type === "CREDIT" ? "bg-red-300 " : "bg-green-300 "}`}
+                >
+                  <FontAwesomeIcon icon={icon} />
+                </div>
+                <div className="text-sm flex flex-col items-center">
+                  <h2 className="text-base font-bold">{act.name}</h2>
+                  <p
+                    className={`text-xs rounded-md px-1 py-0.5  ${act.type === "CREDIT" ? "bg-red-200 text-red-800" : ""}`}
+                  >
+                    {act.type}
+                  </p>
+                </div>
+                <FontAwesomeIcon icon={faEllipsisVertical} />
+              </div>
               <div>
-                <p>Current Balance</p>
-                <p>${act.total}</p>
+                <p>{balHeading}</p>
+                <p className="text-2xl font-bold tracking-wider">
+                  ${act.total}
+                </p>
               </div>
             </div>
           );
