@@ -38,8 +38,8 @@ export default function Accounts() {
 
         <input
           type="text"
-          placeholder="Search accounts"
-          className="rounded-lg border border-gray-300 px-1 py-0.5"
+          placeholder="Busca una cuenta..."
+          className="rounded-2xl border border-gray-500 px-4 py-1 min-w-40 max-w-80 lg:w-2xl bg-blue-100/30"
         />
       </div>
 

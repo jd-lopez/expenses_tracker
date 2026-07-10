@@ -1,6 +1,6 @@
 import React from "react";
-import DashHeading from "../components/DashHeading";
-import { useAuth } from "../../../context/AuthContext";
+import DashHeading from "../transactions/components/DashHeading";
+import { useAuth } from "../../context/AuthContext";
 export default function Dashboard() {
   const { token } = useAuth();
   console.log(token);

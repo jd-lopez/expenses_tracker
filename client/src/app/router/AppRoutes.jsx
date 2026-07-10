@@ -7,7 +7,7 @@ import Layout from "../layouts/Layout";
 import PublicLayout from "../layouts/PublicLayout";
 import Login from "../../features/auth/pages/Login";
 import Register from "../../features/auth/pages/Register";
-import Dashboard from "../../features/transactions/pages/Dashboard";
+import Dashboard from "../../features/Dashboard/Dashboard";
 import Transactions from "../../features/transactions/pages/Transactions";
 import Accounts from "../../features/accounts/Accounts";
 import AccountSummary from "../../features/accounts/AccountSummary";

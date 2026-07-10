@@ -1,5 +1,5 @@
 import React from "react";
-import Dashboard from "../../features/transactions/pages/Dashboard";
+import Dashboard from "../../features/Dashboard/Dashboard";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

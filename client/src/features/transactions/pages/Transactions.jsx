@@ -51,7 +51,10 @@ export default function Transactions() {
   return (
     <div className="overflow-x-hidden">
       <div className="flex justify-between items-center gap-2">
-        <h1 className="text-3xl font-bold text-blue-800">Transactions</h1>
+        <div>
+          <h1 className="text-3xl font-bold text-blue-800">Transactions</h1>
+          <p>Revisa y Gestiona tu actividad financiera</p>
+        </div>
         <input
           type="text"
           placeholder="Busca una trasaccion..."

@@ -14,6 +14,7 @@ import AddTransactionModal from "./AddTransactionModal";
 import { useAccounts } from "../../context/AccountContext";
 import { useCategory } from "../../context/CategoryContext";
 import { useTransactions } from "../../context/TransactionsContext";
+import MobileActionsModal from "./MobileActionsModal";
 
 export default function BottomNav() {
   const { transactions, loadTransactions, createTransaction } =
@@ -76,7 +77,7 @@ export default function BottomNav() {
         </li>
 
         <button
-          className="absolute bottom-10 z-40 left-1/2 -translate-x-1/2 shadow rounded-full  size-14 grid place-content-center active:scale-110 active:animate-spin active:-translate-y-4 transition-all"
+          className=" absolute bottom-10 z-40 left-1/2 -translate-x-1/2 shadow rounded-full  size-14 grid place-content-center active:scale-110 active:animate-spin active:-translate-y-4 transition-all"
           onClick={() => setTransModal(!transModal)}
         >
           <FontAwesomeIcon
@@ -133,18 +134,10 @@ export default function BottomNav() {
         {transModal && (
           <div>
             <div
-              className="absolute top-0 left-0 right-0 bottom-0  bg-slate-700/60 backdrop-blur-xs "
+              className="absolute top-0 left-0 right-0 bottom-20 bg-slate-700/60 backdrop-blur-xs "
               onClick={() => setTransModal(false)}
             ></div>
-            <AddTransactionModal
-              accounts={accounts}
-              transactions={transactions}
-              loadTransactions={loadTransactions}
-              createTransaction={createTransaction}
-              setTransModal={setTransModal}
-              categories={categories}
-              createCategory={createCategory}
-            />
+            <MobileActionsModal />
           </div>
         )}
       </AnimatePresence>
