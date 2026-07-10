@@ -12,6 +12,7 @@ import Transactions from "../../features/transactions/pages/Transactions";
 import Accounts from "../../features/accounts/Accounts";
 import AccountSummary from "../../features/accounts/AccountSummary";
 import { CategoryProvider } from "../../context/CategoryContext";
+import { ThemeProvider } from "../../context/ThemeContext";
 
 function GuestRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -36,15 +37,17 @@ export default function AppRoutes() {
 
       <Route
         element={
-          <AccountProvider>
-            <TransProvider>
-              <CategoryProvider>
-                <ProtectedRoute>
-                  <Layout />
-                </ProtectedRoute>
-              </CategoryProvider>
-            </TransProvider>
-          </AccountProvider>
+          <ThemeProvider>
+            <AccountProvider>
+              <TransProvider>
+                <CategoryProvider>
+                  <ProtectedRoute>
+                    <Layout />
+                  </ProtectedRoute>
+                </CategoryProvider>
+              </TransProvider>
+            </AccountProvider>
+          </ThemeProvider>
         }
       >
         <Route path="/dashboard" element={<Dashboard />} />

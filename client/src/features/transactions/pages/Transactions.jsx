@@ -115,7 +115,8 @@ export default function Transactions() {
                 exit={{ opacity: 0, height: 0, marginBottom: 0 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
                 key={tr.id}
-                className=" grid grid-cols-6 items-center p-2 border border-gray-200 rounded-lg "
+                className=" grid grid-cols-6 items-center p-2 border border-gray-200 rounded-lg md:hover:-translate-y-0.5 transition-all
+                duration-200"
               >
                 <p className="font-medium  flex-1">{tr.title}</p>
 
