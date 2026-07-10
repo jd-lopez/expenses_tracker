@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { TransProvider } from "../../context/TransactionsContext";
+import { AccountProvider } from "../../context/AccountContext";
 import ProtectedRoute from "./ProtectedRoutes";
 import Layout from "../layouts/Layout";
 import PublicLayout from "../layouts/PublicLayout";
@@ -10,6 +11,7 @@ import Dashboard from "../../features/transactions/pages/Dashboard";
 import Transactions from "../../features/transactions/pages/Transactions";
 import Accounts from "../../features/accounts/Accounts";
 import AccountSummary from "../../features/accounts/AccountSummary";
+import { CategoryProvider } from "../../context/CategoryContext";
 
 function GuestRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -34,11 +36,15 @@ export default function AppRoutes() {
 
       <Route
         element={
-          <TransProvider>
-            <ProtectedRoute>
-              <Layout />
-            </ProtectedRoute>
-          </TransProvider>
+          <AccountProvider>
+            <TransProvider>
+              <CategoryProvider>
+                <ProtectedRoute>
+                  <Layout />
+                </ProtectedRoute>
+              </CategoryProvider>
+            </TransProvider>
+          </AccountProvider>
         }
       >
         <Route path="/dashboard" element={<Dashboard />} />

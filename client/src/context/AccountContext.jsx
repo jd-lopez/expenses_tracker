@@ -1,7 +1,11 @@
+import React from "react";
+import { useContext, createContext } from "react";
 import { useState, useEffect } from "react";
-import { accountService } from "../api/accountService";
+import { accountService } from "../features/transactions/api/accountService";
 
-export function useAccounts() {
+const AccountContext = createContext();
+
+export function AccountProvider({ children }) {
   const [accounts, setAccounts] = useState([]);
   const [error, setError] = useState(null);
 
@@ -30,11 +34,15 @@ export function useAccounts() {
     }
   }
 
-  return {
-    accounts,
-    setAccounts,
-    error,
-    loadAccounts,
-    createAccount,
-  };
+  return (
+    <AccountContext.Provider
+      value={{ accounts, setAccounts, error, loadAccounts, createAccount }}
+    >
+      {children}
+    </AccountContext.Provider>
+  );
+}
+
+export function useAccounts() {
+  return useContext(AccountContext);
 }

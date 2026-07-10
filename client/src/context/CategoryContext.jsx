@@ -1,7 +1,11 @@
-import { categoryService } from "../api/categoryService";
+import React, { Children } from "react";
+import { useContext, createContext } from "react";
 import { useState, useEffect } from "react";
+import { categoryService } from "../features/transactions/api/categoryService";
 
-export function useCategories() {
+const CategoryContext = createContext();
+
+export function CategoryProvider({ children }) {
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(null);
 
@@ -32,5 +36,15 @@ export function useCategories() {
     }
   }
 
-  return { categories, error, loadCategories, createCategory };
+  return (
+    <CategoryContext.Provider
+      value={{ categories, error, loadCategories, createCategory }}
+    >
+      {children}
+    </CategoryContext.Provider>
+  );
+}
+
+export function useCategory() {
+  return useContext(CategoryContext);
 }

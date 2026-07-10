@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTransactions } from "../../../context/TransactionsContext";
-import { useAccounts } from "../hooks/useAccounts";
-import { useCategories } from "../hooks/useCategories";
+import { useAccounts } from "../../../context/AccountContext";
+import { useCategory } from "../../../context/CategoryContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as allIcons from "@fortawesome/free-solid-svg-icons";
 import AddTransactionModal from "../../../shared/components/AddTransactionModal";
@@ -13,7 +13,7 @@ export default function Transactions() {
   const { transactions, createTransaction, deleteTransaction } =
     useTransactions();
   const { accounts } = useAccounts();
-  const { categories, createCategory } = useCategories();
+  const { categories, createCategory } = useCategory();
 
   const AllBalance = accounts.reduce((sum, act) => {
     return sum + Number(act.initialBalance);

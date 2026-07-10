@@ -3,7 +3,8 @@ import TotalCard from "../transactions/components/TotalCard";
 import SummaryCards from "../transactions/components/SummaryCards";
 import { useParams } from "react-router-dom";
 import { useTransactions } from "../../context/TransactionsContext";
-import { useAccounts } from "../transactions/hooks/useAccounts";
+import { useAccounts } from "../../context/AccountContext";
+
 export default function AccountSummary() {
   const { id } = useParams();
   const { transactions } = useTransactions();

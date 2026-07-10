@@ -1,12 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import AddAccountModal from "./components/AddAccountModal";
-import { useAccounts } from "../transactions/hooks/useAccounts";
 import { useTransactions } from "../../context/TransactionsContext";
 import { motion, AnimatePresence } from "motion/react";
 import AccountsList from "./components/AccountsList";
 import AccountSummary from "./AccountSummary";
 import SummaryCards from "../transactions/components/SummaryCards";
+import { useAccounts } from "../../context/AccountContext";
 
 export default function Accounts() {
   const [accountModal, setAccountModal] = useState(false);

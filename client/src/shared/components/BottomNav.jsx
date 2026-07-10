@@ -11,15 +11,15 @@ import {
 import MobileMoreModal from "./MobileMoreModal";
 import { AnimatePresence } from "motion/react";
 import AddTransactionModal from "./AddTransactionModal";
-import { useAccounts } from "../../features/transactions/hooks/useAccounts";
-import { useCategories } from "../../features/transactions/hooks/useCategories";
+import { useAccounts } from "../../context/AccountContext";
+import { useCategory } from "../../context/CategoryContext";
 import { useTransactions } from "../../context/TransactionsContext";
 
 export default function BottomNav() {
   const { transactions, loadTransactions, createTransaction } =
     useTransactions();
   const { accounts } = useAccounts();
-  const { categories, createCategory } = useCategories();
+  const { categories, createCategory } = useCategory();
   const [openMore, setOpenMore] = useState(false);
   const [transModal, setTransModal] = useState(false);
 
