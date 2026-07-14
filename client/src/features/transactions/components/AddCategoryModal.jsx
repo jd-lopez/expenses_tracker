@@ -3,8 +3,10 @@ import { motion } from "motion/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import CategoryIconPicker from "./CategoryIconPicker";
+import { useModal } from "../../../context/ModalContext";
 
-export default function AddCategoryModal({ createCategory, setCatModal }) {
+export default function AddCategoryModal({ createCategory }) {
+  const { closeModal } = useModal();
   const [catData, setCatData] = useState({
     name: "",
     type: "",
@@ -19,7 +21,7 @@ export default function AddCategoryModal({ createCategory, setCatModal }) {
   async function handleSubmit(e) {
     e.preventDefault();
     await createCategory({ ...catData, icon: catData.icon || undefined });
-    setCatModal(false);
+    closeModal();
   }
 
   return (
@@ -82,7 +84,7 @@ export default function AddCategoryModal({ createCategory, setCatModal }) {
             <button
               type="button"
               className="flex-1 text-white font-bold py-1 rounded-2xl hover:bg-red-600 bg-red-500 cursor-pointer"
-              onClick={() => setCatModal(false)}
+              onClick={closeModal}
             >
               Cancel
             </button>

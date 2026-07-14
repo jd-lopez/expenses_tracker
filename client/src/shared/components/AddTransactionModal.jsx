@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import AddCategoryModal from "../../features/transactions/components/AddCategoryModal";
+import { useModal } from "../../context/ModalContext";
 
 export default function AddTransactionModal({
   accounts,
   createTransaction,
-  setTransModal,
   categories,
   createCategory,
 }) {
-  const [catModal, setCatModal] = useState(false);
+  const { openModal, closeModal } = useModal();
   const [transData, setTransData] = useState({
     title: "",
     description: "",
@@ -45,7 +44,7 @@ export default function AddTransactionModal({
     };
 
     await createTransaction(payload);
-    setTransModal(false);
+    closeModal();
   }
 
   return (
@@ -134,7 +133,7 @@ export default function AddTransactionModal({
                 <label>Category</label>
                 <button
                   type="button"
-                  onClick={() => setCatModal(true)}
+                  onClick={() => openModal("addCategory")}
                   className="text-xs text-blue-600 hover:text-blue-800 cursor-pointer flex items-center gap-1"
                 >
                   <FontAwesomeIcon icon={faPlus} size="xs" />
@@ -177,23 +176,6 @@ export default function AddTransactionModal({
           </form>
         </div>
       </motion.dialog>
-
-      <AnimatePresence>
-        {catModal && (
-          <div>
-            <div
-              className="fixed inset-0 bg-slate-700/60 backdrop-blur-xs z-40"
-              onClick={() => setCatModal(false)}
-            />
-            <div className="relative z-50">
-              <AddCategoryModal
-                createCategory={createCategory}
-                setCatModal={setCatModal}
-              />
-            </div>
-          </div>
-        )}
-      </AnimatePresence>
     </>
   );
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import AddAccountModal from "./components/AddAccountModal";
 import { useTransactions } from "../../context/TransactionsContext";
 import { motion, AnimatePresence } from "motion/react";
@@ -7,9 +6,10 @@ import AccountsList from "./components/AccountsList";
 import AccountSummary from "./AccountSummary";
 import SummaryCards from "../transactions/components/SummaryCards";
 import { useAccounts } from "../../context/AccountContext";
+import { useModal } from "../../context/ModalContext";
 
 export default function Accounts() {
-  const [accountModal, setAccountModal] = useState(false);
+  const { isModalActive, openModal, closeModal } = useModal();
   const { accounts, setAccounts, createAccount } = useAccounts();
   const { transactions } = useTransactions();
 
@@ -52,21 +52,18 @@ export default function Accounts() {
       <AccountsList
         accounts={accounts}
         transactions={transactions}
-        setAccountModal={setAccountModal}
-        accountModal={accountModal}
       />
 
       <AnimatePresence>
-        {accountModal && (
+        {isModalActive("addAccount") && (
           <div className="">
             <div
               className="absolute inset-0 bg-blue-300/20 backdrop-blur-md "
-              onClick={() => setAccountModal(false)}
+              onClick={closeModal}
             ></div>
 
             <AddAccountModal
               createAccount={createAccount}
-              setAccountModal={setAccountModal}
             />
           </div>
         )}

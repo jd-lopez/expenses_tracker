@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,19 +10,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import MobileMoreModal from "./MobileMoreModal";
 import { AnimatePresence } from "motion/react";
-import AddTransactionModal from "./AddTransactionModal";
 import { useAccounts } from "../../context/AccountContext";
 import { useCategory } from "../../context/CategoryContext";
 import { useTransactions } from "../../context/TransactionsContext";
 import MobileActionsModal from "./MobileActionsModal";
+import { useModal } from "../../context/ModalContext";
 
 export default function BottomNav() {
   const { transactions, loadTransactions, createTransaction } =
     useTransactions();
   const { accounts } = useAccounts();
   const { categories, createCategory } = useCategory();
-  const [openMore, setOpenMore] = useState(false);
-  const [transModal, setTransModal] = useState(false);
+  const { isModalActive, openModal, closeModal } = useModal();
 
   return (
     <div className=" bottom-0 border-t border-gray-700 bg-inverse-on-surface text-base  md:hidden">
@@ -78,7 +77,7 @@ export default function BottomNav() {
 
         <button
           className=" absolute bottom-10 z-40 left-1/2 -translate-x-1/2 shadow rounded-full  size-14 grid place-content-center active:scale-110 active:animate-spin active:-translate-y-4 transition-all"
-          onClick={() => setTransModal(!transModal)}
+          onClick={() => openModal("mobileActions")}
         >
           <FontAwesomeIcon
             icon={faCirclePlus}
@@ -113,7 +112,7 @@ export default function BottomNav() {
         <li>
           <button
             className="bottomNavButtons focus:text-blue-600 "
-            onClick={() => setOpenMore(!openMore)}
+            onClick={() => openModal("mobileMore")}
           >
             <FontAwesomeIcon icon={faCirclePlus} />
             <p>More</p>
@@ -122,20 +121,23 @@ export default function BottomNav() {
       </ul>
 
       <AnimatePresence>
-        {openMore && (
+        {isModalActive("mobileMore") && (
           <div>
-            <div className="absolute -top-220 left-0 right-0 bottom-20  bg-slate-700/60 backdrop-blur-xs "></div>
+            <div
+              className="absolute -top-220 left-0 right-0 bottom-20  bg-slate-700/60 backdrop-blur-xs "
+              onClick={closeModal}
+            ></div>
             <MobileMoreModal />
           </div>
         )}
       </AnimatePresence>
 
       <AnimatePresence>
-        {transModal && (
+        {isModalActive("mobileActions") && (
           <div>
             <div
               className="absolute top-0 left-0 right-0 bottom-20 bg-slate-700/60 backdrop-blur-xs "
-              onClick={() => setTransModal(false)}
+              onClick={closeModal}
             ></div>
             <MobileActionsModal />
           </div>

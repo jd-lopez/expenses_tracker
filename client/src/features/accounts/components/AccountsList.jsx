@@ -9,13 +9,13 @@ import {
   faPlus,
   faWallet,
 } from "@fortawesome/free-solid-svg-icons";
+import { useModal } from "../../../context/ModalContext";
 
 export default function AccountsList({
   accounts = [],
   transactions,
-  setAccountModal,
-  accountModal,
 }) {
+  const { openModal } = useModal();
   const accountsWithTotal = accounts.map((account) => {
     const initialBalance = Number(account.initialBalance) || 0;
 
@@ -55,7 +55,7 @@ export default function AccountsList({
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 ">
         <div
           className=" flex flex-col items-center justify-center gap-6 border border-gray-200 shadow rounded-xl p-4 bg-radial from-white to-blue-100/75"
-          onClick={() => setAccountModal(!accountModal)}
+          onClick={() => openModal("addAccount")}
         >
           <div className="grid place-items-center bg-white border border-slate-500 rounded-full size-8">
             <FontAwesomeIcon icon={faPlus} className="" />

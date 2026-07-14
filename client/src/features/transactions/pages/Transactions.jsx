@@ -7,9 +7,14 @@ import * as allIcons from "@fortawesome/free-solid-svg-icons";
 import AddTransactionModal from "../../../shared/components/AddTransactionModal";
 import { AnimatePresence, motion } from "motion/react";
 import SummaryCards from "../components/SummaryCards";
+import TransacOptions from "../../../shared/components/TransacOptions";
+import AddCategoryModal from "../components/AddCategoryModal";
+import { useModal } from "../../../context/ModalContext";
 
 export default function Transactions() {
-  const [transModal, setTransModal] = useState(false);
+  const [selectedTransact, setSelectedTransact] = useState(null);
+  const { isModalActive, openModal, closeModal } = useModal();
+
   const { transactions, createTransaction, deleteTransaction } =
     useTransactions();
   const { accounts } = useAccounts();
@@ -61,7 +66,7 @@ export default function Transactions() {
           className="rounded-2xl border border-gray-500 px-4 py-1 min-w-40 max-w-80 lg:w-2xl bg-blue-100/30"
         />
         <button
-          onClick={() => setTransModal(!transModal)}
+          onClick={() => openModal("addTransaction")}
           className="hidden bg-blue-600 text-white px-4 py-1 rounded-md cursor-pointer
           md:block
           "
@@ -162,8 +167,11 @@ export default function Transactions() {
                 </div>
 
                 <button
-                  onClick={() => deleteTransaction(tr.id)}
                   className=" flex-1 "
+                  onClick={() => {
+                    setSelectedTransact(tr);
+                    openModal("transOptions", { selectedTransact: tr });
+                  }}
                 >
                   <FontAwesomeIcon icon={allIcons.faEllipsisV} />
                 </button>
@@ -174,19 +182,44 @@ export default function Transactions() {
       </div>
 
       <AnimatePresence>
-        {transModal && (
+        {isModalActive("addTransaction") && (
           <div>
             <div
               className="fixed inset-0 bg-slate-700/60 backdrop-blur-xs"
-              onClick={() => setTransModal(false)}
+              onClick={closeModal}
             ></div>
             <AddTransactionModal
               accounts={accounts}
               createTransaction={createTransaction}
-              setTransModal={setTransModal}
               categories={categories}
               createCategory={createCategory}
             />
+          </div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isModalActive("addCategory") && (
+          <div>
+            <div
+              className="fixed inset-0 bg-slate-700/60 backdrop-blur-xs z-40"
+              onClick={closeModal}
+            />
+            <div className="relative z-50">
+              <AddCategoryModal createCategory={createCategory} />
+            </div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isModalActive("transOptions") && (
+          <div>
+            <div
+              className="absolute inset-0 bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100"
+              onClick={closeModal}
+            ></div>
+            <TransacOptions selectedTransact={selectedTransact} />
           </div>
         )}
       </AnimatePresence>

@@ -1,5 +1,4 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import { motion } from "motion/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,19 +7,24 @@ import {
   faCreditCard,
   faCircleQuestion,
   faPhone,
-  faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import { useAuth } from "../../context/AuthContext";
+import { useModal } from "../../context/ModalContext";
+
 const menuItems = [
-  { label: "Analisis", icon: faChartLine, to: "#" },
-  { label: "Transfers", icon: faArrowRightArrowLeft, to: "#" },
-  { label: "Subscriptions", icon: faCreditCard, to: "#" },
-  { label: "Ayuda", icon: faCircleQuestion, to: "#" },
-  { label: "Contactanos", icon: faPhone, to: "#" },
+  { id: "trans", label: "Agregar Trasaccion", icon: faChartLine, action: "addTransaction" },
+  {
+    id: "account",
+    label: "Agregar Cuenta",
+    icon: faArrowRightArrowLeft,
+    action: "addAccount",
+  },
+  { id: "o", label: "Subscriptions", icon: faCreditCard },
+  { id: "y", label: "Ayuda", icon: faCircleQuestion },
+  { id: "t", label: "Contactanos", icon: faPhone },
 ];
 
 export default function MobileActionsModal() {
-  const { logout } = useAuth();
+  const { openModal } = useModal();
 
   return (
     <motion.dialog
@@ -36,35 +40,20 @@ export default function MobileActionsModal() {
       </h1>
       <ul className="grid grid-cols-2 gap-4 mt-8">
         {menuItems.map((item) => (
-          <li key={item.label}>
-            <NavLink
-              to={item.to}
-              className="flex flex-col items-center justify-center p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg transition-all duration-300 transform shadow-lg"
-            >
-              <FontAwesomeIcon
-                icon={item.icon}
-                className="text-white text-2xl mb-2"
-              />
-              <span className="text-white text-sm font-semibold text-center">
-                {item.label}
-              </span>
-            </NavLink>
-          </li>
-        ))}
-        <li>
           <button
-            onClick={logout}
-            className="w-full flex flex-col items-center justify-center p-4 bg-white/10  backdrop-blur-md border border-white/30 rounded-lg  transition-all duration-300 transform hover:scale-105 shadow-lg"
+            key={item.id}
+            onClick={item.action ? () => openModal(item.action) : undefined}
+            className="flex flex-col items-center justify-center p-4 h-24 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg transition-all duration-300 transform shadow-lg"
           >
             <FontAwesomeIcon
-              icon={faSignOutAlt}
+              icon={item.icon}
               className="text-white text-2xl mb-2"
             />
-            <span className="text-white text-sm font-semibold">
-              Cerrar sesion
+            <span className="text-white text-sm font-semibold text-center">
+              {item.label}
             </span>
           </button>
-        </li>
+        ))}
       </ul>
     </motion.dialog>
   );

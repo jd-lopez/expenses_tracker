@@ -3,8 +3,10 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBank } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "motion/react";
+import { useModal } from "../../../context/ModalContext";
 
-export default function AddAccountModal({ createAccount, setAccountModal }) {
+export default function AddAccountModal({ createAccount }) {
+  const { closeModal } = useModal();
   const [accountData, setAccountData] = useState({
     name: "",
     institution: "",
@@ -29,7 +31,7 @@ export default function AddAccountModal({ createAccount, setAccountModal }) {
     };
 
     await createAccount(payload);
-    setAccountModal(false);
+    closeModal();
   }
 
   return (
@@ -105,7 +107,7 @@ export default function AddAccountModal({ createAccount, setAccountModal }) {
             </button>
             <button
               className="flex-1 text-white font-bold py-1 rounded-2xl  hover:bg-red-600 bg-red-500"
-              onClick={() => setAccountModal(false)}
+              onClick={closeModal}
               type="button"
             >
               Cancel
