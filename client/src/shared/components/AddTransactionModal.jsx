@@ -35,6 +35,7 @@ export default function AddTransactionModal({
     e.preventDefault();
     const payload = {
       ...transData,
+      title: transData.title.toLowerCase(),
       amount: Number(transData.amount),
       accountId: Number(transData.accountId),
       categoryId: transData.categoryId

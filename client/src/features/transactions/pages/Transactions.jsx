@@ -20,6 +20,8 @@ export default function Transactions() {
   const { accounts } = useAccounts();
   const { categories, createCategory } = useCategory();
 
+  const [query, setQuery] = useState("");
+
   const AllBalance = accounts.reduce((sum, act) => {
     return sum + Number(act.initialBalance);
   }, 0);
@@ -53,6 +55,24 @@ export default function Transactions() {
   }
   console.log(categories);
 
+  function handleOnchange(e) {
+    const { name, value } = e.target;
+    setQuery((prev) => (prev, value));
+  }
+
+  const filteredTrans = transactions.filter((tr) => {
+    const account = accounts.find((act) => act.id === tr.accountId);
+
+    const searchableValues = [tr.title, tr?.description, account?.name];
+
+    return searchableValues.some((value) =>
+      value?.toLowerCase().includes(query.toLowerCase().trim()),
+    );
+  });
+
+  console.log(query);
+  console.log(filteredTrans);
+
   return (
     <div className="overflow-x-hidden">
       <div className="flex justify-between items-center gap-2">
@@ -61,8 +81,10 @@ export default function Transactions() {
           <p>Revisa y Gestiona tu actividad financiera</p>
         </div>
         <input
+          onChange={handleOnchange}
+          name="title"
           type="text"
-          placeholder="Busca una trasaccion..."
+          placeholder="Busca trasaccion por titulo, cuenta o desc..."
           className="rounded-2xl border border-gray-500 px-4 py-1 min-w-40 max-w-80 lg:w-2xl bg-blue-100/30"
         />
         <button
@@ -95,89 +117,181 @@ export default function Transactions() {
           <div>No Transactions yet</div>
         )}
         <AnimatePresence>
-          {transactions.map((tr) => {
-            const account = accounts.find((act) => act.id === tr.accountId);
-            const accountName = account?.name;
-            const institution = account?.institution;
-            console.log(accountName);
+          {query.length > 0 ? (
+            <>
+              {filteredTrans.map((tr) => {
+                const account = accounts.find((act) => act.id === tr.accountId);
+                const accountName = account?.name;
+                const institution = account?.institution;
+                console.log(accountName);
 
-            console.log(accounts);
-            console.log(tr.accountId);
-            console.log(accounts.find((act) => act.id === tr.accountId));
+                console.log(accounts);
+                console.log(tr.accountId);
+                console.log(accounts.find((act) => act.id === tr.accountId));
 
-            const cat = getCategory(tr.categoryId);
-            const icon = cat?.icon
-              ? allIcons[cat.icon]
-              : tr.type === "INCOME"
-                ? allIcons.faMoneyBillWave
-                : allIcons.faCartShopping;
+                const cat = getCategory(tr.categoryId);
+                const icon = cat?.icon
+                  ? allIcons[cat.icon]
+                  : tr.type === "INCOME"
+                    ? allIcons.faMoneyBillWave
+                    : allIcons.faCartShopping;
 
-            return (
-              <motion.div
-                layout
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                key={tr.id}
-                className=" grid grid-cols-6 items-center p-2 border border-gray-200 rounded-lg md:hover:-translate-y-0.5 transition-all
+                return (
+                  <motion.div
+                    layout
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    key={tr.id}
+                    className=" grid grid-cols-6 items-center p-2 border border-gray-200 rounded-lg md:hover:-translate-y-0.5 transition-all
                 duration-200"
-              >
-                <p className="font-medium  flex-1">{tr.title}</p>
+                  >
+                    <p className="font-medium  flex-1">{tr.title}</p>
 
-                <p className="text-xs text-gray-500  flex-1">
-                  {tr.transactionDate && `  ${formatDate(tr.transactionDate)}`}
-                </p>
+                    <p className="text-xs text-gray-500  flex-1">
+                      {tr.transactionDate &&
+                        `  ${formatDate(tr.transactionDate)}`}
+                    </p>
 
-                <div className=" flex items-start flex-col flex-1">
-                  {icon && (
-                    <div className="size-7 rounded-full bg-blue-100 text-blue-700 grid place-content-center">
-                      <FontAwesomeIcon icon={icon} />
+                    <div className=" flex items-start flex-col flex-1">
+                      {icon && (
+                        <div className="size-7 rounded-full bg-blue-100 text-blue-700 grid place-content-center">
+                          <FontAwesomeIcon icon={icon} />
+                        </div>
+                      )}
+                      <p className="hidden md:block text-xs bg-blue-200 rounded-xl px-1 py-0.5">
+                        {cat?.name}
+                      </p>
                     </div>
-                  )}
-                  <p className="hidden md:block text-xs bg-blue-200 rounded-xl px-1 py-0.5">
-                    {cat?.name}
-                  </p>
-                </div>
 
-                <div className="text-xs text-gray-600 flex-1">
-                  <p>
-                    {accountName} - {institution}
-                  </p>
-                </div>
+                    <div className="text-xs text-gray-600 flex-1">
+                      <p>
+                        {accountName} - {institution}
+                      </p>
+                    </div>
 
-                <div className="flex flex-col items-center flex-1 ">
-                  <p
-                    className={`font-bold ${
-                      tr.type === "INCOME"
-                        ? "text-green-600"
-                        : tr.type === "EXPENSE"
-                          ? "text-red-600"
-                          : "text-gray-600"
-                    }`}
+                    <div className="flex flex-col items-center flex-1 ">
+                      <p
+                        className={`font-bold ${
+                          tr.type === "INCOME"
+                            ? "text-green-600"
+                            : tr.type === "EXPENSE"
+                              ? "text-red-600"
+                              : "text-gray-600"
+                        }`}
+                      >
+                        {tr.type === "INCOME" ? "+" : "-"}$
+                        {Number(tr.amount).toFixed(2)}
+                      </p>
+                      <p
+                        className={`text-xs px-1 py-0.5 rounded-2xl ${cat?.type === "INCOME" ? "bg-green-200" : "bg-red-200"}`}
+                      >
+                        {cat?.type}
+                      </p>
+                    </div>
+
+                    <button
+                      className=" flex-1 "
+                      onClick={() => {
+                        setSelectedTransact(tr);
+                        openModal("transOptions", { selectedTransact: tr });
+                      }}
+                    >
+                      <FontAwesomeIcon icon={allIcons.faEllipsisV} />
+                    </button>
+                  </motion.div>
+                );
+              })}
+            </>
+          ) : (
+            <>
+              {transactions.map((tr) => {
+                const account = accounts.find((act) => act.id === tr.accountId);
+                const accountName = account?.name;
+                const institution = account?.institution;
+                console.log(accountName);
+
+                console.log(accounts);
+                console.log(tr.accountId);
+                console.log(accounts.find((act) => act.id === tr.accountId));
+
+                const cat = getCategory(tr.categoryId);
+                const icon = cat?.icon
+                  ? allIcons[cat.icon]
+                  : tr.type === "INCOME"
+                    ? allIcons.faMoneyBillWave
+                    : allIcons.faCartShopping;
+
+                return (
+                  <motion.div
+                    layout
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    key={tr.id}
+                    className=" grid grid-cols-6 items-center p-2 border border-gray-200 rounded-lg md:hover:-translate-y-0.5 transition-all
+                duration-200"
                   >
-                    {tr.type === "INCOME" ? "+" : "-"}$
-                    {Number(tr.amount).toFixed(2)}
-                  </p>
-                  <p
-                    className={`text-xs px-1 py-0.5 rounded-2xl ${cat?.type === "INCOME" ? "bg-green-200" : "bg-red-200"}`}
-                  >
-                    {cat?.type}
-                  </p>
-                </div>
+                    <p className="font-medium  flex-1">{tr.title}</p>
 
-                <button
-                  className=" flex-1 "
-                  onClick={() => {
-                    setSelectedTransact(tr);
-                    openModal("transOptions", { selectedTransact: tr });
-                  }}
-                >
-                  <FontAwesomeIcon icon={allIcons.faEllipsisV} />
-                </button>
-              </motion.div>
-            );
-          })}
+                    <p className="text-xs text-gray-500  flex-1">
+                      {tr.transactionDate &&
+                        `  ${formatDate(tr.transactionDate)}`}
+                    </p>
+
+                    <div className=" flex items-start flex-col flex-1">
+                      {icon && (
+                        <div className="size-7 rounded-full bg-blue-100 text-blue-700 grid place-content-center">
+                          <FontAwesomeIcon icon={icon} />
+                        </div>
+                      )}
+                      <p className="hidden md:block text-xs bg-blue-200 rounded-xl px-1 py-0.5">
+                        {cat?.name}
+                      </p>
+                    </div>
+
+                    <div className="text-xs text-gray-600 flex-1">
+                      <p>
+                        {accountName} - {institution}
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col items-center flex-1 ">
+                      <p
+                        className={`font-bold ${
+                          tr.type === "INCOME"
+                            ? "text-green-600"
+                            : tr.type === "EXPENSE"
+                              ? "text-red-600"
+                              : "text-gray-600"
+                        }`}
+                      >
+                        {tr.type === "INCOME" ? "+" : "-"}$
+                        {Number(tr.amount).toFixed(2)}
+                      </p>
+                      <p
+                        className={`text-xs px-1 py-0.5 rounded-2xl ${cat?.type === "INCOME" ? "bg-green-200" : "bg-red-200"}`}
+                      >
+                        {cat?.type}
+                      </p>
+                    </div>
+
+                    <button
+                      className=" flex-1 "
+                      onClick={() => {
+                        setSelectedTransact(tr);
+                        openModal("transOptions", { selectedTransact: tr });
+                      }}
+                    >
+                      <FontAwesomeIcon icon={allIcons.faEllipsisV} />
+                    </button>
+                  </motion.div>
+                );
+              })}
+            </>
+          )}
         </AnimatePresence>
       </div>
 
