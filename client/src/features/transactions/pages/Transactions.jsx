@@ -80,13 +80,7 @@ export default function Transactions() {
           <h1 className="text-3xl font-bold text-blue-800">Transactions</h1>
           <p>Revisa y Gestiona tu actividad financiera</p>
         </div>
-        <input
-          onChange={handleOnchange}
-          name="title"
-          type="text"
-          placeholder="Busca trasaccion por titulo, cuenta o desc..."
-          className="rounded-2xl border border-gray-500 px-4 py-1 min-w-40 max-w-80 lg:w-2xl bg-blue-100/30"
-        />
+
         <button
           onClick={() => openModal("addTransaction")}
           className="hidden bg-blue-600 text-white px-4 py-1 rounded-md cursor-pointer
@@ -102,7 +96,13 @@ export default function Transactions() {
         totalExpenses={totalExpenses}
         totalNet={totalNet}
       />
-
+      <input
+        onChange={handleOnchange}
+        name="title"
+        type="text"
+        placeholder="Busca trasaccion por titulo, cuenta o desc..."
+        className="rounded-2xl border border-gray-500 px-4 py-1 min-w-40 max-w-80 lg:w-2xl bg-blue-100/30"
+      />
       <div className="flex flex-col mt-6 space-y-2">
         {transactions.length > 0 ? (
           <div className="grid grid-cols-6 place-items-start gap-16 rounded-md border border-gray-200 py-2 px-2 text-sm">
