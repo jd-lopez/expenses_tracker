@@ -25,9 +25,9 @@ export default function MobileMoreModal() {
   return (
     <motion.dialog
       open
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0 }}
+      initial={{ opacity: 0, scale: 0, y: 700, x: 200 }}
+      animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+      exit={{ opacity: 0, scale: 0, y: 700, x: 200 }}
       transition={{ duration: 0.5 }}
       className="absolute top-1/10 left-10 bg-inherit w-4/5 py-4"
     >

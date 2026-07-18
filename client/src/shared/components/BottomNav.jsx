@@ -19,6 +19,7 @@ import AddCategoryModal from "../../features/transactions/components/AddCategory
 
 import AddAccountModal from "../../features/accounts/components/AddAccountModal";
 import { useModal } from "../../context/ModalContext";
+import { animateSingleValue, motion } from "motion/react";
 
 export default function BottomNav() {
   const { transactions, loadTransactions, createTransaction } =
@@ -81,15 +82,15 @@ export default function BottomNav() {
           </NavLink>
         </li>
 
-        <button
-          className=" absolute bottom-10 z-40 left-1/2 -translate-x-1/2 shadow rounded-full  size-14 grid place-content-center active:scale-110 active:animate-spin active:-translate-y-4 transition-all"
+        <motion.button
+          className={`absolute bottom-10 z-40 left-1/2 -translate-x-1/2 shadow rounded-full  size-14 grid place-content-center  transition-all ${isModalActive ? "focus:-translate-y-4 focus:rotate-90 focus:scale-110" : "focus:translate-y-0 "}`}
           onClick={() => openModal("mobileActions")}
         >
           <FontAwesomeIcon
             icon={faCirclePlus}
             className="text-blue-600 text-6xl"
           />
-        </button>
+        </motion.button>
 
         <li>
           <NavLink
