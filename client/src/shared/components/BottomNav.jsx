@@ -15,6 +15,7 @@ import { useCategory } from "../../context/CategoryContext";
 import { useTransactions } from "../../context/TransactionsContext";
 import MobileActionsModal from "./MobileActionsModal";
 import AddTransactionModal from "./AddTransactionModal";
+import AddCategoryModal from "../../features/transactions/components/AddCategoryModal";
 
 import AddAccountModal from "../../features/accounts/components/AddAccountModal";
 import { useModal } from "../../context/ModalContext";
@@ -176,6 +177,20 @@ export default function BottomNav() {
             ></div>
 
             <AddAccountModal createAccount={createAccount} />
+          </div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isModalActive("addCategory") && (
+          <div>
+            <div
+              className="fixed inset-0 bg-slate-700/60 backdrop-blur-xs z-40"
+              onClick={closeModal}
+            />
+            <div className="relative z-50">
+              <AddCategoryModal createCategory={createCategory} />
+            </div>
           </div>
         )}
       </AnimatePresence>

@@ -51,7 +51,7 @@ export default function AddTransactionModal({
     <>
       <motion.dialog
         open
-        className="fixed w-[90%] overflow-y-auto max-h-2/3   md:max-h-116 md:w-2/6 top-1/2 left-1/2 no-scrollbar -translate-x-1/2 -translate-y-1/2 shadow-2xl rounded-2xl z-50"
+        className="fixed w-[90%] overflow-y-auto max-h-2/3   md:max-h-116 md:w-2/6 top-1/2 left-1/2 no-scrollbar -translate-x-1/2 -translate-y-1/2 shadow-2xl rounded-2xl z-30"
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0 }}
