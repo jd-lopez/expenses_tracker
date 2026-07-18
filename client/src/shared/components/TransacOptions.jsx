@@ -59,8 +59,8 @@ export default function TransacOptions({ selectedTransact }) {
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0 }}
-      className={` top-1/4 left-1/8 min-w-20 w-80 rounded-2xl shadow-md flex flex-col gap-4
-        md:left-1/3 md:min-w-80
+      className={` top-1/4 left-1/9  min-w-xs w-80 rounded-2xl shadow-md flex flex-col gap-4
+        md:left-1/3 md:min-w-100
         `}
     >
       <div className="bg-blue-200 font-bold flex justify-between gap-6 rounded-tl-2xl rounded-tr-2xl py-2 px-4 border-b border-blue-800">

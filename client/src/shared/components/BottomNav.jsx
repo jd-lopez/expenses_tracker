@@ -14,12 +14,15 @@ import { useAccounts } from "../../context/AccountContext";
 import { useCategory } from "../../context/CategoryContext";
 import { useTransactions } from "../../context/TransactionsContext";
 import MobileActionsModal from "./MobileActionsModal";
+import AddTransactionModal from "./AddTransactionModal";
+
+import AddAccountModal from "../../features/accounts/components/AddAccountModal";
 import { useModal } from "../../context/ModalContext";
 
 export default function BottomNav() {
   const { transactions, loadTransactions, createTransaction } =
     useTransactions();
-  const { accounts } = useAccounts();
+  const { accounts, createAccount } = useAccounts();
   const { categories, createCategory } = useCategory();
   const { isModalActive, openModal, closeModal } = useModal();
 
@@ -32,6 +35,7 @@ export default function BottomNav() {
             className={({ isActive }) =>
               `bottomNavButtons ${isActive ? "border-b border-blue-600" : ""}`
             }
+            onClick={() => closeModal()}
           >
             {({ isActive }) => (
               <>
@@ -56,6 +60,7 @@ export default function BottomNav() {
             className={({ isActive }) =>
               `bottomNavButtons ${isActive ? "border-b border-blue-600" : ""}`
             }
+            onClick={() => closeModal()}
           >
             {({ isActive }) => (
               <>
@@ -91,6 +96,7 @@ export default function BottomNav() {
             className={({ isActive }) =>
               `bottomNavButtons ${isActive ? "border-b border-blue-600" : ""}`
             }
+            onClick={() => closeModal()}
           >
             {({ isActive }) => (
               <>
@@ -124,7 +130,7 @@ export default function BottomNav() {
         {isModalActive("mobileMore") && (
           <div>
             <div
-              className="absolute -top-220 left-0 right-0 bottom-20  bg-slate-700/60 backdrop-blur-xs "
+              className="absolute left-0 right-0 top-1/13 bottom-20  bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100"
               onClick={closeModal}
             ></div>
             <MobileMoreModal />
@@ -136,10 +142,40 @@ export default function BottomNav() {
         {isModalActive("mobileActions") && (
           <div>
             <div
-              className="absolute top-0 left-0 right-0 bottom-20 bg-slate-700/60 backdrop-blur-xs "
+              className="absolute left-0 right-0 top-1/13 bottom-20 bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100"
               onClick={closeModal}
             ></div>
             <MobileActionsModal />
+          </div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isModalActive("addTransaction") && (
+          <div>
+            <div
+              className="absolute inset-x-0 top-18 bottom-20 bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100"
+              onClick={closeModal}
+            ></div>
+            <AddTransactionModal
+              accounts={accounts}
+              createTransaction={createTransaction}
+              categories={categories}
+              createCategory={createCategory}
+            />
+          </div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isModalActive("addAccount") && (
+          <div className="">
+            <div
+              className="absolute inset-x-0 top-18 bottom-20 bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100"
+              onClick={closeModal}
+            ></div>
+
+            <AddAccountModal createAccount={createAccount} />
           </div>
         )}
       </AnimatePresence>

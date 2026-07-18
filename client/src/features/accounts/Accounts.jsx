@@ -7,11 +7,13 @@ import AccountSummary from "./AccountSummary";
 import SummaryCards from "../transactions/components/SummaryCards";
 import { useAccounts } from "../../context/AccountContext";
 import { useModal } from "../../context/ModalContext";
+import { useCategory } from "../../context/CategoryContext";
 
 export default function Accounts() {
   const { isModalActive, openModal, closeModal } = useModal();
   const { accounts, setAccounts, createAccount } = useAccounts();
   const { transactions } = useTransactions();
+  const { categories, createCategory } = useCategory();
 
   const AllBalance = accounts.reduce((sum, act) => {
     return sum + Number(act.initialBalance);
@@ -49,10 +51,7 @@ export default function Accounts() {
         totalNet={totalNet}
       />
 
-      <AccountsList
-        accounts={accounts}
-        transactions={transactions}
-      />
+      <AccountsList accounts={accounts} transactions={transactions} />
 
       <AnimatePresence>
         {isModalActive("addAccount") && (
@@ -62,9 +61,7 @@ export default function Accounts() {
               onClick={closeModal}
             ></div>
 
-            <AddAccountModal
-              createAccount={createAccount}
-            />
+            <AddAccountModal createAccount={createAccount} />
           </div>
         )}
       </AnimatePresence>

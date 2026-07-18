@@ -9,7 +9,7 @@ import TotalCard from "./TotalCard";
 
 export default function SummaryCards({ totalIncome, totalExpenses, totalNet }) {
   return (
-    <div className="flex gap-6 py-4 justify-between overflow-x-auto snap-x snap-mandatory no-scroll">
+    <div className="flex gap-6 py-4 justify-between overflow-x-auto snap-x snap-mandatory no-scrollbar">
       <TotalCard
         card={{
           title: "Total Income",

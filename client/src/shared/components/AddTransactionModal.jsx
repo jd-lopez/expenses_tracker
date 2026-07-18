@@ -51,19 +51,21 @@ export default function AddTransactionModal({
     <>
       <motion.dialog
         open
-        className="fixed w-screen md:w-2/4 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md"
+        className="fixed w-[90%] md:overflow-y-auto md:max-h-116 md:w-2/6 top-1/2 left-1/2 no-scrollbar -translate-x-1/2 -translate-y-1/2 shadow-2xl rounded-2xl"
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0 }}
       >
         <div className="p-6">
           <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
-            <h1>Add new transaction</h1>
+            <h1 className="text-blue-700 font-bold text-2xl">
+              Add new transaction
+            </h1>
 
             <div className="flex flex-col gap-1">
               <label>Title</label>
               <input
-                className="border border-gray-700 rounded-md outline-0 px-2 py-1"
+                className="input"
                 type="text"
                 name="title"
                 value={transData.title}
@@ -79,7 +81,7 @@ export default function AddTransactionModal({
                 name="description"
                 value={transData.description}
                 onChange={handleChange}
-                className="border border-gray-700 rounded-md outline-0 px-2 py-1"
+                className="input"
               />
             </div>
 
@@ -90,7 +92,7 @@ export default function AddTransactionModal({
                 name="transactionDate"
                 value={transData.transactionDate}
                 onChange={handleChange}
-                className="border border-gray-700 rounded-md outline-0 px-2 py-1"
+                className="input"
               />
             </div>
 
@@ -100,7 +102,7 @@ export default function AddTransactionModal({
                 name="type"
                 value={transData.type}
                 onChange={handleChange}
-                className="border border-gray-700 rounded-md outline-0 py-1"
+                className="input"
               >
                 <option value="">Select type</option>
                 {type.map((t) => (
@@ -117,7 +119,7 @@ export default function AddTransactionModal({
                 name="accountId"
                 value={transData.accountId}
                 onChange={handleChange}
-                className="border border-gray-700 rounded-md outline-0 py-1"
+                className="input"
               >
                 <option value="">Select account</option>
                 {accounts.map((act) => (
@@ -144,7 +146,7 @@ export default function AddTransactionModal({
                 name="categoryId"
                 value={transData.categoryId}
                 onChange={handleChange}
-                className="border border-gray-700 rounded-md outline-0 py-1"
+                className="input"
               >
                 <option value="">Select category</option>
                 {categories.map((cat) => (
@@ -156,23 +158,31 @@ export default function AddTransactionModal({
             </div>
 
             <div className="flex flex-col gap-1">
-              <label>Amount</label>
+              <label className="label">Amount</label>
               <input
                 type="number"
                 name="amount"
                 value={transData.amount}
                 onChange={handleChange}
-                className="border border-gray-700 rounded-md outline-0 px-2 py-1"
-                step="0.01"
+                className="input"
               />
             </div>
 
-            <button
-              type="submit"
-              className="bg-blue-600 text-white font-bold rounded-md py-1 px-2 mt-4 cursor-pointer"
-            >
-              Create
-            </button>
+            <div className="flex justify-between items-center">
+              <button
+                type="submit"
+                className="bg-blue-600 text-white font-bold rounded-md py-1 px-2 mt-4 cursor-pointer"
+              >
+                Create
+              </button>
+              <button
+                className="bg-red-600 text-white font-bold rounded-md py-1 px-2 mt-4 cursor-pointer"
+                onClick={() => closeModal()}
+                type="button"
+              >
+                Cancel
+              </button>
+            </div>
           </form>
         </div>
       </motion.dialog>

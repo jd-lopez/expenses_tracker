@@ -82,7 +82,7 @@ body {
 
 @layer components {
 
-    .no-scroll {
+    .no-scrollbar {
 
         scrollbar-width: none;
     }
@@ -92,7 +92,7 @@ body {
     }
 
     .input {
-        @apply outline-0 border border-gray-400 shadow-xl rounded-md flex-1 pl-8 py-2.5 placeholder-transparent
+        @apply outline-0 border border-gray-400 shadow-xl rounded-md flex-1 pl-6 py-2 placeholder-transparent
     }
 
 
@@ -126,5 +126,9 @@ body {
 
     .sideIcon {
         @apply text-blue-600 text-xl
+    }
+
+    .label {
+        @apply text-lg font-medium
     }
 }

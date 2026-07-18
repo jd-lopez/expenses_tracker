@@ -15,16 +15,6 @@ export default function DashHeading() {
           happening today
         </p>
       </div>
-      <div className="flex justify-between items-center gap-2   ">
-        <button className="addButton bg-green-700">
-          <FontAwesomeIcon icon={faArrowUp} />
-          <span>Add Income</span>
-        </button>
-        <button className="addButton bg-blue-700">
-          <FontAwesomeIcon icon={faArrowDown} />
-          <span>Add Expense</span>
-        </button>
-      </div>
     </div>
   );
 }

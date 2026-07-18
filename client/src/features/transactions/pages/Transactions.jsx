@@ -185,7 +185,7 @@ export default function Transactions() {
         {isModalActive("addTransaction") && (
           <div>
             <div
-              className="fixed inset-0 bg-slate-700/60 backdrop-blur-xs"
+              className="absolute inset-0 bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100"
               onClick={closeModal}
             ></div>
             <AddTransactionModal
