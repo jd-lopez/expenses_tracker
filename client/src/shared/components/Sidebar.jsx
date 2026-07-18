@@ -12,10 +12,12 @@ import {
   faCircleQuestion,
   faSignOut,
 } from "@fortawesome/free-solid-svg-icons";
+import { useModal } from "../../context/ModalContext";
 
 export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const { closeModal } = useModal();
 
   const handleLogout = () => {
     logout();
@@ -39,6 +41,7 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
               className={({ isActive }) =>
                 `px-6 py-1 flex gap-2  items-center ${isActive && isOpen ? "bg-blue-600 rounded-md text-white" : "bg-background text-blue-600"}`
               }
+              onClick={() => closeModal()}
             >
               {({ isActive }) => (
                 <>
@@ -61,6 +64,7 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
               className={({ isActive }) =>
                 `px-6 py-1 flex gap-2  items-center ${isActive && isOpen ? "bg-blue-600 rounded-md text-white" : "bg-background text-blue-600"}`
               }
+              onClick={() => closeModal()}
             >
               {({ isActive }) => (
                 <>
@@ -83,6 +87,7 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
               className={({ isActive }) =>
                 `px-6 py-1 flex gap-2  items-center ${isActive && isOpen ? "bg-blue-600 rounded-md text-white" : "bg-background text-blue-600"}`
               }
+              onClick={() => closeModal()}
             >
               {({ isActive }) => (
                 <>
@@ -105,6 +110,7 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
               className={({ isActive }) =>
                 `px-6 py-1 flex gap-2  items-center ${isActive && isOpen ? "bg-blue-600 rounded-md text-white" : "bg-background text-blue-600"}`
               }
+              onClick={() => closeModal()}
             >
               {({ isActive }) => (
                 <>
@@ -128,6 +134,7 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
               className={({ isActive }) =>
                 `px-6 py-1 flex gap-2  items-center ${isActive && isOpen ? "bg-blue-600 rounded-md text-white" : "bg-background text-blue-600"}`
               }
+              onClick={() => closeModal()}
             >
               {({ isActive }) => (
                 <>
