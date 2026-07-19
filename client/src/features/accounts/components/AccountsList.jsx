@@ -10,11 +10,10 @@ import {
   faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 import { useModal } from "../../../context/ModalContext";
+import { useTheme } from "../../../context/ThemeContext";
 
-export default function AccountsList({
-  accounts = [],
-  transactions,
-}) {
+export default function AccountsList({ accounts = [], transactions }) {
+  const { isDark } = useTheme();
   const { openModal } = useModal();
   const accountsWithTotal = accounts.map((account) => {
     const initialBalance = Number(account.initialBalance) || 0;
@@ -45,9 +44,9 @@ export default function AccountsList({
   };
 
   return (
-    <div className=" flex flex-col gap-3">
+    <div className={`flex flex-col gap-3 `}>
       <h2 className="text-xl font-bold">Fuente financiera</h2>
-      <p className="text-sm text-slate-500">
+      <p className="text-sm ">
         Gestiona tus cuentas y efectivo. Abre cualquier cuenta para ver sus
         transacciones.
       </p>
@@ -73,7 +72,7 @@ export default function AccountsList({
             <div
               onClick={() => navigate(`/accounts/${act.id}`)}
               key={act.id}
-              className=" flex flex-col gap-6 border border-gray-200 shadow rounded-xl p-4"
+              className={`flex flex-col gap-6 border  shadow rounded-xl p-4 ${isDark ? "bg-inverse-surface border-gray-500" : "bg-white border-gray-200"}`}
             >
               <div className="flex justify-between items-center">
                 <div

@@ -9,7 +9,7 @@ import TotalCard from "./TotalCard";
 
 export default function SummaryCards({ totalIncome, totalExpenses, totalNet }) {
   return (
-    <div className="flex gap-6 py-4 justify-between overflow-x-auto snap-x snap-mandatory no-scrollbar">
+    <div className="flex  gap-6 py-4 px-4 justify-between overflow-x-auto snap-x snap-mandatory no-scrollbar">
       <TotalCard
         card={{
           title: "Total Income",
@@ -17,6 +17,7 @@ export default function SummaryCards({ totalIncome, totalExpenses, totalNet }) {
           icon: faArrowTrendUp,
           paragraph: "% from last month",
           total: totalIncome,
+          gradientColors: ["#15803d", "#22c55e", "#86efac"],
         }}
       />
       <TotalCard
@@ -26,6 +27,7 @@ export default function SummaryCards({ totalIncome, totalExpenses, totalNet }) {
           icon: faArrowTrendDown,
           paragraph: "% from last month",
           total: totalExpenses,
+          gradientColors: ["#991b1b", "#ef4444", "#fca5a5"],
         }}
       />
       <TotalCard
@@ -35,6 +37,7 @@ export default function SummaryCards({ totalIncome, totalExpenses, totalNet }) {
           icon: faPiggyBank,
           paragraph: "% from last month",
           total: totalNet,
+          gradientColors: ["#2563eb", "#60a5fa", "#bfdbfe"],
         }}
       />
     </div>

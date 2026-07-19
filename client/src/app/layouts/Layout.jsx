@@ -15,7 +15,7 @@ export default function Layout() {
 
   return (
     <div
-      className={`flex flex-col h-screen w-full relative ${isDark ? "bg-[#101a3e] text-white" : "bg-background text-black"}`}
+      className={`flex flex-col h-screen w-full relative ${isDark ? "bg-[#13182b] text-white" : "bg-background text-black"}`}
     >
       <MobileTop />
       <div className="flex flex-col md:flex-row md:justify-between flex-1 overflow-hidden">

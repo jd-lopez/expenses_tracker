@@ -52,19 +52,6 @@ export default function Accounts() {
       />
 
       <AccountsList accounts={accounts} transactions={transactions} />
-
-      <AnimatePresence>
-        {isModalActive("addAccount") && (
-          <div className="">
-            <div
-              className="absolute inset-0 bg-blue-300/20 backdrop-blur-md "
-              onClick={closeModal}
-            ></div>
-
-            <AddAccountModal createAccount={createAccount} />
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

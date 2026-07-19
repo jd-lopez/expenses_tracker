@@ -4,9 +4,11 @@ import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { useTheme } from "../../context/ThemeContext";
 
 export default function MobileTop() {
-  const { toggleTheme } = useTheme();
+  const { toggleTheme, isDark } = useTheme();
   return (
-    <header className="flex  justify-between px-6 py-4 shadow bg-white text-black md:">
+    <header
+      className={`flex  justify-between px-6 py-4 shadow  md: ${isDark ? "bg-inverse-surface" : ""}`}
+    >
       <button className="text-4xl font-bold text-blue-700 ">FinTrack</button>
 
       <button onClick={() => toggleTheme()}>Theme</button>

@@ -4,11 +4,13 @@ import SummaryCards from "../transactions/components/SummaryCards";
 import { useParams } from "react-router-dom";
 import { useTransactions } from "../../context/TransactionsContext";
 import { useAccounts } from "../../context/AccountContext";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function AccountSummary() {
   const { id } = useParams();
   const { transactions } = useTransactions();
   const { accounts } = useAccounts();
+  const { isDark } = useTheme();
 
   const accountTransactions = transactions.filter(
     (t) => t.accountId === Number(id),
