@@ -25,9 +25,12 @@ const app = express();
 const PORT = 3000;
 
 dotenv.config();
+
+const clientUrl = process.env.CLIENT_URL?.replace(/\/$/, "");
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: clientUrl,
     credentials: false,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
