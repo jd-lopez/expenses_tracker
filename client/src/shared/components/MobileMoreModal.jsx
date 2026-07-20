@@ -29,7 +29,7 @@ export default function MobileMoreModal() {
       animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
       exit={{ opacity: 0, scale: 0, y: 400, x: 200 }}
       transition={{ duration: 0.5 }}
-      className="absolute top-1/10 left-10 bg-inherit w-4/5 py-4"
+      className="absolute top-1/10 left-10 bg-inherit w-4/5 py-4 z-20"
     >
       <h1 className="text-2xl font-bold  mb-8">¿Que mas quieres hacer?</h1>
       <ul className="grid grid-cols-2 gap-4 mt-8">

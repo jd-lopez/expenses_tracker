@@ -26,7 +26,7 @@ export default function BottomNav() {
     useTransactions();
   const { accounts, createAccount } = useAccounts();
   const { categories, createCategory } = useCategory();
-  const { isModalActive, openModal, closeModal } = useModal();
+  const { isModalActive, toggleModal, closeModal } = useModal();
 
   return (
     <div className=" bottom-0 border-t border-gray-700 bg-inverse-on-surface text-base  md:hidden">
@@ -83,8 +83,8 @@ export default function BottomNav() {
         </li>
 
         <motion.button
-          className={`absolute bottom-10 z-40 left-1/2 -translate-x-1/2 shadow rounded-full  size-14 grid place-content-center  transition-all ${isModalActive ? "focus:-translate-y-4 focus:rotate-90 focus:scale-110" : "focus:translate-y-0 "}`}
-          onClick={() => openModal("mobileActions")}
+          className={`absolute bottom-10 z-40 left-1/2 -translate-x-1/2 shadow rounded-full  size-14 grid place-content-center  transition-all ${isModalActive("mobileActions") ? "-translate-y-4 rotate-90 scale-110" : "translate-y-0 "}`}
+          onClick={() => toggleModal("mobileActions")}
         >
           <FontAwesomeIcon
             icon={faCirclePlus}
@@ -120,7 +120,7 @@ export default function BottomNav() {
         <li>
           <button
             className="bottomNavButtons focus:text-blue-600 "
-            onClick={() => openModal("mobileMore")}
+            onClick={() => toggleModal("mobileMore")}
           >
             <FontAwesomeIcon icon={faCirclePlus} />
             <p>More</p>
@@ -132,7 +132,7 @@ export default function BottomNav() {
         {isModalActive("mobileMore") && (
           <div>
             <div
-              className="absolute left-0 right-0 top-1/13 bottom-20  bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100"
+              className="absolute left-0 right-0 top-1/13 bottom-20  bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100 z-20"
               onClick={closeModal}
             ></div>
             <MobileMoreModal />
@@ -144,7 +144,7 @@ export default function BottomNav() {
         {isModalActive("mobileActions") && (
           <div>
             <div
-              className="absolute left-0 right-0 top-1/13 bottom-20 bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100"
+              className="absolute left-0 right-0 top-1/13 bottom-20 bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100 z-20"
               onClick={closeModal}
             ></div>
             <MobileActionsModal />

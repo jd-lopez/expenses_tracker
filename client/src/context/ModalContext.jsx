@@ -31,6 +31,22 @@ export function ModalProvider({ children }) {
     }
   }
 
+  function toggleModal(name, data = null) {
+    if (name === nestedModal) {
+      setNestedModal(null);
+      return;
+    }
+
+    if (name === activeModal) {
+      setActiveModal(null);
+      setNestedModal(null);
+      setModalData(null);
+      return;
+    }
+
+    openModal(name, data);
+  }
+
   function isModalActive(name) {
     return name === activeModal || name === nestedModal;
   }
@@ -42,6 +58,7 @@ export function ModalProvider({ children }) {
         nestedModal,
         modalData,
         openModal,
+        toggleModal,
         closeModal,
         isModalActive,
       }}
