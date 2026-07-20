@@ -4,10 +4,12 @@ import { useState } from "react";
 import MobileTop from "../../shared/components/MobileTop";
 import BottomNav from "../../shared/components/BottomNav";
 import { useTheme } from "../../context/ThemeContext";
+import { useModal } from "../../context/ModalContext";
 
 export default function Layout() {
   const [isOpen, setIsOpen] = useState(false);
   const { isDark } = useTheme();
+  const { activeModal } = useModal();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -24,7 +26,9 @@ export default function Layout() {
           setIsOpen={setIsOpen}
           toggleSidebar={toggleSidebar}
         />
-        <main className="flex-1 overflow-y-auto px-3 py-4 relative">
+        <main
+          className={`flex-1  px-3 py-4  relative ${activeModal ? "overflow-y-hidden" : "overflow-y-auto"}`}
+        >
           <Outlet />
         </main>
       </div>

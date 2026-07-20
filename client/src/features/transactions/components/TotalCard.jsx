@@ -12,7 +12,7 @@ export default function TotalCard({ card }) {
         "--clr-2": card.gradientColors[1],
       }}
       className={`${card.color} relative min-w-46 w-46 h-26 aspect-square rounded-lg shadow-md 
-     md:flex-1 md:text-sm z-10
+     md:flex-1 md:text-sm z-2
             snap-start`}
     >
       <div

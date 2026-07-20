@@ -13,7 +13,7 @@ import TransactionsTable from "../components/TransactionsTable";
 export default function Transactions() {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [query, setQuery] = useState("");
-  const { openModal } = useModal();
+  const { openModal, isModalActive } = useModal();
   const { transactions, createTransaction } = useTransactions();
   const { accounts } = useAccounts();
   const { categories, createCategory } = useCategory();
@@ -55,7 +55,7 @@ export default function Transactions() {
   }
 
   return (
-    <div className="overflow-x-hidden">
+    <div>
       <TransactionsHeader
         onAddTransaction={() => openModal("addTransaction")}
       />
