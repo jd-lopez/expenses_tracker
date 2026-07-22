@@ -80,6 +80,17 @@ export const deleteTransaction = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    const transToDelete = await prisma.transaction.findUnique({
+      where: {
+        id: transId,
+      },
+      include: { account: true },
+    });
+    if (transToDelete.account.userId !== userId) {
+      console.log(deletedTrans.accountId.userId);
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
     const deletedTrans = await prisma.transaction.delete({
       where: {
         id: transId,
@@ -90,7 +101,9 @@ export const deleteTransaction = async (req, res) => {
       return res.status(404).json({ message: "Not found" });
     }
 
-    return res.status(201).json(deletedTrans);
+    return res
+      .status(201)
+      .json({ message: "Transaction deleted successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

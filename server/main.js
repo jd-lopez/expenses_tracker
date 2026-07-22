@@ -14,7 +14,11 @@ import {
   createTransaction,
   deleteTransaction,
 } from "./controllers/transactionController.js";
-import { getAccounts, createAccount } from "./controllers/accountController.js";
+import {
+  getAccounts,
+  createAccount,
+  deleteAccount,
+} from "./controllers/accountController.js";
 
 import {
   getCategories,
@@ -72,6 +76,7 @@ app.post("/transactions", authMiddleware, createTransaction);
 app.get("/categories", authMiddleware, getCategories);
 app.post("/categories", authMiddleware, createCategory);
 app.delete("/transactions/:id", authMiddleware, deleteTransaction);
+app.delete("/accounts/:id", authMiddleware, deleteAccount);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,10 +10,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useModal } from "../../../context/ModalContext";
 import { useTheme } from "../../../context/ThemeContext";
-
+import { AnimatePresence } from "motion/react";
+import AddAccountModal from "./AddAccountModal";
+import { useAccounts } from "../../../context/AccountContext";
+import { useTransactions } from "../../../context/TransactionsContext";
 export default function AccountsList({ accounts = [], transactions }) {
   const { isDark } = useTheme();
-  const { openModal } = useModal();
+  const { createAccount, deleteAccount } = useAccounts();
+  const { removeTransByAccount } = useTransactions();
+  const { openModal, isModalActive, closeModal } = useModal();
   const accountsWithTotal = accounts.map((account) => {
     const initialBalance = Number(account.initialBalance) || 0;
 
@@ -43,6 +47,13 @@ export default function AccountsList({ accounts = [], transactions }) {
     CASH: "Balance en Efectivo",
   };
 
+  function handleDeletion(id) {
+    deleteAccount(id);
+    removeTransByAccount(id);
+
+    console.log("errror");
+  }
+
   return (
     <div className={`flex flex-col gap-3 `}>
       <h2 className="text-xl font-bold">Fuente financiera</h2>
@@ -54,7 +65,7 @@ export default function AccountsList({ accounts = [], transactions }) {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 ">
         <div
           className=" flex flex-col items-center justify-center gap-6 border border-gray-200 shadow rounded-xl p-4 bg-radial from-white to-blue-100/75"
-          onClick={() => openModal("addAccount")}
+          onClick={() => openModal("AddAccountModal")}
         >
           <div className="grid place-items-center bg-white border border-slate-500 rounded-full size-8">
             <FontAwesomeIcon icon={faPlus} className="" />
@@ -70,7 +81,7 @@ export default function AccountsList({ accounts = [], transactions }) {
 
           return (
             <div
-              onClick={() => navigate(`/accounts/${act.id}`)}
+              onClick={() => handleDeletion(act.id)}
               key={act.id}
               className={`flex flex-col gap-6 border  shadow rounded-xl p-4 ${isDark ? "bg-inverse-surface border-gray-500" : "bg-white border-gray-200"}`}
             >
@@ -99,6 +110,18 @@ export default function AccountsList({ accounts = [], transactions }) {
             </div>
           );
         })}
+
+        <AnimatePresence>
+          {isModalActive("AddAccountModal") && (
+            <div>
+              <div
+                className="absolute inset-0 bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100 z-5"
+                onClick={closeModal}
+              ></div>
+              <AddAccountModal createAccount={createAccount} />
+            </div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

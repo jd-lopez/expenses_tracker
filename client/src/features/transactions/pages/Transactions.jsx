@@ -60,11 +60,11 @@ export default function Transactions() {
         onAddTransaction={() => openModal("addTransaction")}
       />
 
-      <SummaryCards
+      {/* <SummaryCards
         totalIncome={totalIncome}
         totalExpenses={totalExpenses}
         totalNet={totalNet}
-      />
+      /> */}
 
       <TransactionSearch query={query} onQueryChange={setQuery} />
 

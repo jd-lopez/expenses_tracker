@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBank } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "motion/react";
 import { useModal } from "../../../context/ModalContext";
+import { useAccounts } from "../../../context/AccountContext";
 
 export default function AddAccountModal({ createAccount }) {
   const { closeModal } = useModal();
@@ -40,7 +41,7 @@ export default function AddAccountModal({ createAccount }) {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0 }}
       open
-      className="fixed w-[90%] md:overflow-y-auto md:max-h-116 md:w-2/6 top-1/2 left-1/2 no-scrollbar -translate-x-1/2 -translate-y-1/2 shadow-2xl rounded-2xl"
+      className="fixed w-[90%] md:overflow-y-auto md:max-h-120 md:w-2/6 top-1/2 left-1/2 no-scrollbar -translate-x-1/2 -translate-y-1/2 shadow-2xl rounded-2xl z-10"
     >
       <div className="rounded-md border border-gray-200 p-4">
         <h1 className="text-2xl font-bold text-blue-950">Add New Account</h1>
@@ -95,7 +96,6 @@ export default function AddAccountModal({ createAccount }) {
               onChange={handleChange}
               className="modalInput"
               type="number"
-              required
             />
           </div>
           <div className="flex justify-between gap-4 mt-6">

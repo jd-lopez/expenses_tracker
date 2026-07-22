@@ -46,6 +46,10 @@ export function TransProvider({ children }) {
     }
   }
 
+  const removeTransByAccount = (accountId) => {
+    setTransactions((prev) => prev.filter((t) => t.accountId !== accountId));
+  };
+
   return (
     <TransContext.Provider
       value={{
@@ -54,6 +58,7 @@ export function TransProvider({ children }) {
         loadTransactions,
         createTransaction,
         deleteTransaction,
+        removeTransByAccount,
       }}
     >
       {children}

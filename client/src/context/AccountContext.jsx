@@ -2,6 +2,7 @@ import React from "react";
 import { useContext, createContext } from "react";
 import { useState, useEffect } from "react";
 import { accountService } from "../features/transactions/api/accountService";
+import { useTransactions } from "./TransactionsContext";
 
 const AccountContext = createContext();
 
@@ -33,10 +34,31 @@ export function AccountProvider({ children }) {
       throw error;
     }
   }
+  async function deleteAccount(id) {
+    try {
+      const data = await accountService.deleteAccount(id);
+      setAccounts((prev) => prev.filter((act) => act.id !== id));
+      setError(null);
+      console.log(data);
+      removeTransByAccount(id);
+      return data;
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error.message;
+      setError(errorMessage);
+      throw error;
+    }
+  }
 
   return (
     <AccountContext.Provider
-      value={{ accounts, setAccounts, error, loadAccounts, createAccount }}
+      value={{
+        accounts,
+        setAccounts,
+        error,
+        loadAccounts,
+        createAccount,
+        deleteAccount,
+      }}
     >
       {children}
     </AccountContext.Provider>

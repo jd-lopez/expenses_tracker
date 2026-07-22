@@ -27,11 +27,11 @@ export const createAccount = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    if (!userId || !name || !institution || !type || !initialBalance) {
-      return res
-        .status(400)
-        .json({ message: "name, institution, type, balance are required" });
+    if (!userId || !name || !institution || !type) {
+      return res.status(400).json({ message: "name, institution, type, " });
     }
+
+    if (initialBalance === " ") initialBalance = 0;
 
     const uppertype = type.toUpperCase();
     console.log(uppertype);
@@ -48,6 +48,45 @@ export const createAccount = async (req, res) => {
     console.log(typeof initialBalance);
 
     return res.status(201).json(account);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { id } = req.params;
+    const accountId = Number(id);
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const actToDelete = await prisma.account.findUnique({
+      where: {
+        id: accountId,
+      },
+    });
+
+    if (actToDelete.userId !== userId) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    const deletedAct = await prisma.$transaction([
+      prisma.transaction.deleteMany({
+        where: {
+          accountId: accountId,
+        },
+      }),
+      prisma.account.delete({
+        where: {
+          id: accountId,
+        },
+      }),
+    ]);
+
+    return res.status(201).json({ message: "Account deleted successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

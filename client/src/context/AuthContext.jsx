@@ -38,39 +38,32 @@ export function AuthProvider({ children }) {
   }
 
   async function signup({ first, last, email, password }) {
-    try {
-      const data = await registerUser({
-        first,
-        last,
-        email,
-        password,
-      });
+    const data = await registerUser({
+      first,
+      last,
+      email,
+      password,
+    });
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
 
-      setToken(data.token);
-      setUser(data.user);
+    setToken(data.token);
+    setUser(data.user);
 
-      return data;
-    } catch (error) {
-      throw error;
-    }
+    return data;
   }
 
   async function login({ email, password }) {
-    try {
-      const data = await loginUser({ email, password });
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+    const data = await loginUser({ email, password });
 
-      setToken(data.token);
-      setUser(data.user);
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
 
-      return data;
-    } catch (error) {
-      throw error;
-    }
+    setToken(data.token);
+    setUser(data.user);
+
+    return data;
   }
 
   function logout() {
