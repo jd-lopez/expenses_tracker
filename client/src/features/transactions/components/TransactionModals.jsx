@@ -3,6 +3,7 @@ import { useModal } from "../../../context/ModalContext";
 import AddTransactionModal from "../../../shared/components/AddTransactionModal";
 import TransacOptions from "../../../shared/components/TransacOptions";
 import AddCategoryModal from "./AddCategoryModal";
+import AddAccountModal from "../../accounts/components/AddAccountModal";
 
 export default function TransactionModals({
   accounts,
@@ -10,6 +11,7 @@ export default function TransactionModals({
   selectedTransaction,
   createTransaction,
   createCategory,
+  createAccount,
 }) {
   const { isModalActive, closeModal } = useModal();
 
@@ -54,6 +56,20 @@ export default function TransactionModals({
               onClick={closeModal}
             />
             <TransacOptions selectedTransact={selectedTransaction} />
+          </div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isModalActive("addAccount") && (
+          <div>
+            <div
+              className="absolute inset-0 bg-slate-700/60 backdrop-blur-xs z-40"
+              onClick={closeModal}
+            />
+            <div className="relative z-50">
+              <AddAccountModal createAccount={createAccount} />
+            </div>
           </div>
         )}
       </AnimatePresence>

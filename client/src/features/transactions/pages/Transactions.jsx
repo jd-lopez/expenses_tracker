@@ -15,7 +15,7 @@ export default function Transactions() {
   const [query, setQuery] = useState("");
   const { openModal, isModalActive } = useModal();
   const { transactions, createTransaction } = useTransactions();
-  const { accounts } = useAccounts();
+  const { accounts, createAccount } = useAccounts();
   const { categories, createCategory } = useCategory();
   const { isDark } = useTheme();
 
@@ -55,7 +55,7 @@ export default function Transactions() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-3">
       <TransactionsHeader
         onAddTransaction={() => openModal("addTransaction")}
       />
@@ -74,7 +74,7 @@ export default function Transactions() {
         categories={categories}
         isDark={isDark}
         onOpenOptions={handleOpenOptions}
-        showPagination={!normalizedQuery && transactions.length > 0}
+        // showPagination={!normalizedQuery && transactions.length > 0}
       />
 
       <TransactionModals
@@ -83,6 +83,7 @@ export default function Transactions() {
         selectedTransaction={selectedTransaction}
         createTransaction={createTransaction}
         createCategory={createCategory}
+        createAccount={createAccount}
       />
     </div>
   );

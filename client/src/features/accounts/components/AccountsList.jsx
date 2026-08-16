@@ -14,6 +14,7 @@ import { AnimatePresence } from "motion/react";
 import AddAccountModal from "./AddAccountModal";
 import { useAccounts } from "../../../context/AccountContext";
 import { useTransactions } from "../../../context/TransactionsContext";
+
 export default function AccountsList({ accounts = [], transactions }) {
   const { isDark } = useTheme();
   const { createAccount, deleteAccount } = useAccounts();
@@ -81,7 +82,7 @@ export default function AccountsList({ accounts = [], transactions }) {
 
           return (
             <div
-              onClick={() => handleDeletion(act.id)}
+              onClick={() => navigate(`/accounts/${act.id}`)}
               key={act.id}
               className={`flex flex-col gap-6 border  shadow rounded-xl p-4 ${isDark ? "bg-inverse-surface border-gray-500" : "bg-white border-gray-200"}`}
             >
@@ -99,7 +100,10 @@ export default function AccountsList({ accounts = [], transactions }) {
                     {act.type}
                   </p>
                 </div>
-                <FontAwesomeIcon icon={faEllipsisVertical} />
+                <FontAwesomeIcon
+                  icon={faEllipsisVertical}
+                  onClick={() => handleDeletion(act.id)}
+                />
               </div>
               <div>
                 <p>{balHeading}</p>

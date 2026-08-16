@@ -115,7 +115,17 @@ export default function AddTransactionModal({
             </div>
 
             <div className="flex flex-col gap-1">
-              <label>Account</label>
+              <div className="flex items-center justify-between">
+                <label>Account</label>
+                <button
+                  type="button"
+                  onClick={() => openModal("addAccount")}
+                  className="text-xs text-blue-600 hover:text-blue-800 cursor-pointer flex items-center gap-1"
+                >
+                  <FontAwesomeIcon icon={faPlus} size="xs" />
+                  New
+                </button>
+              </div>
               <select
                 name="accountId"
                 value={transData.accountId}

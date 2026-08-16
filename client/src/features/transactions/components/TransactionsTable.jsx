@@ -8,7 +8,6 @@ export default function TransactionsTable({
   categories,
   isDark,
   onOpenOptions,
-  showPagination,
 }) {
   return (
     <div
@@ -30,7 +29,9 @@ export default function TransactionsTable({
           <span className="sr-only">Actions</span>
         </div>
       ) : (
-        <div>No Transactions yet</div>
+        <div className="py-4 px-2 text-center text-slate-500">
+          No Transactions yet. Add your first transaction!
+        </div>
       )}
 
       <div className={isDark ? "bg-inverse-surface" : "bg-white"}>
@@ -49,8 +50,6 @@ export default function TransactionsTable({
             />
           ))}
         </AnimatePresence>
-
-        {showPagination && <TransactionPagination />}
       </div>
     </div>
   );

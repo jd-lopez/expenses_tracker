@@ -1,7 +1,7 @@
 export default function TransactionsHeader({ onAddTransaction }) {
   return (
     <div className="flex justify-between items-center gap-2">
-      <div>
+      <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold text-blue-800">Transactions</h1>
         <p>Revisa y Gestiona tu actividad financiera</p>
       </div>

@@ -4,6 +4,7 @@ const ModalContext = createContext();
 
 const OVERLAY_MAP = {
   addCategory: "addTransaction",
+  addAccount: "addTransaction",
 };
 
 export function ModalProvider({ children }) {

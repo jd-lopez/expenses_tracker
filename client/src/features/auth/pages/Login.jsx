@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 import SSO from "../components/SSO";
 import LoginForm from "../components/LoginForm";
@@ -50,7 +49,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex h-full md:max-w-4/5 md:max-h-3/4 flex-col justify-center p-4 rounded-2xl md:px-8 gap-10 shadow-2xl bg-white lg:h-full lg:max-w-4/5 ">
+    <div className="flex h-full md:max-w-4/5 md:max-h-3/4 flex-col justify-center p-4 rounded-2xl md:px-8 gap-10 shadow-2xl bg-white lg:min-h-5/6  lg:max-w-4/5 ">
       <h1 className="text-3xl font-bold">Bienvenido de nuevo</h1>
       <p>Ingresa tus credenciales para acceder a tus Dashboard</p>
 
