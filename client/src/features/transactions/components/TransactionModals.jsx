@@ -19,9 +19,9 @@ export default function TransactionModals({
     <>
       <AnimatePresence>
         {isModalActive("addTransaction") && (
-          <div>
+          <div className="absolute inset-0 z-40 flex items-start justify-center overflow-y-auto p-4 md:items-center">
             <div
-              className="absolute inset-0 bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100 z-5"
+              className="absolute inset-0 bg-slate-700/35 backdrop-blur-sm"
               onClick={closeModal}
             />
             <AddTransactionModal
@@ -36,23 +36,21 @@ export default function TransactionModals({
 
       <AnimatePresence>
         {isModalActive("addCategory") && (
-          <div>
+          <div className="absolute inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 md:items-center">
             <div
-              className="fixed inset-0 bg-slate-700/60 backdrop-blur-xs z-40"
+              className="absolute inset-0 bg-slate-700/60 backdrop-blur-xs"
               onClick={closeModal}
             />
-            <div className="relative z-50">
-              <AddCategoryModal createCategory={createCategory} />
-            </div>
+            <AddCategoryModal createCategory={createCategory} />
           </div>
         )}
       </AnimatePresence>
 
       <AnimatePresence>
         {isModalActive("transOptions") && selectedTransaction && (
-          <div>
+          <div className="absolute inset-0 z-40 flex items-start justify-center overflow-y-auto p-4 md:items-center">
             <div
-              className="absolute inset-0 bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100"
+              className="absolute inset-0 bg-slate-700/35 backdrop-blur-sm"
               onClick={closeModal}
             />
             <TransacOptions selectedTransact={selectedTransaction} />
@@ -62,14 +60,12 @@ export default function TransactionModals({
 
       <AnimatePresence>
         {isModalActive("addAccount") && (
-          <div>
+          <div className="absolute inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 md:items-center">
             <div
-              className="absolute inset-0 bg-slate-700/60 backdrop-blur-xs z-40"
+              className="absolute inset-0 bg-slate-700/60 backdrop-blur-xs"
               onClick={closeModal}
             />
-            <div className="relative z-50">
-              <AddAccountModal createAccount={createAccount} />
-            </div>
+            <AddAccountModal createAccount={createAccount} />
           </div>
         )}
       </AnimatePresence>

@@ -19,33 +19,65 @@ export const getAccounts = async (req, res) => {
 export const createAccount = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { name, institution, type, initialBalance } = req.body;
-    console.log(name, institution, type, userId, initialBalance);
-
-    console.log(name);
+    const {
+      name,
+      accountNumber,
+      institution,
+      type,
+      initialBalance,
+      creditLimit,
+    } = req.body;
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    if (!userId || !name || !institution || !type) {
-      return res.status(400).json({ message: "name, institution, type, " });
+    if (!name || !institution || !type) {
+      return res.status(400).json({
+        message: "name, institution, and type are required",
+      });
     }
 
-    if (initialBalance === " ") initialBalance = 0;
-
+    const accountFourLast = accountNumber ? String(accountNumber).slice(-4) : null;
     const uppertype = type.toUpperCase();
-    console.log(uppertype);
+    if (uppertype !== "CASH" && !accountFourLast) {
+      return res.status(400).json({
+        message: "accountNumber is required for non-cash accounts",
+      });
+    }
+
+    const parsedInitialBalance =
+      uppertype === "CREDIT" ? 0 : Number(initialBalance ?? 0);
+    const parsedCreditLimit =
+      creditLimit === "" || creditLimit == null ? null : Number(creditLimit);
+
+    if (!Number.isFinite(parsedInitialBalance) || parsedInitialBalance < 0) {
+      return res.status(400).json({
+        message: "initialBalance must be a non-negative number",
+      });
+    }
+
+    if (
+      uppertype === "CREDIT" &&
+      (parsedCreditLimit == null ||
+        !Number.isFinite(parsedCreditLimit) ||
+        parsedCreditLimit <= 0)
+    ) {
+      return res.status(400).json({
+        message: "creditLimit must be greater than zero for a credit card",
+      });
+    }
+
     const account = await prisma.account.create({
       data: {
         userId,
         name,
+        accountNumber: accountFourLast,
         institution,
         type: uppertype,
-        initialBalance,
+        initialBalance: parsedInitialBalance,
+        creditLimit: uppertype === "CREDIT" ? parsedCreditLimit : null,
       },
     });
-
-    console.log(typeof initialBalance);
 
     return res.status(201).json(account);
   } catch (error) {

@@ -9,28 +9,24 @@ import {
   faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 import { useModal } from "../../../context/ModalContext";
-import { useTheme } from "../../../context/ThemeContext";
 import { AnimatePresence } from "motion/react";
 import AddAccountModal from "./AddAccountModal";
 import { useAccounts } from "../../../context/AccountContext";
 import { useTransactions } from "../../../context/TransactionsContext";
+import {
+  calculateAccountBalance,
+  calculateAvailableCredit,
+  isCreditAccount,
+} from "../../../shared/finance";
 
 export default function AccountsList({ accounts = [], transactions }) {
-  const { isDark } = useTheme();
   const { createAccount, deleteAccount } = useAccounts();
   const { removeTransByAccount } = useTransactions();
   const { openModal, isModalActive, closeModal } = useModal();
   const accountsWithTotal = accounts.map((account) => {
-    const initialBalance = Number(account.initialBalance) || 0;
-
-    const total = transactions
-      .filter((t) => t.accountId === account.id)
-      .reduce((sum, t) => {
-        const amount = Number(t.amount) || 0;
-        return t.type === "INCOME" ? sum + amount : sum - amount;
-      }, initialBalance);
-
-    return { ...account, total };
+    const total = calculateAccountBalance(account, transactions);
+    const availableCredit = calculateAvailableCredit(account, transactions);
+    return { ...account, total, availableCredit };
   });
 
   const navigate = useNavigate();
@@ -42,7 +38,7 @@ export default function AccountsList({ accounts = [], transactions }) {
   };
 
   const accountType = {
-    CREDIT: "Credito Disponible",
+    CREDIT: "Balance owed",
     CHECKING: "Balance actual",
     SAVINGS: "Balance de ahorros",
     CASH: "Balance en Efectivo",
@@ -75,8 +71,6 @@ export default function AccountsList({ accounts = [], transactions }) {
         </div>
 
         {accountsWithTotal.map((act) => {
-          console.log(typeof act.initialBalance);
-
           const icon = accountIcons[act.type] ?? faWallet;
           const balHeading = accountType[act.type] ?? "Balance actual";
 
@@ -84,7 +78,7 @@ export default function AccountsList({ accounts = [], transactions }) {
             <div
               onClick={() => navigate(`/accounts/${act.id}`)}
               key={act.id}
-              className={`flex flex-col gap-6 border  shadow rounded-xl p-4 ${isDark ? "bg-inverse-surface border-gray-500" : "bg-white border-gray-200"}`}
+              className="flex flex-col gap-6 rounded-xl border border-gray-200 bg-white p-4 shadow hover:cursor-pointer dark:border-gray-500 dark:bg-inverse-surface"
             >
               <div className="flex justify-between items-center">
                 <div
@@ -102,14 +96,23 @@ export default function AccountsList({ accounts = [], transactions }) {
                 </div>
                 <FontAwesomeIcon
                   icon={faEllipsisVertical}
-                  onClick={() => handleDeletion(act.id)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleDeletion(act.id);
+                  }}
                 />
               </div>
               <div>
                 <p>{balHeading}</p>
                 <p className="text-2xl font-bold tracking-wider">
-                  ${act.total}
+                  ${act.total.toFixed(2)}
                 </p>
+                {isCreditAccount(act) && act.availableCredit != null && (
+                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                    ${act.availableCredit.toFixed(2)} available of $
+                    {Number(act.creditLimit).toFixed(2)}
+                  </p>
+                )}
               </div>
             </div>
           );
@@ -117,9 +120,9 @@ export default function AccountsList({ accounts = [], transactions }) {
 
         <AnimatePresence>
           {isModalActive("AddAccountModal") && (
-            <div>
+            <div className="absolute inset-0 z-40 flex items-start justify-center overflow-y-auto p-4 md:items-center">
               <div
-                className="absolute inset-0 bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100 z-5"
+                className="absolute inset-0 bg-slate-700/35 backdrop-blur-sm"
                 onClick={closeModal}
               ></div>
               <AddAccountModal createAccount={createAccount} />

@@ -1,9 +1,5 @@
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBuildingColumns,
-  faEnvelope,
-  faLock,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import EmailInput from "./EmailInput";
@@ -17,8 +13,7 @@ export default function SignupForm({
   success,
 }) {
   return (
-    <>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-8 font-serif">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-8 font-serif">
         <div className="flex flex-col md:flex-row gap-6">
           <div className="flex flex-col relative md:flex-1">
             <FontAwesomeIcon icon={faUser} className="icon" />
@@ -62,9 +57,14 @@ export default function SignupForm({
 
         <EmailInput formData={formData} handleChange={handleChange} />
 
-        <PasswordInput formData={formData} handleChange={handleChange} />
+        <PasswordInput
+          formData={formData}
+          handleChange={handleChange}
+          autoComplete="new-password"
+        />
 
         <button
+          type="submit"
           className="mt-4 rounded-md px-2 font-bold hover:bg-blue-800 py-2 bg-blue-600 text-white"
           disabled={isLoading}
         >
@@ -75,6 +75,5 @@ export default function SignupForm({
               : "Crear cuenta"}
         </button>
       </form>
-    </>
   );
 }

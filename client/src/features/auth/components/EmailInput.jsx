@@ -1,4 +1,3 @@
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 export default function EmailInput({ formData, handleChange }) {
@@ -11,9 +10,10 @@ export default function EmailInput({ formData, handleChange }) {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          type="text"
+          type="email"
           id="email"
           required
+          autoComplete="email"
           className="input peer"
           placeholder="Ingresa tu correo"
         />

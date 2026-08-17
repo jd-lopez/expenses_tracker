@@ -30,7 +30,7 @@ export default function AddCategoryModal({ createCategory }) {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0 }}
       open
-      className="fixed w-[90%] overflow-y-auto max-h-2/3   md:max-h-116 md:w-2/6 top-1/2 left-1/2 no-scrollbar -translate-x-1/2 -translate-y-1/2 shadow-2xl rounded-2xl z-60"
+      className="relative z-10 max-h-full w-[min(100%,32rem)] overflow-y-auto rounded-2xl shadow-2xl"
     >
       <div className="rounded-md border border-gray-200 p-4 bg-white">
         <h1 className="text-2xl font-bold text-blue-950">Add Category</h1>

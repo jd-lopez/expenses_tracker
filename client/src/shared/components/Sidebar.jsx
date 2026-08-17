@@ -1,5 +1,3 @@
-import React from "react";
-import Dashboard from "../../features/Dashboard/Dashboard";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,13 +11,11 @@ import {
   faSignOut,
 } from "@fortawesome/free-solid-svg-icons";
 import { useModal } from "../../context/ModalContext";
-import { useTheme } from "../../context/ThemeContext";
 
-export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
+export default function Sidebar({ isOpen, toggleSidebar }) {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const { closeModal } = useModal();
-  const { isDark } = useTheme();
 
   const handleLogout = () => {
     logout();
@@ -29,8 +25,8 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
   return (
     <section
       popoverTarget="my-popover"
-      className={`hidden md:block md:h-full border-r border-r-sky-300 shadow-lg transition-all duration-300 ${isOpen ? "w-52 p-4" : "w-28 p-2"} ${isDark ? "bg-inverse-surface" : "bg-background "}`}
-      onMouseEnter={(e) => {
+      className={`hidden border-r border-r-sky-300 bg-background shadow-lg transition-all duration-300 dark:bg-inverse-surface md:block md:h-full ${isOpen ? "w-52 p-4" : "w-28 p-2"}`}
+      onMouseEnter={() => {
         toggleSidebar();
       }}
       onMouseLeave={toggleSidebar}
@@ -41,7 +37,7 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
             <NavLink
               to="/dashboard"
               className={({ isActive }) =>
-                `px-6 py-1 flex gap-2  items-center ${isActive && isOpen ? "bg-blue-600 rounded-md text-white" : "text-blue-600"} ${isDark ? "text-white" : "text-blue-600"} `
+                `flex items-center gap-2 px-6 py-1 dark:text-white ${isActive && isOpen ? "rounded-md bg-blue-600 text-white" : "text-blue-600"}`
               }
               onClick={() => closeModal()}
             >
@@ -64,7 +60,7 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
             <NavLink
               to="/transactions"
               className={({ isActive }) =>
-                `px-6 py-1 flex gap-2  items-center ${isActive && isOpen ? "bg-blue-600 rounded-md text-white" : "text-blue-600"} ${isDark ? "text-white" : "text-blue-600"}`
+                `flex items-center gap-2 px-6 py-1 dark:text-white ${isActive && isOpen ? "rounded-md bg-blue-600 text-white" : "text-blue-600"}`
               }
               onClick={() => closeModal()}
             >
@@ -87,7 +83,7 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
             <NavLink
               to="/register"
               className={({ isActive }) =>
-                `px-6 py-1 flex gap-2  items-center ${isActive && isOpen ? "bg-blue-600 rounded-md text-white" : " text-blue-600"} ${isDark ? "text-white" : "text-blue-600"}`
+                `flex items-center gap-2 px-6 py-1 dark:text-white ${isActive && isOpen ? "rounded-md bg-blue-600 text-white" : "text-blue-600"}`
               }
               onClick={() => closeModal()}
             >
@@ -110,7 +106,7 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
             <NavLink
               to="/accounts"
               className={({ isActive }) =>
-                `px-6 py-1 flex gap-2  items-center ${isActive && isOpen ? "bg-blue-600 rounded-md text-white" : " text-blue-600"} ${isDark ? "text-white" : "text-blue-600"}`
+                `flex items-center gap-2 px-6 py-1 dark:text-white ${isActive && isOpen ? "rounded-md bg-blue-600 text-white" : "text-blue-600"}`
               }
               onClick={() => closeModal()}
             >
@@ -134,7 +130,7 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
             <NavLink
               to=""
               className={({ isActive }) =>
-                `px-6 py-1 flex gap-2  items-center ${isActive && isOpen ? "bg-blue-600 rounded-md text-white" : " text-blue-600"} ${isDark ? "text-white" : "text-blue-600"}`
+                `flex items-center gap-2 px-6 py-1 dark:text-white ${isActive && isOpen ? "rounded-md bg-blue-600 text-white" : "text-blue-600"}`
               }
               onClick={() => closeModal()}
             >
@@ -156,9 +152,7 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
         </ul>
 
         <div className="hidden md:flex flex-col gap-2 text-lg">
-          <button
-            className={`flex gap-2 items-center ${isDark ? "text-white" : "text-blue-600"}`}
-          >
+          <button className="flex items-center gap-2 text-blue-600 dark:text-white">
             <FontAwesomeIcon icon={faCircleQuestion} className="" />
             <span
               className={` transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-0 w-0"}`}
@@ -168,7 +162,7 @@ export default function Sidebar({ isOpen, setIsOpen, toggleSidebar }) {
           </button>
           <button
             onClick={handleLogout}
-            className={`flex gap-2 items-center ${isDark ? "text-white" : "text-blue-600"}`}
+            className="flex items-center gap-2 text-blue-600 dark:text-white"
           >
             <FontAwesomeIcon icon={faSignOut} className="" />
             <span

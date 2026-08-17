@@ -3,8 +3,6 @@ import { useTransactions } from "../../../context/TransactionsContext";
 import { useAccounts } from "../../../context/AccountContext";
 import { useCategory } from "../../../context/CategoryContext";
 import { useModal } from "../../../context/ModalContext";
-import { useTheme } from "../../../context/ThemeContext";
-import SummaryCards from "../components/SummaryCards";
 import TransactionModals from "../components/TransactionModals";
 import TransactionSearch from "../components/TransactionSearch";
 import TransactionsHeader from "../components/TransactionsHeader";
@@ -13,23 +11,10 @@ import TransactionsTable from "../components/TransactionsTable";
 export default function Transactions() {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [query, setQuery] = useState("");
-  const { openModal, isModalActive } = useModal();
+  const { openModal } = useModal();
   const { transactions, createTransaction } = useTransactions();
   const { accounts, createAccount } = useAccounts();
   const { categories, createCategory } = useCategory();
-  const { isDark } = useTheme();
-
-  const allBalance = accounts.reduce(
-    (sum, account) => sum + Number(account.initialBalance),
-    0,
-  );
-  const totalIncome = transactions
-    .filter((transaction) => transaction.type === "INCOME")
-    .reduce((sum, transaction) => sum + Number(transaction.amount), 0);
-  const totalExpenses = transactions
-    .filter((transaction) => transaction.type === "EXPENSE")
-    .reduce((sum, transaction) => sum + Number(transaction.amount), 0);
-  const totalNet = allBalance + totalIncome - totalExpenses;
 
   const normalizedQuery = query.toLowerCase().trim();
   const visibleTransactions = normalizedQuery
@@ -60,19 +45,12 @@ export default function Transactions() {
         onAddTransaction={() => openModal("addTransaction")}
       />
 
-      {/* <SummaryCards
-        totalIncome={totalIncome}
-        totalExpenses={totalExpenses}
-        totalNet={totalNet}
-      /> */}
-
       <TransactionSearch query={query} onQueryChange={setQuery} />
 
       <TransactionsTable
         transactions={visibleTransactions}
         accounts={accounts}
         categories={categories}
-        isDark={isDark}
         onOpenOptions={handleOpenOptions}
         // showPagination={!normalizedQuery && transactions.length > 0}
       />

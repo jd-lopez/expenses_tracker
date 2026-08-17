@@ -1,7 +1,11 @@
-import React from "react";
-import { useContext, createContext } from "react";
-import { useState, useEffect } from "react";
-import { useMemo } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 const ThemeContext = createContext();
 const THEME_KEY = "trackTheme";
@@ -12,22 +16,22 @@ export function ThemeProvider({ children }) {
     return saved ? saved === "dark" : false;
   });
 
-  const toggleTheme = () => setIsDark((prev) => !prev);
-  const value = useMemo(() => ({ isDark, toggleTheme, setIsDark }), [isDark]);
+  const toggleTheme = useCallback(() => setIsDark((prev) => !prev), []);
+  const value = useMemo(() => ({ toggleTheme }), [toggleTheme]);
 
   useEffect(() => {
-    // Persist the current theme whenever it changes so refreshes keep the same mode.
+    document.documentElement.classList.toggle("dark", isDark);
     localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
   }, [isDark]);
 
   return (
-    <ThemeContext.Provider value={value}> {children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 }
 export function useTheme() {
   const ctx = useContext(ThemeContext);
 
   // This guards against using the hook outside ThemeProvider, which would return null.
-  if (!ctx) throw new Error("d");
+  if (!ctx) throw new Error("useTheme must be used within ThemeProvider");
   return ctx;
 }

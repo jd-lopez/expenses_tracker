@@ -3,12 +3,10 @@ import Sidebar from "../../shared/components/Sidebar";
 import { useState } from "react";
 import MobileTop from "../../shared/components/MobileTop";
 import BottomNav from "../../shared/components/BottomNav";
-import { useTheme } from "../../context/ThemeContext";
 import { useModal } from "../../context/ModalContext";
 
 export default function Layout() {
   const [isOpen, setIsOpen] = useState(false);
-  const { isDark } = useTheme();
   const { activeModal } = useModal();
 
   const toggleSidebar = () => {
@@ -16,14 +14,11 @@ export default function Layout() {
   };
 
   return (
-    <div
-      className={`flex flex-col h-screen w-full relative ${isDark ? "bg-[#13182b] text-white" : "bg-background text-black"}`}
-    >
+    <div className="relative flex h-screen w-full flex-col bg-background text-black dark:bg-[#13182b] dark:text-white">
       <MobileTop />
       <div className="flex flex-col md:flex-row md:justify-between flex-1 overflow-hidden">
         <Sidebar
           isOpen={isOpen}
-          setIsOpen={setIsOpen}
           toggleSidebar={toggleSidebar}
         />
         <main

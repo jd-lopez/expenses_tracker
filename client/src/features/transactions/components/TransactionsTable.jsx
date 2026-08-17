@@ -1,26 +1,16 @@
 import { AnimatePresence } from "motion/react";
-import TransactionPagination from "../../../shared/components/TransactionPagination";
 import TransactionRow from "./TransactionRow";
 
 export default function TransactionsTable({
   transactions,
   accounts,
   categories,
-  isDark,
   onOpenOptions,
 }) {
   return (
-    <div
-      className={`flex flex-col mt-6 border rounded-2xl ${
-        isDark ? "border-gray-400" : "border-gray-200"
-      }`}
-    >
+    <div className="mt-6 flex flex-col rounded-2xl border border-gray-200 dark:border-gray-400">
       {transactions.length > 0 ? (
-        <div
-          className={`grid grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)_minmax(0,0.85fr)_minmax(0,1.25fr)_minmax(0,1fr)_2rem] items-center rounded-tl-2xl rounded-tr-2xl py-4 px-2 text-sm font-bold ${
-            isDark ? "text-white" : "text-slate-500"
-          }`}
-        >
+        <div className="grid grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)_minmax(0,0.85fr)_minmax(0,1.25fr)_minmax(0,1fr)_2rem] items-center rounded-t-2xl px-2 py-4 text-sm font-bold text-slate-500 dark:text-white">
           <button className="w-full text-left">Titulo</button>
           <button className="w-full text-left">Fecha</button>
           <button className="w-full text-left">Categoria</button>
@@ -34,7 +24,7 @@ export default function TransactionsTable({
         </div>
       )}
 
-      <div className={isDark ? "bg-inverse-surface" : "bg-white"}>
+      <div className="bg-white dark:bg-inverse-surface">
         <AnimatePresence>
           {transactions.map((transaction) => (
             <TransactionRow

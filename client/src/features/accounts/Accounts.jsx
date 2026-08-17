@@ -8,6 +8,10 @@ import SummaryCards from "../transactions/components/SummaryCards";
 import { useAccounts } from "../../context/AccountContext";
 import { useModal } from "../../context/ModalContext";
 import { useCategory } from "../../context/CategoryContext";
+import {
+  calculateAccountNetValue,
+  isCreditAccount,
+} from "../../shared/finance";
 
 export default function Accounts() {
   const { isModalActive, openModal, closeModal } = useModal();
@@ -15,13 +19,18 @@ export default function Accounts() {
   const { transactions } = useTransactions();
   const { categories, createCategory } = useCategory();
 
-  const AllBalance = accounts.reduce((sum, act) => {
-    return sum + Number(act.initialBalance);
-  }, 0);
+  const totalNet = accounts.reduce(
+    (sum, account) =>
+      sum + calculateAccountNetValue(account, transactions),
+    0,
+  );
 
   const totalIncome = Number(
     transactions
-      .filter((t) => t.type === "INCOME")
+      .filter((t) => {
+        const account = accounts.find((account) => account.id === t.accountId);
+        return t.type === "INCOME" && !isCreditAccount(account);
+      })
       .reduce((sum, trans) => sum + Number(trans.amount), 0),
   );
 
@@ -30,8 +39,6 @@ export default function Accounts() {
       .filter((t) => t.type === "EXPENSE")
       .reduce((sum, trans) => sum + Number(trans.amount), 0),
   );
-
-  const totalNet = Number(AllBalance + totalIncome - totalExpenses);
 
   return (
     <div className="">

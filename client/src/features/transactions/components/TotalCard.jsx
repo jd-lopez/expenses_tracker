@@ -1,9 +1,6 @@
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTheme } from "../../../context/ThemeContext";
 
 export default function TotalCard({ card }) {
-  const { isDark } = useTheme();
   return (
     <div
       id="card"
@@ -15,9 +12,7 @@ export default function TotalCard({ card }) {
      md:flex-1 md:text-sm z-2
             snap-start`}
     >
-      <div
-        className={`relative z-10 h-full rounded-lg p-4 flex flex-col snap-start ${isDark ? "bg-inverse-surface text-white" : "bg-white"}`}
-      >
+      <div className="relative z-10 flex h-full snap-start flex-col rounded-lg bg-white p-4 dark:bg-inverse-surface dark:text-white">
         <div className="flex justify-between gap-4 items-center">
           <h1>{card.title}</h1>
           <div className="grid place-content-center rounded-full size-6 bg-green-300 text-white">

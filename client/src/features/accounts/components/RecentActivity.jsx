@@ -12,7 +12,7 @@ export default function RecentActivity({ accountTransactions }) {
   return (
     <div className="flex flex-col gap-2">
       {accountTransactions.length > 0 ? (
-        <div className="grid grid-cols-4 gap-4 bg-background p-2">
+        <div className="-mx-4 grid grid-cols-4 gap-4 bg-background px-5 py-2 text-slate-500 dark:bg-slate-400/50 dark:text-white">
           <p>Title</p>
           <p>Amount</p>
           <p>Date</p>

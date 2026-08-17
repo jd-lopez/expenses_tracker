@@ -154,9 +154,9 @@ export default function BottomNav() {
 
       <AnimatePresence>
         {isModalActive("addTransaction") && (
-          <div>
+          <div className="absolute inset-x-0 top-18 bottom-20 z-40 flex items-start justify-center overflow-y-auto p-4 md:items-center">
             <div
-              className="absolute inset-x-0 top-18 bottom-20 bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100"
+              className="absolute inset-0 bg-slate-700/35 backdrop-blur-sm"
               onClick={closeModal}
             ></div>
             <AddTransactionModal
@@ -171,9 +171,9 @@ export default function BottomNav() {
 
       <AnimatePresence>
         {isModalActive("addAccount") && (
-          <div className="">
+          <div className="absolute inset-x-0 top-18 bottom-20 z-50 flex items-start justify-center overflow-y-auto p-4 md:items-center">
             <div
-              className="absolute inset-x-0 top-18 bottom-20 bg-linear-to-r from-blue-400/10 to-blue-200/10 backdrop-blur-sm saturate-100"
+              className="absolute inset-0 bg-slate-700/60 backdrop-blur-sm"
               onClick={closeModal}
             ></div>
 
@@ -184,14 +184,12 @@ export default function BottomNav() {
 
       <AnimatePresence>
         {isModalActive("addCategory") && (
-          <div>
+          <div className="absolute inset-x-0 top-18 bottom-20 z-50 flex items-start justify-center overflow-y-auto p-4 md:items-center">
             <div
-              className="fixed inset-0 bg-slate-700/60 backdrop-blur-xs z-40"
+              className="absolute inset-0 bg-slate-700/60 backdrop-blur-xs"
               onClick={closeModal}
             />
-            <div className="relative z-50">
-              <AddCategoryModal createCategory={createCategory} />
-            </div>
+            <AddCategoryModal createCategory={createCategory} />
           </div>
         )}
       </AnimatePresence>

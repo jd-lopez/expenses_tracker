@@ -31,12 +31,10 @@ export default function Login() {
       const res = await login(formData);
 
       const message = res.message;
-      console.log(message);
-
       setError("");
       setSuccess(message);
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/dashboard", { replace: true });
       }, 4000);
     } catch (error) {
       const message =
@@ -49,16 +47,20 @@ export default function Login() {
   }
 
   return (
-    <div className="flex h-full md:max-w-4/5 md:max-h-3/4 flex-col justify-center p-4 rounded-2xl md:px-8 gap-10 shadow-2xl bg-white lg:min-h-5/6  lg:max-w-4/5 ">
-      <h1 className="text-3xl font-bold">Bienvenido de nuevo</h1>
-      <p>Ingresa tus credenciales para acceder a tus Dashboard</p>
+    <section className="my-auto flex w-full max-w-lg flex-col gap-6 rounded-2xl bg-white p-6 shadow-2xl sm:p-8">
+      <div>
+        <h1 className="text-3xl font-bold">Bienvenido de nuevo</h1>
+        <p className="mt-2 text-slate-600">
+          Ingresa tus credenciales para acceder a tu dashboard.
+        </p>
+      </div>
 
       <SSO />
 
-      <div className="flex justify-between items-center">
-        <div className="w-20 md:w-30 h-0.5 bg-gray-300"></div>
-        <span>O continua con</span>
-        <div className="w-20 md:w-30 h-0.5 bg-gray-300"></div>
+      <div className="flex items-center gap-3 text-sm text-slate-500">
+        <div className="h-px flex-1 bg-gray-300" />
+        <span>O continúa con</span>
+        <div className="h-px flex-1 bg-gray-300" />
       </div>
       <LoginForm
         formData={formData}
@@ -69,7 +71,7 @@ export default function Login() {
         error={error}
       />
 
-      <div className=" flex justify-between">
+      <div className="flex flex-wrap justify-between gap-3 text-sm">
         <div className="flex gap-2 items-center">
           <input type="checkbox" name="remember" id="remember" />
           <label htmlFor="remember">Remember me</label>
@@ -77,12 +79,12 @@ export default function Login() {
         <button className="text-blue-700 font-bold">Forgot Password?</button>
       </div>
 
-      <p className="mx-auto">
-        No tienes cuenta?
+      <p className="mx-auto text-center">
+        ¿No tienes cuenta?
         <NavLink to="/register" className="text-blue-700 font-bold ml-2">
           Crea una cuenta
         </NavLink>
       </p>
-    </div>
+    </section>
   );
 }
