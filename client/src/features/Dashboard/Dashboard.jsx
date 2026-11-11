@@ -18,6 +18,8 @@ import {
   isCreditAccount,
 } from "../../shared/finance";
 import DashHeading from "./components/DashHeading";
+import { dateOnlyToUTCDate, formatDateOnly } from "../../shared/date";
+import { transactionTypeLabels, paymentMethodLabels } from "../../shared/transactionLabels";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -25,7 +27,10 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
 });
 
 function getTransactionDate(transaction) {
-  return new Date(transaction.transactionDate ?? transaction.createdAt);
+  return (
+    dateOnlyToUTCDate(transaction.transactionDate) ??
+    new Date(transaction.createdAt)
+  );
 }
 
 export default function Dashboard() {
@@ -37,8 +42,8 @@ export default function Dashboard() {
   const currentMonthTransactions = transactions.filter((transaction) => {
     const date = getTransactionDate(transaction);
     return (
-      date.getFullYear() === now.getFullYear() &&
-      date.getMonth() === now.getMonth()
+      date.getUTCFullYear() === now.getFullYear() &&
+      date.getUTCMonth() === now.getMonth()
     );
   });
 
@@ -200,7 +205,7 @@ export default function Dashboard() {
                         {transaction.title}
                       </p>
                       <p className="truncate text-xs text-slate-500 dark:text-slate-400">
-                        {[category?.name, account?.name]
+                        {[category?.name || transactionTypeLabels[transaction.type], account?.name, paymentMethodLabels[transaction.payMethod]]
                           .filter(Boolean)
                           .join(" · ") || "Uncategorized"}
                       </p>
@@ -221,10 +226,10 @@ export default function Dashboard() {
                         )}
                       </p>
                       <p className="text-xs text-slate-500 dark:text-slate-400">
-                        {getTransactionDate(transaction).toLocaleDateString(
-                          "en-US",
-                          { month: "short", day: "numeric" },
-                        )}
+                        {formatDateOnly(transaction.transactionDate, {
+                          month: "short",
+                          day: "numeric",
+                        })}
                       </p>
                     </div>
                   </div>

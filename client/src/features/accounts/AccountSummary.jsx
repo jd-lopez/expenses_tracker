@@ -20,7 +20,7 @@ export default function AccountSummary() {
   const { accounts } = useAccounts();
 
   const accountTransactions = transactions.filter(
-    (t) => t.accountId === Number(id),
+    (t) => t.accountId === Number(id) || t.destinationAccountId === Number(id),
   );
 
   const currentAccount = accounts.find((act) => act.id === Number(id));

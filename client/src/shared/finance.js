@@ -13,9 +13,20 @@ export function calculateAccountBalance(account, transactions = []) {
     : toAmount(account?.initialBalance);
 
   return transactions
-    .filter((transaction) => transaction.accountId === account?.id)
+    .filter((transaction) => transaction.accountId === account?.id || transaction.destinationAccountId === account?.id)
     .reduce((balance, transaction) => {
       const amount = toAmount(transaction.amount);
+
+      if (transaction.type === "INTERNAL_TRANSFER") {
+        if (transaction.destinationAccountId === account?.id) {
+          return isCreditAccount(account) ? balance - amount : balance + amount;
+        }
+        return balance - amount;
+      }
+
+      if (transaction.type === "EXTERNAL_TRANSFER") {
+        return balance - amount;
+      }
 
       if (transaction.type === "EXPENSE") {
         return isCreditAccount(account) ? balance + amount : balance - amount;

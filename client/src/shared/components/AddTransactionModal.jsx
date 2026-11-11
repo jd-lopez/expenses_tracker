@@ -4,18 +4,25 @@ import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "motion/react";
 import { useModal } from "../../context/ModalContext";
 import { isCreditAccount } from "../finance";
+import { getLocalDateInputValue } from "../date";
 
 const initialForm = {
   title: "",
   description: "",
   type: "",
+  payMethod: "",
   amount: "",
   accountId: "",
+  destinationAccountId: "",
   categoryId: "",
-  transactionDate: new Date().toISOString().split("T")[0],
+  transactionDate: getLocalDateInputValue(),
 };
 
-export default function AddTransactionModal({ accounts, createTransaction, categories }) {
+export default function AddTransactionModal({
+  accounts,
+  createTransaction,
+  categories,
+}) {
   const { openModal, closeModal } = useModal();
   const [transData, setTransData] = useState(initialForm);
   const [error, setError] = useState("");
@@ -26,6 +33,8 @@ export default function AddTransactionModal({ accounts, createTransaction, categ
   );
   const isCredit = isCreditAccount(selectedAccount);
   const isCreditPayment = isCredit && transData.type === "INCOME";
+  const isInternalTransfer = transData.type === "INTERNAL_TRANSFER";
+  const isTransfer = isInternalTransfer || transData.type === "EXTERNAL_TRANSFER";
   const transactionTypes = isCredit
     ? [
         { value: "EXPENSE", label: "Purchase / charge" },
@@ -34,8 +43,16 @@ export default function AddTransactionModal({ accounts, createTransaction, categ
     : [
         { value: "INCOME", label: "Income" },
         { value: "EXPENSE", label: "Expense" },
-        { value: "TRANSFER", label: "Transfer" },
+        { value: "INTERNAL_TRANSFER", label: "Internal Transfer" },
+        { value: "EXTERNAL_TRANSFER", label: "External Transfer" },
       ];
+
+  const paymentMethod = [
+    { value: "DEBIT_CARD", label: "Debit Card" },
+    { value: "BANK_TRANSFER", label: "Bank Transfer" },
+    { value: "CASH", label: "Cash" },
+    { value: "ATM", label: "ATM" },
+  ];
   const visibleCategories = categories.filter(
     (category) => !transData.type || category.type === transData.type,
   );
@@ -45,8 +62,8 @@ export default function AddTransactionModal({ accounts, createTransaction, categ
     setTransData((previous) => ({
       ...previous,
       [name]: value,
-      ...(name === "accountId" ? { type: "", categoryId: "" } : {}),
-      ...(name === "type" ? { categoryId: "" } : {}),
+      ...(name === "accountId" ? { type: "", categoryId: "", payMethod: "", destinationAccountId: "" } : {}),
+      ...(name === "type" ? { categoryId: "", destinationAccountId: "" } : {}),
     }));
     setError("");
   }
@@ -61,6 +78,7 @@ export default function AddTransactionModal({ accounts, createTransaction, categ
     }
 
     setIsSubmitting(true);
+
     try {
       await createTransaction({
         ...transData,
@@ -68,7 +86,8 @@ export default function AddTransactionModal({ accounts, createTransaction, categ
         description: transData.description.trim() || undefined,
         amount,
         accountId: Number(transData.accountId),
-        categoryId: transData.categoryId
+        destinationAccountId: isInternalTransfer ? Number(transData.destinationAccountId) : undefined,
+        categoryId: !isTransfer && !isCreditPayment && transData.categoryId
           ? Number(transData.categoryId)
           : undefined,
         transactionDate: transData.transactionDate || undefined,
@@ -100,10 +119,19 @@ export default function AddTransactionModal({ accounts, createTransaction, categ
       <form onSubmit={handleSubmit} className="flex flex-col">
         <header className="flex items-start justify-between border-b border-slate-200 px-6 py-5 dark:border-slate-700">
           <div>
-            <h1 id="add-transaction-title" className="text-2xl font-bold">Add a transaction</h1>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Record income, spending, transfers, or credit-card activity.</p>
+            <h1 id="add-transaction-title" className="text-2xl font-bold">
+              Add a transaction
+            </h1>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              Record income, spending, transfers, or credit-card activity.
+            </p>
           </div>
-          <button type="button" onClick={closeModal} className="grid size-9 place-items-center rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700" aria-label="Close transaction form">
+          <button
+            type="button"
+            onClick={closeModal}
+            className="grid size-9 place-items-center rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700"
+            aria-label="Close transaction form"
+          >
             <FontAwesomeIcon icon={faXmark} />
           </button>
         </header>
@@ -112,15 +140,27 @@ export default function AddTransactionModal({ accounts, createTransaction, categ
           <label className="flex flex-col gap-1.5 text-sm font-medium">
             Account
             <div className="flex gap-2">
-              <select name="accountId" value={transData.accountId} onChange={handleChange} className={`${inputClass} min-w-0 flex-1`} required>
+              <select
+                name="accountId"
+                value={transData.accountId}
+                onChange={handleChange}
+                className={`${inputClass} min-w-0 flex-1`}
+                required
+              >
                 <option value="">Select an account</option>
                 {accounts.map((account) => (
                   <option key={account.id} value={account.id}>
-                    {account.name} · {account.institution}{account.type === "CREDIT" ? " · Credit" : ""}
+                    {account.name} · {account.institution}
+                    {account.type === "CREDIT" ? " · Credit" : ""}
                   </option>
                 ))}
               </select>
-              <button type="button" onClick={() => openModal("addAccount")} className="rounded-xl border border-slate-300 px-3 text-indigo-600 hover:bg-indigo-50 dark:border-slate-600 dark:text-indigo-300 dark:hover:bg-slate-700" aria-label="Add a new account">
+              <button
+                type="button"
+                onClick={() => openModal("addAccount")}
+                className="rounded-xl border border-slate-300 px-3 text-indigo-600 hover:bg-indigo-50 dark:border-slate-600 dark:text-indigo-300 dark:hover:bg-slate-700"
+                aria-label="Add a new account"
+              >
                 <FontAwesomeIcon icon={faPlus} />
               </button>
             </div>
@@ -129,56 +169,190 @@ export default function AddTransactionModal({ accounts, createTransaction, categ
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="flex flex-col gap-1.5 text-sm font-medium">
               Transaction type
-              <select name="type" value={transData.type} onChange={handleChange} className={inputClass} disabled={!selectedAccount} required>
-                <option value="">{selectedAccount ? "Select a type" : "Choose an account first"}</option>
-                {transactionTypes.map((type) => <option key={type.value} value={type.value}>{type.label}</option>)}
+              <select
+                name="type"
+                value={transData.type}
+                onChange={handleChange}
+                className={inputClass}
+                disabled={!selectedAccount}
+                required
+              >
+                <option value="">
+                  {selectedAccount
+                    ? "Select a type"
+                    : "Choose an account first"}
+                </option>
+                {transactionTypes.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
               </select>
             </label>
             <label className="flex flex-col gap-1.5 text-sm font-medium">
-              Date
-              <input type="date" name="transactionDate" value={transData.transactionDate} onChange={handleChange} className={inputClass} required />
+              Payment Method
+              <select
+                name="payMethod"
+                value={transData.payMethod}
+                onChange={handleChange}
+                className={inputClass}
+                disabled={!selectedAccount}
+                required
+              >
+                <option value="">
+                  {selectedAccount
+                    ? "Select a payment method"
+                    : "Choose an account first"}
+                </option>
+                {paymentMethod.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+              </select>
             </label>
           </div>
 
-          {isCredit && <p className="rounded-xl bg-indigo-50 px-3 py-2 text-xs text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">Purchases increase this card&apos;s balance owed. Payments and credits reduce it.</p>}
-
-          <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_10rem]">
+          {isInternalTransfer && (
             <label className="flex flex-col gap-1.5 text-sm font-medium">
-              Title
-              <input name="title" value={transData.title} onChange={handleChange} className={inputClass} placeholder={isCredit ? "Grocery purchase" : "Transaction name"} maxLength={100} required />
-            </label>
-            <label className="flex flex-col gap-1.5 text-sm font-medium">
-              Amount
-              <input type="number" name="amount" value={transData.amount} onChange={handleChange} className={inputClass} min="0.01" step="0.01" placeholder="0.00" required />
-            </label>
-          </div>
-
-          {!isCreditPayment && transData.type !== "TRANSFER" && (
-            <label className="flex flex-col gap-1.5 text-sm font-medium">
-              <span>Category <span className="text-xs font-normal text-slate-500">Optional</span></span>
-              <div className="flex gap-2">
-                <select name="categoryId" value={transData.categoryId} onChange={handleChange} className={`${inputClass} min-w-0 flex-1`} disabled={!transData.type}>
-                  <option value="">No category</option>
-                  {visibleCategories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
-                </select>
-                <button type="button" onClick={() => openModal("addCategory")} className="rounded-xl border border-slate-300 px-3 text-indigo-600 hover:bg-indigo-50 dark:border-slate-600 dark:text-indigo-300 dark:hover:bg-slate-700" aria-label="Add a new category">
-                  <FontAwesomeIcon icon={faPlus} />
-                </button>
-              </div>
+              Destination account
+              <select name="destinationAccountId" value={transData.destinationAccountId} onChange={handleChange} className={inputClass} required>
+                <option value="">Select the receiving account</option>
+                {accounts.filter((account) => account.id !== selectedAccount?.id).map((account) => (
+                  <option key={account.id} value={account.id}>{account.name} · {account.institution}</option>
+                ))}
+              </select>
+              <span className="text-xs text-slate-500">Moves money from the selected account to this account. A credit-card destination reduces its debt.</span>
             </label>
           )}
+          {transData.type === "EXTERNAL_TRANSFER" && <p className="text-xs text-slate-500">Sends money out of the selected account to a recipient outside your tracked accounts.</p>}
+
+          {isCredit && (
+            <p className="rounded-xl bg-indigo-50 px-3 py-2 text-xs text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
+              Purchases increase this card&apos;s balance owed. Payments and
+              credits reduce it.
+            </p>
+          )}
+
+          <div className="flex flex-col justify-between gap-4 md:flex-row">
+            <label className="flex flex-col gap-1.5 text-sm font-medium flex-1">
+              Title
+              <input
+                name="title"
+                value={transData.title}
+                onChange={handleChange}
+                className={inputClass}
+                placeholder={isCredit ? "Grocery purchase" : "Transaction name"}
+                maxLength={100}
+                required
+              />
+            </label>
+            <label className="flex flex-col gap-1.5 text-sm font-medium flex-1">
+              Amount
+              <input
+                type="number"
+                name="amount"
+                value={transData.amount}
+                onChange={handleChange}
+                className={inputClass}
+                min="0.01"
+                step="0.01"
+                placeholder="0.00"
+                required
+              />
+            </label>
+          </div>
+          <div className="flex flex-col gap-4 justify-between md:flex-row">
+            {!isCreditPayment && !isTransfer && (
+              <label className="flex flex-col gap-1.5 text-sm font-medium flex-1">
+                <span>
+                  Category{" "}
+                  <span className="text-xs font-normal text-slate-500">
+                    Optional
+                  </span>
+                </span>
+                <div className="flex gap-2">
+                  <select
+                    name="categoryId"
+                    value={transData.categoryId}
+                    onChange={handleChange}
+                    className={`${inputClass} min-w-0 flex-1`}
+                    disabled={!transData.type}
+                  >
+                    <option value="">No category</option>
+                    {visibleCategories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={() => openModal("addCategory")}
+                    className="rounded-xl border border-slate-300 px-3 text-indigo-600 hover:bg-indigo-50 dark:border-slate-600 dark:text-indigo-300 dark:hover:bg-slate-700"
+                    aria-label="Add a new category"
+                  >
+                    <FontAwesomeIcon icon={faPlus} />
+                  </button>
+                </div>
+              </label>
+            )}
+            <label className="flex flex-col gap-1.5 text-sm font-medium flex-1">
+              Date
+              <input
+                type="date"
+                name="transactionDate"
+                value={transData.transactionDate}
+                onChange={handleChange}
+                className={inputClass}
+                required
+              />
+            </label>
+          </div>
 
           <label className="flex flex-col gap-1.5 text-sm font-medium">
-            <span>Description <span className="text-xs font-normal text-slate-500">Optional</span></span>
-            <textarea name="description" value={transData.description} onChange={handleChange} className={`${inputClass} min-h-20 resize-y`} placeholder="Add a note" maxLength={300} />
+            <span>
+              Description{" "}
+              <span className="text-xs font-normal text-slate-500">
+                Optional
+              </span>
+            </span>
+            <textarea
+              name="description"
+              value={transData.description}
+              onChange={handleChange}
+              className={`${inputClass} min-h-20 resize-y`}
+              placeholder="Add a note"
+              maxLength={300}
+            />
           </label>
 
-          {error && <p role="alert" className="rounded-xl bg-rose-50 px-3 py-2 text-sm text-rose-700 dark:bg-rose-500/15 dark:text-rose-300">{error}</p>}
+          {error && (
+            <p
+              role="alert"
+              className="rounded-xl bg-rose-50 px-3 py-2 text-sm text-rose-700 dark:bg-rose-500/15 dark:text-rose-300"
+            >
+              {error}
+            </p>
+          )}
         </div>
 
         <footer className="flex justify-end gap-3 border-t border-slate-200 px-6 py-4 dark:border-slate-700">
-          <button type="button" onClick={closeModal} disabled={isSubmitting} className="rounded-xl border border-slate-300 px-4 py-2 font-semibold hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:hover:bg-slate-700">Cancel</button>
-          <button type="submit" disabled={isSubmitting} className="rounded-xl bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-60">{isSubmitting ? "Saving…" : "Save transaction"}</button>
+          <button
+            type="button"
+            onClick={closeModal}
+            disabled={isSubmitting}
+            className="rounded-xl border border-slate-300 px-4 py-2 font-semibold hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:hover:bg-slate-700"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="rounded-xl bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isSubmitting ? "Saving…" : "Save transaction"}
+          </button>
         </footer>
       </form>
     </motion.dialog>

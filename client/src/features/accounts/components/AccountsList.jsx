@@ -47,7 +47,6 @@ export default function AccountsList({ accounts = [], transactions }) {
   function handleDeletion(id) {
     deleteAccount(id);
     removeTransByAccount(id);
-
     console.log("errror");
   }
 
@@ -97,7 +96,7 @@ export default function AccountsList({ accounts = [], transactions }) {
                 <FontAwesomeIcon
                   icon={faEllipsisVertical}
                   onClick={(e) => {
-                    e.preventDefault();
+                    e.stopPropagation();
                     handleDeletion(act.id);
                   }}
                 />

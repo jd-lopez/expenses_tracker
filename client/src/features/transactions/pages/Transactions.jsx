@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTransactions } from "../../../context/TransactionsContext";
 import { useAccounts } from "../../../context/AccountContext";
 import { useCategory } from "../../../context/CategoryContext";
@@ -12,27 +12,32 @@ export default function Transactions() {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [query, setQuery] = useState("");
   const { openModal } = useModal();
-  const { transactions, createTransaction } = useTransactions();
+  const {
+    pageTransactions,
+    pagination,
+    loading,
+    error,
+    loadTransactions,
+    createTransaction,
+  } = useTransactions();
   const { accounts, createAccount } = useAccounts();
   const { categories, createCategory } = useCategory();
 
-  const normalizedQuery = query.toLowerCase().trim();
-  const visibleTransactions = normalizedQuery
-    ? transactions.filter((transaction) => {
-        const account = accounts.find(
-          (item) => item.id === transaction.accountId,
-        );
-        const searchableValues = [
-          transaction.title,
-          transaction.description,
-          account?.name,
-        ];
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      loadTransactions({ page: 1, search: query.trim() }).catch(() => {});
+    }, 300);
 
-        return searchableValues.some((value) =>
-          value?.toLowerCase().includes(normalizedQuery),
-        );
-      })
-    : transactions;
+    return () => clearTimeout(timeoutId);
+  }, [loadTransactions, query]);
+
+  function handlePageChange(page) {
+    if (page === pagination.page || page < 1 || page > pagination.totalPages) {
+      return;
+    }
+
+    loadTransactions({ page, search: query.trim() }).catch(() => {});
+  }
 
   function handleOpenOptions(transaction) {
     setSelectedTransaction(transaction);
@@ -48,9 +53,13 @@ export default function Transactions() {
       <TransactionSearch query={query} onQueryChange={setQuery} />
 
       <TransactionsTable
-        transactions={visibleTransactions}
+        transactions={pageTransactions}
         accounts={accounts}
         categories={categories}
+        pagination={pagination}
+        loading={loading}
+        error={error}
+        onPageChange={handlePageChange}
         onOpenOptions={handleOpenOptions}
         // showPagination={!normalizedQuery && transactions.length > 0}
       />

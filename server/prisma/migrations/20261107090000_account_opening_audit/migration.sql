@@ -1,0 +1,1 @@
+ALTER TYPE "TransactionTypes" ADD VALUE 'ACCOUNT_OPENING';

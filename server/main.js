@@ -11,6 +11,7 @@ import {
 import { authMiddleware } from "./middleware/auth.js";
 import {
   getAllTransactions,
+  getTransactionHistory,
   createTransaction,
   deleteTransaction,
 } from "./controllers/transactionController.js";
@@ -68,6 +69,7 @@ app.get("/about", (req, res) => {
 });
 app.get("/accounts", authMiddleware, getAccounts);
 app.get("/transactions", authMiddleware, getAllTransactions);
+app.get("/transactions/history", authMiddleware, getTransactionHistory);
 app.post("/register", registerUser);
 app.post("/login", loginUser);
 app.get("/me", authMiddleware, getCurrentUser);

@@ -76,6 +76,16 @@ export const createAccount = async (req, res) => {
         type: uppertype,
         initialBalance: parsedInitialBalance,
         creditLimit: uppertype === "CREDIT" ? parsedCreditLimit : null,
+        // Nested writes are atomic: an account always has its opening audit entry.
+        // initialBalance remains the source for balance calculations.
+        transactions: {
+          create: {
+            title: "Account opened",
+            description: `Opening balance recorded for ${name}.`,
+            amount: parsedInitialBalance,
+            type: "ACCOUNT_OPENING",
+          },
+        },
       },
     });
 

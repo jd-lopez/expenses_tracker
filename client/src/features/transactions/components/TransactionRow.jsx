@@ -1,11 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as allIcons from "@fortawesome/free-solid-svg-icons";
 import { motion } from "motion/react";
+import { formatDateOnly } from "../../../shared/date";
+import { transactionTypeLabels, paymentMethodLabels } from "../../../shared/transactionLabels";
 
 function formatDate(dateStr) {
   if (!dateStr) return "";
 
-  return new Date(dateStr).toLocaleDateString("en-US", {
+  return formatDateOnly(dateStr, {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -15,10 +17,13 @@ function formatDate(dateStr) {
 export default function TransactionRow({
   transaction,
   account,
+  destinationAccount,
   category,
   onOpenOptions,
 }) {
-  const icon = category?.icon
+  const isOpening = transaction.type === "ACCOUNT_OPENING";
+  const isTransfer = transaction.type === "INTERNAL_TRANSFER" || transaction.type === "EXTERNAL_TRANSFER";
+  const icon = isOpening ? allIcons.faBuildingColumns : isTransfer ? allIcons.faArrowRightArrowLeft : category?.icon
     ? allIcons[category.icon]
     : transaction.type === "INCOME"
       ? allIcons.faMoneyBillWave
@@ -46,7 +51,7 @@ export default function TransactionRow({
           </div>
         )}
         <p className="hidden md:block text-xs bg-blue-200 rounded-xl px-1 py-0.5">
-          {category?.name}
+          {isOpening ? "Account opening" : category?.name}
         </p>
       </div>
 
@@ -54,6 +59,8 @@ export default function TransactionRow({
         <p>
           {account?.name} - {account?.institution}
         </p>
+        {destinationAccount && <p>To: {destinationAccount.name}</p>}
+        {transaction.payMethod && <p className="text-slate-500">{paymentMethodLabels[transaction.payMethod] || transaction.payMethod}</p>}
       </div>
 
       <div className="flex flex-col items-center flex-1">
@@ -66,25 +73,25 @@ export default function TransactionRow({
                 : "text-gray-600"
           }`}
         >
-          {transaction.type === "INCOME" ? "+" : "-"}$
+          {transaction.type === "INCOME" ? "+" : transaction.type === "EXPENSE" || isTransfer ? "-" : ""}$
           {Number(transaction.amount).toFixed(2)}
         </p>
         <p
           className={`text-xs px-1 py-0.5 rounded-2xl ${
-            category?.type === "INCOME" ? "bg-green-200" : "bg-red-200"
+            isOpening || isTransfer ? "bg-slate-200" : transaction.type === "INCOME" ? "bg-green-200" : "bg-red-200"
           }`}
         >
-          {category?.type}
+          {transactionTypeLabels[transaction.type] || transaction.type}
         </p>
       </div>
 
-      <button
+      {!isOpening && <button
         className="justify-self-end"
         onClick={() => onOpenOptions(transaction)}
         aria-label={`Open options for ${transaction.title}`}
       >
         <FontAwesomeIcon icon={allIcons.faEllipsisV} />
-      </button>
+      </button>}
     </motion.div>
   );
 }

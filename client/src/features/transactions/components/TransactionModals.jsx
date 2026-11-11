@@ -1,4 +1,5 @@
 import { AnimatePresence } from "motion/react";
+import { createPortal } from "react-dom";
 import { useModal } from "../../../context/ModalContext";
 import AddTransactionModal from "../../../shared/components/AddTransactionModal";
 import TransacOptions from "../../../shared/components/TransacOptions";
@@ -14,12 +15,16 @@ export default function TransactionModals({
   createAccount,
 }) {
   const { isModalActive, closeModal } = useModal();
+  const modalRoot =
+    typeof document !== "undefined"
+      ? document.getElementById("main-modal-root")
+      : null;
 
-  return (
+  const modals = (
     <>
       <AnimatePresence>
         {isModalActive("addTransaction") && (
-          <div className="absolute inset-0 z-40 flex items-start justify-center overflow-y-auto p-4 md:items-center">
+          <div className="pointer-events-auto absolute inset-0 flex items-start justify-center overflow-y-auto p-4 md:items-center">
             <div
               className="absolute inset-0 bg-slate-700/35 backdrop-blur-sm"
               onClick={closeModal}
@@ -36,7 +41,7 @@ export default function TransactionModals({
 
       <AnimatePresence>
         {isModalActive("addCategory") && (
-          <div className="absolute inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 md:items-center">
+          <div className="pointer-events-auto absolute inset-0 z-10 flex items-start justify-center overflow-y-auto p-4 md:items-center">
             <div
               className="absolute inset-0 bg-slate-700/60 backdrop-blur-xs"
               onClick={closeModal}
@@ -48,7 +53,7 @@ export default function TransactionModals({
 
       <AnimatePresence>
         {isModalActive("transOptions") && selectedTransaction && (
-          <div className="absolute inset-0 z-40 flex items-start justify-center overflow-y-auto p-4 md:items-center">
+          <div className="pointer-events-auto absolute inset-0 flex items-start justify-center overflow-y-auto p-4 md:items-center">
             <div
               className="absolute inset-0 bg-slate-700/35 backdrop-blur-sm"
               onClick={closeModal}
@@ -60,7 +65,7 @@ export default function TransactionModals({
 
       <AnimatePresence>
         {isModalActive("addAccount") && (
-          <div className="absolute inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 md:items-center">
+          <div className="pointer-events-auto absolute inset-0 z-10 flex items-start justify-center overflow-y-auto p-4 md:items-center">
             <div
               className="absolute inset-0 bg-slate-700/60 backdrop-blur-xs"
               onClick={closeModal}
@@ -71,4 +76,6 @@ export default function TransactionModals({
       </AnimatePresence>
     </>
   );
+
+  return modalRoot ? createPortal(modals, modalRoot) : modals;
 }

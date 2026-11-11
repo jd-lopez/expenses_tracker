@@ -38,15 +38,15 @@ export default function AppRoutes() {
       <Route
         element={
           <ThemeProvider>
-            <AccountProvider>
-              <TransProvider>
+            <TransProvider>
+              <AccountProvider>
                 <CategoryProvider>
                   <ProtectedRoute>
                     <Layout />
                   </ProtectedRoute>
                 </CategoryProvider>
-              </TransProvider>
-            </AccountProvider>
+              </AccountProvider>
+            </TransProvider>
           </ThemeProvider>
         }
       >

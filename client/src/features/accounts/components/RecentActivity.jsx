@@ -1,8 +1,11 @@
+import { formatDateOnly } from "../../../shared/date";
+import { transactionTypeLabels, paymentMethodLabels } from "../../../shared/transactionLabels";
+
 export default function RecentActivity({ accountTransactions }) {
   function formatDate(dateStr) {
     if (!dateStr) return "";
 
-    return new Date(dateStr).toLocaleDateString("en-US", {
+    return formatDateOnly(dateStr, {
       month: "short",
       day: "numeric",
       year: "numeric",
@@ -30,7 +33,7 @@ export default function RecentActivity({ accountTransactions }) {
             className="grid grid-cols-4 gap-4 border-b border-gray-200 py-2 px-1 text-sm hover:-translate-y-0.5 transition-all duration-200"
             key={transaction.id}
           >
-            <p>{transaction.title}</p>
+            <div><p>{transaction.title}</p>{transaction.payMethod && <p className="text-xs text-slate-500">{paymentMethodLabels[transaction.payMethod]}</p>}</div>
             <p
               className={`font-bold ${
                 transaction.type === "INCOME"
@@ -53,7 +56,7 @@ export default function RecentActivity({ accountTransactions }) {
                     : "text-gray-600"
               }`}
             >
-              {transaction.type}
+              {transactionTypeLabels[transaction.type] || transaction.type}
             </p>
           </div>
         ))}

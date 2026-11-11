@@ -1,4 +1,3 @@
-import React from "react";
 import { useContext, createContext } from "react";
 import { useState, useEffect } from "react";
 import { accountService } from "../features/transactions/api/accountService";
@@ -7,6 +6,7 @@ import { useTransactions } from "./TransactionsContext";
 const AccountContext = createContext();
 
 export function AccountProvider({ children }) {
+  const { loadTransactionHistory, loadTransactions, removeTransByAccount } = useTransactions();
   const [accounts, setAccounts] = useState([]);
   const [error, setError] = useState(null);
 
@@ -26,6 +26,11 @@ export function AccountProvider({ children }) {
     try {
       const data = await accountService.createAccount(accountData);
       setAccounts((prev) => [...prev, data]);
+      // Refresh both consumers of transaction data after the atomic server write.
+      await Promise.allSettled([
+        loadTransactionHistory(),
+        loadTransactions({ page: 1 }),
+      ]);
       setError(null);
       return data;
     } catch (error) {

@@ -21,10 +21,16 @@ export default function Layout() {
           isOpen={isOpen}
           toggleSidebar={toggleSidebar}
         />
-        <main
-          className={`flex-1  px-3 py-4  relative ${activeModal ? "overflow-y-hidden" : "overflow-y-auto"}`}
-        >
-          <Outlet />
+        <main className="relative flex-1 overflow-hidden px-3 py-4">
+          <div
+            className={`h-full ${activeModal ? "overflow-y-hidden" : "overflow-y-auto"}`}
+          >
+            <Outlet />
+          </div>
+          <div
+            id="main-modal-root"
+            className="pointer-events-none absolute inset-0 z-40"
+          />
         </main>
       </div>
       <BottomNav />

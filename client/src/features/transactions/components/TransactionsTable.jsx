@@ -1,15 +1,28 @@
 import { AnimatePresence } from "motion/react";
 import TransactionRow from "./TransactionRow";
+import TransactionPagination from "../../../shared/components/TransactionPagination";
 
 export default function TransactionsTable({
   transactions,
   accounts,
   categories,
+  pagination,
+  loading,
+  error,
+  onPageChange,
   onOpenOptions,
 }) {
   return (
     <div className="mt-6 flex flex-col rounded-2xl border border-gray-200 dark:border-gray-400">
-      {transactions.length > 0 ? (
+      {error ? (
+        <div role="alert" className="px-4 py-8 text-center text-rose-600">
+          {error}
+        </div>
+      ) : loading && transactions.length === 0 ? (
+        <div className="px-4 py-8 text-center text-slate-500">
+          Loading transactions…
+        </div>
+      ) : transactions.length > 0 ? (
         <div className="grid grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)_minmax(0,0.85fr)_minmax(0,1.25fr)_minmax(0,1fr)_2rem] items-center rounded-t-2xl px-2 py-4 text-sm font-bold text-slate-500 dark:text-white">
           <button className="w-full text-left">Titulo</button>
           <button className="w-full text-left">Fecha</button>
@@ -33,6 +46,9 @@ export default function TransactionsTable({
               account={accounts.find(
                 (account) => account.id === transaction.accountId,
               )}
+              destinationAccount={accounts.find(
+                (account) => account.id === transaction.destinationAccountId,
+              )}
               category={categories.find(
                 (category) => category.id === transaction.categoryId,
               )}
@@ -41,6 +57,14 @@ export default function TransactionsTable({
           ))}
         </AnimatePresence>
       </div>
+
+      {!error && pagination.totalPages > 0 && (
+        <TransactionPagination
+          pagination={pagination}
+          loading={loading}
+          onPageChange={onPageChange}
+        />
+      )}
     </div>
   );
 }

@@ -37,6 +37,7 @@ model Account {
   initialBalance Decimal       @default(0)
   creditLimit    Decimal?
   transactions   Transaction[]
+  incomingTransfers Transaction[] @relation("TransferDestination")
   user           User          @relation(fields: [userId], references: [id])
   userId         Int
   type           AccountTypes
@@ -62,9 +63,18 @@ model Category {
 }
 
 enum TransactionTypes {
+  ACCOUNT_OPENING
   INCOME
   EXPENSE
-  TRANSFER
+  INTERNAL_TRANSFER
+  EXTERNAL_TRANSFER
+}
+
+enum PaymentMethods {
+  DEBIT_CARD
+  BANK_TRANSFER
+  CASH
+  ATM
 }
 
 model Transaction {
@@ -73,13 +83,17 @@ model Transaction {
   description     String?
   amount          Decimal
   type            TransactionTypes
+  payMethod       PaymentMethods?
   account         Account          @relation(fields: [accountId], references: [id])
   accountId       Int
+  destinationAccount Account? @relation("TransferDestination", fields: [destinationAccountId], references: [id], onDelete: SetNull)
+  destinationAccountId Int?
   categories      Category?        @relation(fields: [categoryId], references: [id])
   categoryId      Int?
   createdAt       DateTime         @default(now())
-  transactionDate DateTime         @default(now())
+  transactionDate DateTime         @default(now()) @db.Date
 
   @@index([accountId])
+  @@index([destinationAccountId])
   @@index([createdAt])
 }

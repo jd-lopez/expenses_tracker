@@ -1,8 +1,15 @@
 import api from "../../../shared/utils/api";
 
 export const transactionService = {
-  async getAll() {
-    const response = await api.get("/transactions");
+  async getPage({ page = 1, limit = 10, search = "" } = {}) {
+    const response = await api.get("/transactions", {
+      params: { page, limit, ...(search ? { search } : {}) },
+    });
+    return response.data;
+  },
+
+  async getHistory() {
+    const response = await api.get("/transactions/history");
     return response.data;
   },
 
