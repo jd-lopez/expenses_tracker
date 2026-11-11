@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import expressRateLimit from "express-rate-limit";
-import dotenv from "dotenv";
+import { databaseConfig } from "./config/env.js";
 import {
   registerUser,
   loginUser,
@@ -27,9 +27,10 @@ import {
 } from "./controllers/categoryController.js";
 
 const app = express();
-const PORT = 3000;
-
-dotenv.config();
+const PORT = Number(process.env.PORT || 3000);
+if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
+  throw new Error("PORT must be an integer between 1 and 65535");
+}
 
 const clientUrl = process.env.CLIENT_URL?.replace(/\/$/, "");
 
@@ -82,4 +83,5 @@ app.delete("/accounts/:id", authMiddleware, deleteAccount);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  console.log(`Database target: ${databaseConfig.target}`);
 });
