@@ -79,9 +79,11 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
               )}
             </NavLink>
           </li>
+
+
           <li>
             <NavLink
-              to="/register"
+              to="/loans"
               className={({ isActive }) =>
                 `flex items-center gap-2 px-6 py-1 dark:text-white ${isActive && isOpen ? "rounded-md bg-blue-600 text-white" : "text-blue-600"}`
               }
@@ -90,18 +92,19 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
               {({ isActive }) => (
                 <>
                   <FontAwesomeIcon
-                    icon={faChartLine}
-                    className={`transition-all duration-200 ${isOpen ? "text-xl" : isActive ? "text-xl text-white px-3 py-1 rounded-md  bg-blue-600" : "text-2xl px-3 "} `}
+                    icon={faMoneyCheckDollar}
+                    className={`transition-all duration-200 ${isOpen ? "text-xl" : isActive ? "text-xl text-white px-3 py-1 rounded-md  bg-blue-600" : "text-2xl px-3"}`}
                   />
                   <span
                     className={` transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-0 w-0"}`}
                   >
-                    Analytics
+                    Loans and Reimbursements
                   </span>
                 </>
               )}
             </NavLink>
           </li>
+
           <li>
             <NavLink
               to="/accounts"
@@ -125,6 +128,30 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
               )}
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/register"
+              className={({ isActive }) =>
+                `flex items-center gap-2 px-6 py-1 dark:text-white ${isActive && isOpen ? "rounded-md bg-blue-600 text-white" : "text-blue-600"}`
+              }
+              onClick={() => closeModal()}
+            >
+              {({ isActive }) => (
+                <>
+                  <FontAwesomeIcon
+                    icon={faChartLine}
+                    className={`transition-all duration-200 ${isOpen ? "text-xl" : isActive ? "text-xl text-white px-3 py-1 rounded-md  bg-blue-600" : "text-2xl px-3 "} `}
+                  />
+                  <span
+                    className={` transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-0 w-0"}`}
+                  >
+                    Analytics
+                  </span>
+                </>
+              )}
+            </NavLink>
+          </li>
+          
 
           <li className="">
             <NavLink

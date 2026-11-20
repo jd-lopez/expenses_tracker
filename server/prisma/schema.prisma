@@ -60,10 +60,21 @@ model Transaction {
   account              Account          @relation(fields: [accountId], references: [id])
   categories           Category?        @relation(fields: [categoryId], references: [id])
   destinationAccount   Account?         @relation("TransferDestination", fields: [destinationAccountId], references: [id])
+  loan                 Loan?            @relation(fields: [loanId], references: [id])
+  loanId               Int?
 
   @@index([accountId])
   @@index([destinationAccountId])
   @@index([createdAt])
+}
+
+model Loan {
+  id           Int           @id @default(autoincrement())
+  userId       Int
+  borrower     String
+  amount       Decimal       @db.Decimal(12, 2)
+  createdAt    DateTime      @default(now())
+  transactions Transaction[]
 }
 
 enum AccountTypes {
@@ -83,7 +94,8 @@ enum TransactionTypes {
   INCOME
   EXPENSE
   INTERNAL_TRANSFER
-  EXTERNAL_TRANSFER
+  LOAN_OUT
+  LOAN_REPAYMENT
 }
 
 enum PaymentMethods {

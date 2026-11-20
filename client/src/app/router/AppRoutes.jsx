@@ -13,6 +13,7 @@ import Accounts from "../../features/accounts/Accounts";
 import AccountSummary from "../../features/accounts/AccountSummary";
 import { CategoryProvider } from "../../context/CategoryContext";
 import { ThemeProvider } from "../../context/ThemeContext";
+import Loans from "../../features/loans/Loans";
 
 function GuestRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -52,6 +53,7 @@ export default function AppRoutes() {
       >
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/transactions" element={<Transactions />} />
+        <Route path="/loans"  element={<Loans/>}/>
         <Route path="/accounts" element={<Accounts />} />
         <Route path="/accounts/:id" element={<AccountSummary />} />
       </Route>

@@ -60,7 +60,7 @@ export default function Dashboard() {
     );
 
   const monthlyExpenses = currentMonthTransactions
-    .filter((transaction) => transaction.type === "EXPENSE" || transaction.type === "EXTERNAL_TRANSFER")
+    .filter((transaction) => transaction.type === "EXPENSE" || transaction.type === "EXTERNAL_TRANSFER" || transaction.type === "LOAN_OUT")
     .reduce(
       (sum, transaction) => sum + (Number(transaction.amount) || 0),
       0,

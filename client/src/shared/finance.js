@@ -36,6 +36,9 @@ export function calculateAccountBalance(account, transactions = []) {
         return isCreditAccount(account) ? balance - amount : balance + amount;
       }
 
+      if (transaction.type === "LOAN_OUT") {
+        return isCreditAccount(account) ? balance - amount : balance - amount
+      }
       return balance;
     }, openingBalance);
 }

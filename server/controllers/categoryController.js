@@ -31,7 +31,7 @@ export const createCategory = async (req, res) => {
 
     const uppertype = type.toUpperCase();
 
-    if (!["INCOME", "EXPENSE"].includes(uppertype)) {
+    if (!["INCOME", "EXPENSE", "LOAN"].includes(uppertype)) {
       return res.status(400).json({ message: "type must be INCOME or EXPENSE" });
     }
 

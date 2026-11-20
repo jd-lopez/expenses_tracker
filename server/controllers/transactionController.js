@@ -139,9 +139,12 @@ export function createTransactionHandler(db) {
         "INCOME",
         "EXPENSE",
         "INTERNAL_TRANSFER",
-        "EXTERNAL_TRANSFER",
+        "LOAN_OUT",
+        "LOAN_REPAYMENT"
       ];
       const validMethods = ["DEBIT_CARD", "BANK_TRANSFER", "CASH", "ATM"];
+
+      const requiresCategory = ["INCOME", "EXPENSE"].includes(validTypes)
 
       if (
         typeof title !== "string" ||
@@ -178,8 +181,17 @@ export function createTransactionHandler(db) {
           .status(400)
           .json({ message: "categoryId must be a positive integer" });
       }
+
+      if (requiresCategory && parsedCategoryId === null) {
+        return res.status(400).json({message: "Category is required for income and expenses"})
+      }
+
+      const finalCategory = requiresCategory ? parsedCategoryId : null
+
       const isTransfer =
         type === "INTERNAL_TRANSFER" || type === "EXTERNAL_TRANSFER";
+      
+
       if (
         type === "INTERNAL_TRANSFER" &&
         (!Number.isSafeInteger(parsedDestinationId) ||
@@ -207,6 +219,11 @@ export function createTransactionHandler(db) {
             message: "Transfers cannot have an income or expense category",
           });
       }
+
+
+    const isLoan = type === "LOAN_OUT" || type === "LOAN_REPAYMENT"
+
+      
 
       const account = await db.account.findFirst({
         where: {
@@ -270,7 +287,7 @@ export function createTransactionHandler(db) {
           payMethod,
           accountId: parsedAccountId,
           destinationAccountId: parsedDestinationId,
-          categoryId: parsedCategoryId,
+          categoryId: finalCategory,
           transactionDate: parsedTransactionDate,
         },
       });

@@ -60,6 +60,7 @@ export default function AddCategoryModal({ createCategory }) {
               <option value="">Select type</option>
               <option value="INCOME">Income</option>
               <option value="EXPENSE">Expense</option>
+              <option value="LOAN">Loan</option>
             </select>
           </div>
 

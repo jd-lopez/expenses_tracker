@@ -43,8 +43,9 @@ export default function AddTransactionModal({
     : [
         { value: "INCOME", label: "Income" },
         { value: "EXPENSE", label: "Expense" },
-        { value: "INTERNAL_TRANSFER", label: "Internal Transfer" },
-        { value: "EXTERNAL_TRANSFER", label: "External Transfer" },
+        { value: "INTERNAL_TRANSFER", label: "Transfer between my accounts" },
+        { value: "LOAN_OUT", label: "Loan Out" },
+        { value: "LOAN_REPAYMENT", label: "Loan payment" },
       ];
 
   const paymentMethod = [
