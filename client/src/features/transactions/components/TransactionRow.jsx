@@ -22,7 +22,7 @@ export default function TransactionRow({
   onOpenOptions,
 }) {
   const isOpening = transaction.type === "ACCOUNT_OPENING";
-  const isTransfer = transaction.type === "INTERNAL_TRANSFER" || transaction.type === "EXTERNAL_TRANSFER";
+  const isTransfer = transaction.type === "INTERNAL_TRANSFER";
   const icon = isOpening ? allIcons.faBuildingColumns : isTransfer ? allIcons.faArrowRightArrowLeft : category?.icon
     ? allIcons[category.icon]
     : transaction.type === "INCOME"
@@ -68,12 +68,12 @@ export default function TransactionRow({
           className={`font-bold ${
             transaction.type === "INCOME"
               ? "text-green-600"
-              : transaction.type === "EXPENSE"
+              : transaction.type === "EXPENSE" || transaction.type === "EXTERNAL_TRANSFER"
                 ? "text-red-600"
                 : "text-gray-600"
           }`}
         >
-          {transaction.type === "INCOME" ? "+" : transaction.type === "EXPENSE" || isTransfer ? "-" : ""}$
+          {transaction.type === "INCOME" ? "+" : transaction.type === "EXPENSE" && transaction.type === "EXTERNAL_TRANSFER" ? "-" : ""}$
           {Number(transaction.amount).toFixed(2)}
         </p>
         <p

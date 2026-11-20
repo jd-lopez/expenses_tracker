@@ -3,13 +3,11 @@ import { useTransactions } from "../../../context/TransactionsContext";
 import { useAccounts } from "../../../context/AccountContext";
 import { useCategory } from "../../../context/CategoryContext";
 import { useModal } from "../../../context/ModalContext";
-import TransactionModals from "../components/TransactionModals";
 import TransactionSearch from "../components/TransactionSearch";
 import TransactionsHeader from "../components/TransactionsHeader";
 import TransactionsTable from "../components/TransactionsTable";
 
 export default function Transactions() {
-  const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [query, setQuery] = useState("");
   const { openModal } = useModal();
   const {
@@ -18,10 +16,9 @@ export default function Transactions() {
     loading,
     error,
     loadTransactions,
-    createTransaction,
   } = useTransactions();
-  const { accounts, createAccount } = useAccounts();
-  const { categories, createCategory } = useCategory();
+  const { accounts } = useAccounts();
+  const { categories } = useCategory();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -40,7 +37,6 @@ export default function Transactions() {
   }
 
   function handleOpenOptions(transaction) {
-    setSelectedTransaction(transaction);
     openModal("transOptions", { selectedTransact: transaction });
   }
 
@@ -64,14 +60,6 @@ export default function Transactions() {
         // showPagination={!normalizedQuery && transactions.length > 0}
       />
 
-      <TransactionModals
-        accounts={accounts}
-        categories={categories}
-        selectedTransaction={selectedTransaction}
-        createTransaction={createTransaction}
-        createCategory={createCategory}
-        createAccount={createAccount}
-      />
     </div>
   );
 }

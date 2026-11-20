@@ -8,6 +8,7 @@ import {
   toAmount,
 } from "../../shared/finance";
 import RecentActivity from "./components/RecentActivity";
+import { dateOnlyToUTCDate } from "../../shared/date";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -39,6 +40,16 @@ export default function AccountSummary() {
   const utilization =
     isCredit && creditLimit > 0 ? (balance / creditLimit) * 100 : 0;
   const utilizationWidth = Math.min(Math.max(utilization, 0), 100);
+  const now = new Date();
+  const monthlyExpenses = accountTransactions
+    .filter((transaction) => {
+      const date = dateOnlyToUTCDate(transaction.transactionDate) ?? new Date(transaction.createdAt);
+      return transaction.accountId === currentAccount.id &&
+        (transaction.type === "EXPENSE" || transaction.type === "EXTERNAL_TRANSFER") &&
+        date.getUTCFullYear() === now.getFullYear() &&
+        date.getUTCMonth() === now.getMonth();
+    })
+    .reduce((sum, transaction) => sum + toAmount(transaction.amount), 0);
 
   return (
     <div className="flex flex-col gap-6 p-4 text-black dark:text-white">
@@ -148,6 +159,17 @@ export default function AccountSummary() {
             className={`flex flex-col gap-4 rounded-2xl p-4 shadow-sm flex-2 bg-white dark:bg-gray-700`}
           >
             <h2>Spend Analytics</h2>
+            <div>
+              <p className="text-sm text-slate-500 dark:text-slate-300">
+                Expenses for {now.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+              </p>
+              <p className="mt-1 text-2xl font-bold text-rose-600 dark:text-rose-400">
+                {currencyFormatter.format(monthlyExpenses)}
+              </p>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                Expenses and outgoing external transfers, based on transaction date.
+              </p>
+            </div>
           </div>
         </div>
         <div

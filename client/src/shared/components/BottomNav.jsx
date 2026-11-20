@@ -10,22 +10,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import MobileMoreModal from "./MobileMoreModal";
 import { AnimatePresence } from "motion/react";
-import { useAccounts } from "../../context/AccountContext";
-import { useCategory } from "../../context/CategoryContext";
-import { useTransactions } from "../../context/TransactionsContext";
 import MobileActionsModal from "./MobileActionsModal";
-import AddTransactionModal from "./AddTransactionModal";
-import AddCategoryModal from "../../features/transactions/components/AddCategoryModal";
 
-import AddAccountModal from "../../features/accounts/components/AddAccountModal";
 import { useModal } from "../../context/ModalContext";
 import { animateSingleValue, motion } from "motion/react";
 
 export default function BottomNav() {
-  const { transactions, loadTransactions, createTransaction } =
-    useTransactions();
-  const { accounts, createAccount } = useAccounts();
-  const { categories, createCategory } = useCategory();
   const { isModalActive, toggleModal, closeModal } = useModal();
 
   return (
@@ -152,47 +142,6 @@ export default function BottomNav() {
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
-        {isModalActive("addTransaction") && (
-          <div className="absolute inset-x-0 top-18 bottom-20 z-40 flex items-start justify-center overflow-y-auto p-4 md:items-center">
-            <div
-              className="absolute inset-0 bg-slate-700/35 backdrop-blur-sm"
-              onClick={closeModal}
-            ></div>
-            <AddTransactionModal
-              accounts={accounts}
-              createTransaction={createTransaction}
-              categories={categories}
-              createCategory={createCategory}
-            />
-          </div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {isModalActive("addAccount") && (
-          <div className="absolute inset-x-0 top-18 bottom-20 z-50 flex items-start justify-center overflow-y-auto p-4 md:items-center">
-            <div
-              className="absolute inset-0 bg-slate-700/60 backdrop-blur-sm"
-              onClick={closeModal}
-            ></div>
-
-            <AddAccountModal createAccount={createAccount} />
-          </div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {isModalActive("addCategory") && (
-          <div className="absolute inset-x-0 top-18 bottom-20 z-50 flex items-start justify-center overflow-y-auto p-4 md:items-center">
-            <div
-              className="absolute inset-0 bg-slate-700/60 backdrop-blur-xs"
-              onClick={closeModal}
-            />
-            <AddCategoryModal createCategory={createCategory} />
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

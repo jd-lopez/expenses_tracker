@@ -12,12 +12,19 @@ import {
   calculateAccountNetValue,
   isCreditAccount,
 } from "../../shared/finance";
+import { dateOnlyToUTCDate } from "../../shared/date";
 
 export default function Accounts() {
   const { isModalActive, openModal, closeModal } = useModal();
   const { accounts, setAccounts, createAccount } = useAccounts();
   const { transactions } = useTransactions();
   const { categories, createCategory } = useCategory();
+  const now = new Date();
+  const currentMonthTransactions = transactions.filter((transaction) => {
+    const date = dateOnlyToUTCDate(transaction.transactionDate) ?? new Date(transaction.createdAt);
+    return date.getUTCFullYear() === now.getFullYear() &&
+      date.getUTCMonth() === now.getMonth();
+  });
 
   const totalNet = accounts.reduce(
     (sum, account) =>
@@ -26,7 +33,7 @@ export default function Accounts() {
   );
 
   const totalIncome = Number(
-    transactions
+    currentMonthTransactions
       .filter((t) => {
         const account = accounts.find((account) => account.id === t.accountId);
         return t.type === "INCOME" && !isCreditAccount(account);
@@ -35,8 +42,8 @@ export default function Accounts() {
   );
 
   const totalExpenses = Number(
-    transactions
-      .filter((t) => t.type === "EXPENSE")
+    currentMonthTransactions
+      .filter((t) => t.type === "EXPENSE" || t.type === "EXTERNAL_TRANSFER")
       .reduce((sum, trans) => sum + Number(trans.amount), 0),
   );
 
@@ -53,6 +60,7 @@ export default function Accounts() {
       </div>
 
       <SummaryCards
+        monthly
         totalIncome={totalIncome}
         totalExpenses={totalExpenses}
         totalNet={totalNet}

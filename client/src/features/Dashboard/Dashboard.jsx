@@ -60,7 +60,7 @@ export default function Dashboard() {
     );
 
   const monthlyExpenses = currentMonthTransactions
-    .filter((transaction) => transaction.type === "EXPENSE")
+    .filter((transaction) => transaction.type === "EXPENSE" || transaction.type === "EXTERNAL_TRANSFER")
     .reduce(
       (sum, transaction) => sum + (Number(transaction.amount) || 0),
       0,
@@ -122,6 +122,9 @@ export default function Dashboard() {
     },
   ];
 
+console.log(monthlyExpenses);
+
+
   return (
     <section className="flex flex-col gap-6">
       <DashHeading />
@@ -130,7 +133,7 @@ export default function Dashboard() {
         {summaryCards.map((card) => (
           <article
             key={card.label}
-            className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-inverse-surface"
+            className=" rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-inverse-surface"
           >
             <div className="flex items-start justify-between gap-4">
               <div>
@@ -182,7 +185,7 @@ export default function Dashboard() {
                   (item) => item.id === transaction.categoryId,
                 );
                 const isIncome = transaction.type === "INCOME";
-                const isExpense = transaction.type === "EXPENSE";
+                const isExpense = transaction.type === "EXPENSE" || transaction.type === "EXTERNAL_TRANSFER";
 
                 return (
                   <div
